@@ -67,10 +67,8 @@ public class CharacterConfigurator : MonoBehaviour
             character.agility = agility;
             character.strength = strength;
 
-            // 计算派生属性
             CalculateDerivedAttributes();
 
-            // 更新派生属性到UI
             UpdateDerivedAttributesToUI();
         }
     }
@@ -120,16 +118,15 @@ public class CharacterConfigurator : MonoBehaviour
             if (string.IsNullOrWhiteSpace(field.text) || !float.TryParse(field.text, out float value) || value <= 0)
             {
                 Debug.LogError($"输入字段 {field.name} 无效，值：{field.text}");
-                return false;  // 有任意一个无效则失败
+                return false;
             }
         }
 
-        return true;  // 所有字段均有效
+        return true;
     }
 
     private void CalculateDerivedAttributes()
     {
-        // 基础属性的衍生公式
         character.soulAttack = character.intelligence * 20.0f;
         character.soulDefense = character.intelligence * 5.0f;
         character.hitRate = character.intelligence * 1.0f;
