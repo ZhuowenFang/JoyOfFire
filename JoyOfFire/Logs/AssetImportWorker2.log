@@ -212,3 +212,319 @@ Start importing Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght.ttf using Guid(
  -> (artifact id: '0aac12125d0400872f3179d6c0109762') in 0.082545 seconds
 Number of updated asset objects reloaded before import = 0
 Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 59.807966 seconds.
+  path: Assets/Noto_Sans_SC/static
+  artifactKey: Guid(141a4b8ff8e5c4cc7bb4d62a21595169) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/static using Guid(141a4b8ff8e5c4cc7bb4d62a21595169) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '6eed1e1364e204982d0c1f7f446f366a') in 0.001610 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.027531 seconds.
+  path: Assets/Noto_Sans_SC/static/NotoSansSC-Black.ttf
+  artifactKey: Guid(ab3eb998d28cc41cda8dd82726c16885) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/static/NotoSansSC-Black.ttf using Guid(ab3eb998d28cc41cda8dd82726c16885) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '6aec15f5a0cd3b160dcaa5642f3abcb7') in 0.061440 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 0.000076 seconds.
+  path: Assets/Noto_Sans_SC/static/NotoSansSC-Thin.ttf
+  artifactKey: Guid(1a894a4610a34460cb63d6055e819d94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/static/NotoSansSC-Thin.ttf using Guid(1a894a4610a34460cb63d6055e819d94) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '26ebdc1b214edf7205b98c26cb664bb2') in 0.022533 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 0.000036 seconds.
+  path: Assets/Noto_Sans_SC/static/NotoSansSC-SemiBold.ttf
+  artifactKey: Guid(c1a8ecdf5c81b40fd813ac65286ffbe9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/static/NotoSansSC-SemiBold.ttf using Guid(c1a8ecdf5c81b40fd813ac65286ffbe9) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '3e375f76c43e5608c59d0621b7f684bf') in 0.016088 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 0.000056 seconds.
+  path: Assets/Noto_Sans_SC/static/NotoSansSC-Light.ttf
+  artifactKey: Guid(fa66e29f166c64034a66849ea5db0896) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/static/NotoSansSC-Light.ttf using Guid(fa66e29f166c64034a66849ea5db0896) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '82082a7053bd3114b22e15bd36fa0b97') in 0.012870 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 0.000051 seconds.
+  path: Assets/Noto_Sans_SC/static/NotoSansSC-Medium.ttf
+  artifactKey: Guid(2f8a7cdd51a12495d93c4f2881ec7866) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/static/NotoSansSC-Medium.ttf using Guid(2f8a7cdd51a12495d93c4f2881ec7866) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: 'dedd680cfc6773bc8cea9cb12471a4bb') in 0.009632 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/Noto_Sans_SC/static/NotoSansSC-ExtraLight.ttf
+  artifactKey: Guid(b995f2a7c5c5c4ffc96d05f4671e3e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/static/NotoSansSC-ExtraLight.ttf using Guid(b995f2a7c5c5c4ffc96d05f4671e3e88) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '0ee3ececba88a6ef80641eab6367aea7') in 0.009574 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 4
+========================================================================
+Received Import Request.
+  Time since last request: 181.372933 seconds.
+  path: Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset
+  artifactKey: Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset using Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '989fb0011f466fc5e24a1726832990f3') in 0.059157 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
+========================================================================
+Received Import Request.
+  Time since last request: 9.644293 seconds.
+  path: Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat
+  artifactKey: Guid(e73a58f6e2794ae7b1b7e50b7fb811b0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat using Guid(e73a58f6e2794ae7b1b7e50b7fb811b0) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: 'fb6ac9f33d8d14043855f4dcb11bfcf0') in 0.053932 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000080 seconds.
+  path: Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Outline.mat
+  artifactKey: Guid(79459efec17a4d00a321bdcc27bbc385) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Outline.mat using Guid(79459efec17a4d00a321bdcc27bbc385) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '30a18f604be332e65f6a17619b555c31') in 0.026325 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 47.400372 seconds.
+  path: Assets/Noto_Sans_SC/static/NotoSansSC-Regular SDF.asset
+  artifactKey: Guid(369afae72d2b945a9b519c2fc7389aa1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/static/NotoSansSC-Regular SDF.asset using Guid(369afae72d2b945a9b519c2fc7389aa1) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: 'b8d39e55e536b4b5c3feb039e1996294') in 0.041559 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
+========================================================================
+Received Import Request.
+  Time since last request: 337.908158 seconds.
+  path: Assets/Noto_Sans_SC/OFL.txt
+  artifactKey: Guid(84b9ddf87d7db4cc292dac77d9e184be) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/OFL.txt using Guid(84b9ddf87d7db4cc292dac77d9e184be) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '5de394a4859887632d087556e2fc1d5e') in 0.018408 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 4.631220 seconds.
+  path: Assets/Noto_Sans_SC/README.txt
+  artifactKey: Guid(d602b68f15cf94c01b69ff7216807cb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/README.txt using Guid(d602b68f15cf94c01b69ff7216807cb2) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: 'f888a48b8dd82975c63a8d21bdc68992') in 0.000785 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 117.228565 seconds.
+  path: Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset
+  artifactKey: Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset using Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: 'd6d548edfd006581203e9c4d4bdbb29e') in 0.083057 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
+========================================================================
+Received Import Request.
+  Time since last request: 283.612125 seconds.
+  path: Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset
+  artifactKey: Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset using Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '52da27bd64bda3b77d031186e0c3f94e') in 0.064459 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
+========================================================================
+Received Import Request.
+  Time since last request: 6.609136 seconds.
+  path: Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset
+  artifactKey: Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset using Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '55d3ba473e48b5c23d15556a8080caa6') in 0.020821 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x291287000 may have been prematurely finalized
+- Loaded All Assemblies, in  0.232 seconds
+Refreshing native plugins compatible for Editor in 1.20 ms, found 3 plugins.
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.658 seconds
+Domain Reload Profiling: 890ms
+	BeginReloadAssembly (83ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (6ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (32ms)
+	RebuildCommonClasses (19ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (12ms)
+	LoadAllAssembliesAndSetupDomain (111ms)
+		LoadAssemblies (126ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (10ms)
+			TypeCache.Refresh (6ms)
+				TypeCache.ScanAssembly (0ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (4ms)
+	FinalizeReload (658ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (215ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (2ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (30ms)
+			ProcessInitializeOnLoadAttributes (168ms)
+			ProcessInitializeOnLoadMethodAttributes (13ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (4ms)
+Refreshing native plugins compatible for Editor in 1.04 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4038 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 38 unused Assets / (35.7 KB). Loaded Objects now: 4576.
+Memory consumption went from 154.0 MB to 154.0 MB.
+Total: 2.701459 ms (FindLiveObjects: 0.148500 ms CreateObjectMapping: 0.043542 ms MarkObjects: 2.460083 ms  DeleteObjects: 0.048917 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 9a22284fe3817be447336de3de66b15e -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 35.726850 seconds.
+  path: Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset
+  artifactKey: Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset using Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: 'd0520e4a6fcb67e07bba3185aeba3f95') in 0.079490 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
+========================================================================
+Received Prepare
+Begin MonoManager ReloadAssembly
+Thread 0x28a087000 may have been prematurely finalized
+- Loaded All Assemblies, in  0.207 seconds
+Refreshing native plugins compatible for Editor in 1.00 ms, found 3 plugins.
+Native extension for OSXStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.602 seconds
+Domain Reload Profiling: 810ms
+	BeginReloadAssembly (70ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (5ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (25ms)
+	RebuildCommonClasses (19ms)
+	RebuildNativeTypeToScriptingClass (7ms)
+	initialDomainReloadingComplete (11ms)
+	LoadAllAssembliesAndSetupDomain (101ms)
+		LoadAssemblies (115ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (7ms)
+			TypeCache.Refresh (4ms)
+				TypeCache.ScanAssembly (0ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (3ms)
+	FinalizeReload (602ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (213ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (2ms)
+			SetLoadedEditorAssemblies (2ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (29ms)
+			ProcessInitializeOnLoadAttributes (166ms)
+			ProcessInitializeOnLoadMethodAttributes (14ms)
+			AfterProcessingInitializeOnLoad (1ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (4ms)
+Refreshing native plugins compatible for Editor in 1.07 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4038 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 38 unused Assets / (35.7 KB). Loaded Objects now: 4580.
+Memory consumption went from 160.3 MB to 160.2 MB.
+Total: 2.666292 ms (FindLiveObjects: 0.142041 ms CreateObjectMapping: 0.047583 ms MarkObjects: 2.423833 ms  DeleteObjects: 0.052417 ms)
+
+Prepare: number of updated asset objects reloaded= 0
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:CustomObjectIndexerAttribute: 9a22284fe3817be447336de3de66b15e -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:AudioImporter_EditorPlatform: 3918e3fc78b5a79bad01e8451be0beb8 -> 
+  custom:framework-osx-AVFoundation: e770b220cccbd017edd2c1fefb359320 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 32.884958 seconds.
+  path: Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset
+  artifactKey: Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Noto_Sans_SC/NotoSansSC-VariableFont_wght SDF.asset using Guid(1925f55402a0e422bbbca23d05ce8ab8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) [PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+[PhysX] Initialized MultithreadedTaskDispatcher with 11 workers.
+ -> (artifact id: '24ace1b4e66e6942ff22e3ccbf57ec49') in 0.061822 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 6
