@@ -98,6 +98,7 @@ public class CharacterConfigurator : MonoBehaviour
         character.tenacityRate = float.Parse(tenacityRateInput.text);
         character.damageX1 = float.Parse(damageX1Input.text);
         character.damageX2 = float.Parse(damageX2Input.text);
+        character.timePoint = 0f;
 
         Debug.Log("Character attributes saved and calculated.");
         characterConfiguratorPanel.SetActive(false);
@@ -164,6 +165,7 @@ public class CharacterConfigurator : MonoBehaviour
 [System.Serializable]
 public class CharacterAttributes
 {
+    public int index; 
     public string characterName;
     public string characterSkill1Entry;
     public float intelligence;
@@ -180,10 +182,12 @@ public class CharacterAttributes
     public float tenacityRate;
     public float damageX1;
     public float damageX2;
+    public float timePoint;
     public CharacterAttributes Clone()
     {
         return new CharacterAttributes
         {
+            index = this.index,
             characterName = this.characterName,
             characterSkill1Entry = this.characterSkill1Entry,
             intelligence = this.intelligence,
@@ -199,7 +203,8 @@ public class CharacterAttributes
             hitRate = this.hitRate,
             tenacityRate = this.tenacityRate,
             damageX1 = this.damageX1,
-            damageX2 = this.damageX2
+            damageX2 = this.damageX2,
+            timePoint = 0f
         };
     }
 }

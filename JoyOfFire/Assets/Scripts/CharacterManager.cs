@@ -11,18 +11,43 @@ public class CharacterManager : MonoBehaviour
     private int currentCharacterIndex;
     private CharacterAttributes currentCharacterClone;
     public Button startButton;
-    
+    public GameObject characterConfiguratorPanel;
+    public List<Button> characterButtons;
 
     void Start()
     {
+        InitializeCharacters();
+        InitializeButtons();
+        startButton.interactable = false;
+    }
+
+    private void InitializeCharacters()
+    {
         for (int i = 0; i < 6; i++)
         {
-            allCharacters.Add(new CharacterAttributes());
+            CharacterAttributes character = new CharacterAttributes
+            {
+                index = i
+            };
+            allCharacters.Add(character);
             isConfigured.Add(false);
-
+            Debug.Log($"初始化角色索引 {i}");
         }
-        startButton.interactable = false;
+    }
 
+    private void InitializeButtons()
+    {
+        foreach (var button in characterButtons)
+        {
+            int index = characterButtons.IndexOf(button);  // 避免闭包问题
+            button.onClick.RemoveAllListeners();  // 确保没有预设事件
+            button.onClick.AddListener(() =>
+            {
+                OpenConfigurator(index);
+                characterConfiguratorPanel.SetActive(true);
+            });
+            Debug.Log($"绑定角色按钮 {button.name} 的点击事件，索引 {index}");
+        }
     }
 
     public void OpenConfigurator(int characterIndex)
@@ -37,8 +62,10 @@ public class CharacterManager : MonoBehaviour
         if (configurator.AreAllInputsValid())
         {
             configurator.SaveCharacter();
-            isConfigured[currentCharacterIndex] = true; 
-            Debug.Log($"角色 {currentCharacterIndex} 已配置完成！");
+            allCharacters[currentCharacterIndex] = currentCharacterClone.Clone();
+            isConfigured[currentCharacterIndex] = true;
+
+            Debug.Log($"角色索引 {currentCharacterIndex} 已配置完成！");
             CheckAllConfigured();
         }
         else
@@ -46,6 +73,7 @@ public class CharacterManager : MonoBehaviour
             Debug.LogError("角色配置无效，无法保存！");
         }
     }
+
     private void CheckAllConfigured()
     {
         if (!isConfigured.Contains(false))
