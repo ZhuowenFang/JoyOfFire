@@ -13,7 +13,12 @@ public class CharacterManager : MonoBehaviour
     public Button startButton;
     public GameObject characterConfiguratorPanel;
     public List<Button> characterButtons;
-
+    public static CharacterManager instance;
+    
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         InitializeCharacters();

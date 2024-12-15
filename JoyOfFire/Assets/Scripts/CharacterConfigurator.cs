@@ -4,7 +4,15 @@ using TMPro;
 public class CharacterConfigurator : MonoBehaviour
 {
     public TMP_InputField nameInput;
-    public TMP_InputField skill1Input;
+    public TMP_InputField costInput;
+    public TMP_InputField physicalDamageInput;
+    public TMP_InputField soulDamageInput;
+    public TMP_InputField stunChanceInput;
+    public TMP_InputField silenceChanceInput;
+    public TMP_InputField criticalBoostInput;
+    public TMP_InputField shieldAmountInput;
+    public TMP_InputField blockChanceInput;
+    public TMP_InputField healAmountInput;
     public TMP_InputField intelligenceInput;
     public TMP_InputField agilityInput;
     public TMP_InputField strengthInput;
@@ -19,6 +27,7 @@ public class CharacterConfigurator : MonoBehaviour
     public TMP_InputField tenacityRateInput;
     public TMP_InputField damageX1Input;
     public TMP_InputField damageX2Input;
+    public TMP_InputField levelInput;
     
     public GameObject characterConfiguratorPanel;
     
@@ -34,11 +43,24 @@ public class CharacterConfigurator : MonoBehaviour
     public void LoadCharacter(CharacterAttributes charAttr)
     {
         character = charAttr;
+        if (character.skillAttributes == null)
+        {
+            character.skillAttributes = new SkillAttributes();
+        }
         intelligenceInput.onValueChanged.RemoveAllListeners();
         agilityInput.onValueChanged.RemoveAllListeners();
         strengthInput.onValueChanged.RemoveAllListeners();
         nameInput.text = character.characterName;
-        skill1Input.text = character.characterSkill1Entry;
+        costInput.text = character.skillAttributes.cost.ToString();
+        // skill1Input.text = character.characterSkill1Entry;
+        physicalDamageInput.text = character.skillAttributes.physicalDamage.ToString("F2");
+        soulDamageInput.text = character.skillAttributes.soulDamage.ToString("F2");
+        stunChanceInput.text = character.skillAttributes.stunChance.ToString("F2");
+        silenceChanceInput.text = character.skillAttributes.silenceChance.ToString("F2");
+        criticalBoostInput.text = character.skillAttributes.criticalBoost.ToString("F2");
+        shieldAmountInput.text = character.skillAttributes.shieldAmount.ToString("F2");
+        blockChanceInput.text = character.skillAttributes.blockChance.ToString("F2");
+        healAmountInput.text = character.skillAttributes.healAmount.ToString("F2");
         intelligenceInput.text = character.intelligence.ToString("F2");
         agilityInput.text = character.agility.ToString("F2");
         strengthInput.text = character.strength.ToString("F2");
@@ -53,6 +75,7 @@ public class CharacterConfigurator : MonoBehaviour
         tenacityRateInput.text = character.tenacityRate.ToString("F2");
         damageX1Input.text = character.damageX1.ToString("F2");
         damageX2Input.text = character.damageX2.ToString("F2");
+        levelInput.text = character.level.ToString();
         intelligenceInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
         agilityInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
         strengthInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
@@ -82,8 +105,19 @@ public class CharacterConfigurator : MonoBehaviour
             return;
         }
 
+        character.skillAttributes = new SkillAttributes
+        {
+            cost = int.Parse(costInput.text),
+            physicalDamage = float.Parse(physicalDamageInput.text),
+            soulDamage = float.Parse(soulDamageInput.text),
+            stunChance = float.Parse(stunChanceInput.text),
+            silenceChance = float.Parse(silenceChanceInput.text),
+            criticalBoost = float.Parse(criticalBoostInput.text),
+            shieldAmount = float.Parse(shieldAmountInput.text),
+            blockChance = float.Parse(blockChanceInput.text),
+            healAmount = float.Parse(healAmountInput.text)
+        };
         character.characterName = nameInput.text;
-        character.characterSkill1Entry = skill1Input.text;
         character.intelligence = float.Parse(intelligenceInput.text);
         character.agility = float.Parse(agilityInput.text);
         character.strength = float.Parse(strengthInput.text);
@@ -98,20 +132,23 @@ public class CharacterConfigurator : MonoBehaviour
         character.tenacityRate = float.Parse(tenacityRateInput.text);
         character.damageX1 = float.Parse(damageX1Input.text);
         character.damageX2 = float.Parse(damageX2Input.text);
+        character.level = int.Parse(levelInput.text);
         character.timePoint = 0f;
+        character.currentHealth = character.health;
+        character.energy = 0;
+        character.maxEnergy = 10;
 
         Debug.Log("Character attributes saved and calculated.");
         characterConfiguratorPanel.SetActive(false);
     }
     public bool AreAllInputsValid()
     {
-        // 遍历所有需要检查的输入框
         TMP_InputField[] requiredFields = 
         {
             intelligenceInput, agilityInput, strengthInput,
             healthInput, physicalAttackInput, physicalDefenseInput,
             soulAttackInput, soulDefenseInput, speedInput,
-            criticalRateInput, hitRateInput, tenacityRateInput, damageX1Input, damageX2Input
+            criticalRateInput, hitRateInput, tenacityRateInput, damageX1Input, damageX2Input, levelInput
         };
 
         foreach (var field in requiredFields)
@@ -130,7 +167,6 @@ public class CharacterConfigurator : MonoBehaviour
     {
         character.soulAttack = character.intelligence * 20.0f;
         character.soulDefense = character.intelligence * 5.0f;
-        character.hitRate = character.intelligence * 1.0f;
         character.health = character.intelligence * 30.0f
                            + character.agility * 20.0f
                            + character.strength * 50.0f;
@@ -138,8 +174,9 @@ public class CharacterConfigurator : MonoBehaviour
                                    + character.strength * 5.0f;
         character.physicalDefense = character.strength * 15.0f;
         character.speed = character.agility * 1.0f;
-        character.criticalRate = character.agility * 1.0f;
-        character.tenacityRate = character.strength * 1.0f;
+        character.criticalRate = character.agility * 1.0f / 100f;
+        character.hitRate = character.intelligence * 1.0f / 100f;
+        character.tenacityRate = character.strength * 1.0f / 100f; 
     }
 
     private void UpdateDerivedAttributesToUI()
@@ -167,11 +204,12 @@ public class CharacterAttributes
 {
     public int index; 
     public string characterName;
-    public string characterSkill1Entry;
+    public SkillAttributes skillAttributes; 
     public float intelligence;
     public float agility;
     public float strength;
     public float health;
+    public float currentHealth;
     public float physicalAttack;
     public float physicalDefense;
     public float soulAttack;
@@ -183,17 +221,22 @@ public class CharacterAttributes
     public float damageX1;
     public float damageX2;
     public float timePoint;
+    public int level;
+    public float shieldAmount;
+    public int energy;
+    public int maxEnergy;
     public CharacterAttributes Clone()
     {
         return new CharacterAttributes
         {
             index = this.index,
             characterName = this.characterName,
-            characterSkill1Entry = this.characterSkill1Entry,
+            skillAttributes = this.skillAttributes,
             intelligence = this.intelligence,
             agility = this.agility,
             strength = this.strength,
             health = this.health,
+            currentHealth = this.health,
             physicalAttack = this.physicalAttack,
             physicalDefense = this.physicalDefense,
             soulAttack = this.soulAttack,
@@ -204,7 +247,30 @@ public class CharacterAttributes
             tenacityRate = this.tenacityRate,
             damageX1 = this.damageX1,
             damageX2 = this.damageX2,
-            timePoint = 0f
+            timePoint = 0f,
+            level = this.level,
+            shieldAmount = this.shieldAmount,
+            energy = this.energy,
+            maxEnergy = this.maxEnergy
+            
         };
     }
 }
+
+[System.Serializable]
+public class SkillAttributes
+{
+    public int cost;
+    public float physicalDamage;
+    public float soulDamage;
+    public float stunChance;
+    public float silenceChance;
+    public float criticalBoost;
+    public float shieldAmount;
+    public float blockChance;
+    public float healAmount;  
+}
+
+
+    
+

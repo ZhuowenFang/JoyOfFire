@@ -23,7 +23,12 @@ public class SpeedBarUI : MonoBehaviour
     private const float MaxDistance = 5000f;    // 固定路程
     private const float TurnTime = 100f;        // 每回合最大时间
     private int roundNumber = 1;                // 当前回合数
+    public static SpeedBarUI instance;
     
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         characterManager = FindObjectOfType<CharacterManager>();
@@ -100,7 +105,7 @@ public class SpeedBarUI : MonoBehaviour
         float yPos = speedAreaHeight / 2f - (index + 0.5f) * iconHeight;
         icon.localPosition = new Vector3(0, yPos, 0);
     }
-
+    
     private void UpdateDividerPosition()
     {
         float currentTurnTime = TurnTime * roundNumber;

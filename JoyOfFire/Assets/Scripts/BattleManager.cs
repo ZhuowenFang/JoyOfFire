@@ -1,21 +1,30 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
-    public SpeedBarUI speedBarUI;           // 速度条管理器
-    public RectTransform actionPanel;       // 操作栏
-    public Button attackButton;             // 普通攻击按钮
-    public Button endTurnButton;            // 结束回合按钮
-    public List<Button> characterButtons;   // 玩家与敌人的按钮列表
-    public List<Button> enemyButtons;       // 敌方角色按钮列表
+    public SpeedBarUI speedBarUI;
+    public RectTransform actionPanel;
+    public Button attackButton; 
+    public Button skillButton;
+    public Button endTurnButton;
+    public List<Button> characterButtons;
+    public List<Button> enemyButtons;
 
-    private bool isSelectingEnemy = false;  // 是否正在选择敌人
-    private float animationTimer = 0f;      // 动画计时器
+    private bool isSelectingEnemy = false;
+    private float animationTimer = 0f;
     public static BattleManager instance;
-
+    
+    public float criticalMultiplier = 1.5f; 
+    public GameObject damageTextPrefab;
+    public Canvas mainCanvas;  
+    public bool isUsingSkill = false;
+    private Dictionary<int, float> textOffsets = new Dictionary<int, float>();
+    public TMP_Text energyText;
     private void Awake()
     {
         instance = this;
@@ -28,14 +37,23 @@ public class BattleManager : MonoBehaviour
             button.onClick.RemoveAllListeners();
         }
 
-        // 动态绑定敌人按钮点击事件
         for (int i = 0; i < enemyButtons.Count; i++)
         {
             int index = i;
             enemyButtons[i].onClick.AddListener(() => OnEnemySelected(index));
         }
 
-        attackButton.onClick.AddListener(StartEnemySelection);
+        attackButton.onClick.AddListener(() =>
+        {
+            isUsingSkill = false;
+            StartEnemySelection();
+        });
+
+        skillButton.onClick.AddListener(() =>
+        {
+            isUsingSkill = true;
+            StartEnemySelection();
+        });
         endTurnButton.onClick.AddListener(EndTurn);
         StartNextTurn();
     }
@@ -68,12 +86,21 @@ public class BattleManager : MonoBehaviour
         {
             actionPanel.gameObject.SetActive(true);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
+            energyText.text = $"{nextCharacter.energy} / {nextCharacter.maxEnergy}";
+            if (nextCharacter.energy < nextCharacter.skillAttributes.cost)
+            {
+                skillButton.interactable = false;
+            }
+            else
+            {
+                skillButton.interactable = true;
+            }
+            
         }
     }
 
     public void StartEnemySelection()
     {
-        Debug.Log("开始选择攻击目标！");
         isSelectingEnemy = true;
         actionPanel.gameObject.SetActive(false);
     }
@@ -93,7 +120,7 @@ public class BattleManager : MonoBehaviour
 
         foreach (var enemy in enemyButtons)
         {
-            enemy.transform.localScale = Vector3.one * scale;  // 敌人图片缩放动画
+            enemy.transform.localScale = Vector3.one * scale;
         }
     }
 
@@ -101,19 +128,222 @@ public class BattleManager : MonoBehaviour
     {
         if (!isSelectingEnemy) return;
 
-        Debug.Log($"攻击敌人 {enemyIndex + 4}！");
-        DealDamage(enemyIndex);
+        CharacterAttributes attacker = SpeedBarUI.instance.GetNextCharacter();
+        CharacterAttributes defender = CharacterManager.instance.allCharacters[enemyIndex + 3];
+
+        if (isUsingSkill)
+        {
+            UseSkill(attacker, defender, attacker.skillAttributes);
+            attacker.energy -= attacker.skillAttributes.cost;
+        }
+        else
+        {
+            DealDamage(attacker, defender, 1f);
+            if (attacker.energy < attacker.maxEnergy)
+            {
+                attacker.energy += 1;
+            }
+        }
 
         isSelectingEnemy = false;
         ResetAllCharacterSizes();
-
         EndTurn();
     }
-
-    private void DealDamage(int enemyIndex)
+    
+    public void DealDamage(CharacterAttributes attacker, CharacterAttributes defender, float damageMultiplier)
     {
-        Debug.Log($"对敌人 {enemyIndex + 4} 造成 10 点伤害！");
+        float levelDifference = Mathf.Abs(attacker.level - defender.level);
+        float damageReductionPercentage = defender.physicalDefense / 
+                                          (defender.physicalDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
+
+        float damage = attacker.physicalAttack * damageMultiplier * (1 - damageReductionPercentage);
+
+        float randomValue = Random.value;
+        bool isCritical = randomValue <= attacker.criticalRate;
+        if (isCritical)
+        {
+            damage *= criticalMultiplier;
+            Debug.Log($"暴击！造成了 {damage} 点伤害！");
+        }
+        else
+        {
+            Debug.Log($"普通攻击造成了 {damage} 点伤害！");
+        }
+
+        ApplyDamage(defender, damage, isCritical);
     }
+
+    private void ApplyDamage(CharacterAttributes defender, float damage, bool isCritical)
+    {
+        float remainingShield = Mathf.Max(defender.shieldAmount - damage, 0);
+        float damageToHealth = Mathf.Max(damage - defender.shieldAmount, 0);
+        defender.shieldAmount = remainingShield;
+        defender.currentHealth -= damageToHealth;
+       
+        ShowDamageText(defender.index, damage, isCritical);
+
+        if (defender.currentHealth <= 0)
+        {
+            Debug.Log($"{defender.characterName} 被击败！");
+            // RemoveCharacter(defender);
+        }
+    }
+    
+    public void UseSkill(CharacterAttributes attacker, CharacterAttributes defender, SkillAttributes skill)
+    {
+        float levelDifference = Mathf.Abs(attacker.level - defender.level);
+
+        // 计算物理伤害
+        float physicalDamageReduction = defender.physicalDefense /
+            (defender.physicalDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
+        float physicalDamage = attacker.physicalAttack * skill.physicalDamage * (1 - physicalDamageReduction);
+
+        // 计算灵魂伤害
+        float soulDamageReduction = defender.soulDefense /
+            (defender.soulDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
+        float soulDamage = attacker.soulAttack * skill.soulDamage * (1 - soulDamageReduction);
+
+        // 总伤害 = 物理伤害 + 灵魂伤害
+        float totalDamage = physicalDamage + soulDamage;
+
+        // 暴击判定
+        float effectiveCriticalRate = attacker.criticalRate + skill.criticalBoost;
+        bool isCritical = Random.value < effectiveCriticalRate;
+        if (isCritical)
+        {
+            totalDamage *= 1.5f;
+            Debug.Log($"暴击！造成了 {totalDamage:F0} 点伤害！");
+        }
+        else
+        {
+            Debug.Log($"普通技能造成了 {totalDamage:F0} 点伤害！");
+        }
+
+        // 应用伤害
+        ApplyDamage(defender, totalDamage,isCritical);
+
+        // 技能附加效果
+        ApplySkillEffects(attacker, defender, skill);
+    }
+
+    private void ApplySkillEffects(CharacterAttributes attacker, CharacterAttributes defender, SkillAttributes skill)
+    {
+        // 状态效果应用
+        if (skill.stunChance > 0 && Random.value < skill.stunChance)
+        {
+            ShowText(defender.index, "眩晕!",Color.yellow);
+            Debug.Log($"{defender.characterName} 被眩晕！");
+        }
+
+        if (skill.silenceChance > 0 && Random.value < skill.silenceChance)
+        {
+            ShowText(defender.index, "沉默!",Color.blue);
+            Debug.Log($"{defender.characterName} 被沉默！");
+        }
+
+        if (skill.blockChance > 0 && Random.value < skill.blockChance)
+        {
+            attacker.tenacityRate += 0.3f;
+            attacker.physicalDefense *= 1.2f;
+            attacker.soulDefense *= 1.2f;
+
+            ShowText(attacker.index, "变得更肉了!",Color.green);
+            Debug.Log($"{attacker.characterName} 变得更肉了！");
+        }
+
+        if (skill.shieldAmount > 0)
+        {
+            attacker.shieldAmount += skill.shieldAmount;
+
+            ShowText(attacker.index, $"护盾 +{skill.shieldAmount}",Color.green);
+            Debug.Log($"{attacker.characterName} 获得了 {skill.shieldAmount} 点护盾！");
+        }
+
+        if (skill.healAmount > 0)
+        {
+            float healedAmount = Mathf.Min(skill.healAmount, attacker.health - attacker.currentHealth);
+            attacker.currentHealth = Mathf.Min(attacker.currentHealth + skill.healAmount, attacker.health);
+
+            ShowText(attacker.index, $"治疗 +{healedAmount:F0}",Color.green);
+            Debug.Log($"{attacker.characterName} 回复了 {healedAmount} 点生命值！");
+        }
+    }
+
+
+
+    private void ShowDamageText(int characterIndex, float damage, bool isCritical)
+    {
+        RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
+
+        GameObject damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
+        if (isCritical)
+        {
+            damageText.GetComponent<TMP_Text>().text = $"暴击！-{damage:F0}";
+        }
+        else
+        {
+            damageText.GetComponent<TMP_Text>().text = $"-{damage:F0}";
+
+        }
+
+        RectTransform textRect = damageText.GetComponent<RectTransform>();
+        textRect.SetParent(mainCanvas.transform, false);
+        textRect.localPosition = targetRect.localPosition + new Vector3(0, 300, 0);
+
+        damageText.transform.SetAsLastSibling();
+
+        
+        Destroy(damageText, 1.5f);
+    }
+    
+
+    private void ShowText(int characterIndex, string text,Color color)
+    {
+        RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
+
+        GameObject statusText = Instantiate(damageTextPrefab, mainCanvas.transform);
+        statusText.GetComponent<TMP_Text>().text = text;
+        statusText.GetComponent<TMP_Text>().color = color;
+
+        if (!textOffsets.ContainsKey(characterIndex))
+        {
+            if (characterIndex >= 3)
+            {
+                textOffsets[characterIndex] = -300f;
+            }
+            else
+            {
+                textOffsets[characterIndex] = -350f;
+
+            }
+            
+        }
+
+        RectTransform textRect = statusText.GetComponent<RectTransform>();
+        textRect.SetParent(mainCanvas.transform, false);
+        textRect.localPosition = targetRect.localPosition + new Vector3(0, textOffsets[characterIndex], 0);
+        statusText.transform.SetAsLastSibling();
+
+        textOffsets[characterIndex] -= 100f;
+
+        StartCoroutine(ResetTextOffset(characterIndex, statusText));
+    }
+
+    private IEnumerator ResetTextOffset(int characterIndex, GameObject textObject)
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        // 销毁文本对象
+        Destroy(textObject);
+
+        // 恢复偏移量
+        if (textOffsets.ContainsKey(characterIndex))
+        {
+            textOffsets[characterIndex] += 100f;
+        }
+    }
+
+
 
     private void ResetAllCharacterSizes()
     {
