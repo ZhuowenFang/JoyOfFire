@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
@@ -32,11 +33,20 @@ public class BattleManager : MonoBehaviour
 
     void Start()
     {
+        foreach (var button in CharacterManager.instance.characterButtons)
+        {
+            characterButtons.Add(button);
+        }
+
+        foreach (var button in CharacterManager.instance.EnemyButtons)
+        {
+            enemyButtons.Add(button);
+        }
         foreach (var button in characterButtons)
         {
             button.onClick.RemoveAllListeners();
         }
-
+    
         for (int i = 0; i < enemyButtons.Count; i++)
         {
             int index = i;
@@ -74,8 +84,9 @@ public class BattleManager : MonoBehaviour
 
         int characterIndex = nextCharacter.index;
 
-        if (characterIndex >= 3)
+        if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count-1)
         {
+            actionPanel.gameObject.SetActive(false);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
             await Task.Delay(1000);
             Debug.Log($"敌人 {characterIndex + 1} 行动完成！");
@@ -129,7 +140,7 @@ public class BattleManager : MonoBehaviour
         if (!isSelectingEnemy) return;
 
         CharacterAttributes attacker = SpeedBarUI.instance.GetNextCharacter();
-        CharacterAttributes defender = CharacterManager.instance.allCharacters[enemyIndex + 3];
+        CharacterAttributes defender = CharacterManager.instance.EnemyCharacters[enemyIndex];
 
         if (isUsingSkill)
         {
@@ -307,7 +318,7 @@ public class BattleManager : MonoBehaviour
 
         if (!textOffsets.ContainsKey(characterIndex))
         {
-            if (characterIndex >= 3)
+            if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count)
             {
                 textOffsets[characterIndex] = -300f;
             }
@@ -359,5 +370,9 @@ public class BattleManager : MonoBehaviour
         ResetAllCharacterSizes();
         speedBarUI.CompleteCurrentTurn();
         StartNextTurn();
+    }
+    public void EndBattle()
+    {
+        SceneManager.UnloadSceneAsync("Battle");
     }
 }

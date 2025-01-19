@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json.Linq;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class EventManager : MonoBehaviour
@@ -20,12 +22,14 @@ public class EventManager : MonoBehaviour
     public Button ChoiceDetail;
     private string level;
     private List<string> levelPool;
-    public APIManager.LevelResponse levelResponse;
+    public ClassManager.LevelResponse levelResponse;
     public GameObject CharacterPanel;
     public Button ConfirmButton;
     private string APIresponse;
     public Dictionary<string, JObject> optionResults = new Dictionary<string, JObject>();
-
+    public GameObject RewardPanel;
+    public GameObject RewardPrefab;
+    public GameObject HorizontalLayoutGroup;
     void InitializeLevelPool()
     {
         levelPool = new List<string>();
@@ -93,7 +97,7 @@ public class EventManager : MonoBehaviour
             {
                 Time.timeScale = 0;
                 Debug.Log($"成功响应：{response}");
-                levelResponse = JsonUtility.FromJson<APIManager.LevelResponse>(response);
+                levelResponse = JsonUtility.FromJson<ClassManager.LevelResponse>(response);
                 CharacterPanel.SetActive(true);
                 CharacterButton.SetActive(false);
                 CharacterSelectionEventTitle.text = level + " " + levelResponse.data.levelInfo.level_name;
@@ -188,7 +192,6 @@ public class EventManager : MonoBehaviour
             Debug.Log($"Monsters: {optionResult["monsters"]}");
             if (optionResult["monsters"] != null)
             {
-                // 确保是一个 JObject
                 if (optionResult["monsters"] is JObject monsters)
                 {
                     foreach (var monster in monsters)
@@ -238,9 +241,32 @@ public class EventManager : MonoBehaviour
             ChoiceDetail.onClick.AddListener( () =>
             {
                 EventPanel.SetActive(false);
+                ChoiceDetail.gameObject.SetActive(false);
+                if (optionResult["monsters"].Count() != 0 && optionResult["monsters"] is JObject monsters)
+                {
+                    SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
+                }
+
+                if (optionResult["treasure"].Count() != 0 && optionResult["treasure"] is JObject treasures)
+                {
+                    RewardPanel.SetActive(true);
+
+                    foreach (Transform child in HorizontalLayoutGroup.transform)
+                    {
+                        Destroy(child.gameObject);
+                    }
+
+                    foreach (var treasure in treasures)
+                    {
+                        GameObject newReward = Instantiate(RewardPrefab, HorizontalLayoutGroup.transform);
+
+                        Text nameText = newReward.transform.Find("name").GetComponent<Text>();
+                        nameText.text = treasure.Key;
+                    }
+                }
                 CharacterButton.SetActive(true);
+
                 Time.timeScale = 1;
-                
             });
             
         }
@@ -248,10 +274,5 @@ public class EventManager : MonoBehaviour
         {
             Debug.LogWarning($"No valid data for {optionKey}");
         }
-    }
-    private IEnumerator ResumeGameAfterDelay(float delay)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-        Time.timeScale = 1;
     }
 }

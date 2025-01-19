@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -173,7 +174,7 @@ public class CharacterConfigurator : MonoBehaviour
         character.physicalAttack = character.agility * 10.0f
                                    + character.strength * 5.0f;
         character.physicalDefense = character.strength * 15.0f;
-        character.speed = character.agility * 1.0f;
+        character.speed = character.agility * 1.0f + 100f;
         character.criticalRate = character.agility * 1.0f / 100f;
         character.hitRate = character.intelligence * 1.0f / 100f;
         character.tenacityRate = character.strength * 1.0f / 100f; 
@@ -206,8 +207,11 @@ public class CharacterAttributes
     public string characterName;
     public SkillAttributes skillAttributes; 
     public float intelligence;
+    public float potentialIntelligence;
     public float agility;
+    public float potentialAgility;
     public float strength;
+    public float potentialStrength;
     public float health;
     public float currentHealth;
     public float physicalAttack;
@@ -225,6 +229,19 @@ public class CharacterAttributes
     public float shieldAmount;
     public int energy;
     public int maxEnergy;
+    public string id;
+    public string user_id;
+    public ClassManager.BasicInformation basic_information;
+    public string character_picture;
+    public List<string> current_ability;
+    public List<string> potential_ability;
+    public ClassManager.Talent talent1;
+    public List<string> talent_count1;
+    public ClassManager.Talent talent2;
+    public List<string> talent_count2;
+    public ClassManager.Talent talent3;
+    public List<string> talent_count3;
+    public string experience;
     public CharacterAttributes Clone()
     {
         return new CharacterAttributes
@@ -233,8 +250,11 @@ public class CharacterAttributes
             characterName = this.characterName,
             skillAttributes = this.skillAttributes,
             intelligence = this.intelligence,
+            potentialIntelligence = this.potentialIntelligence,
             agility = this.agility,
+            potentialAgility = this.potentialAgility,
             strength = this.strength,
+            potentialStrength = this.potentialStrength,
             health = this.health,
             currentHealth = this.health,
             physicalAttack = this.physicalAttack,
@@ -251,7 +271,20 @@ public class CharacterAttributes
             level = this.level,
             shieldAmount = this.shieldAmount,
             energy = this.energy,
-            maxEnergy = this.maxEnergy
+            maxEnergy = this.maxEnergy,
+            id = this.id,
+            user_id = this.user_id,
+            basic_information = this.basic_information,
+            character_picture = this.character_picture,
+            current_ability = this.current_ability,
+            potential_ability = this.potential_ability,
+            talent1 = this.talent1,
+            talent_count1 = this.talent_count1,
+            talent2 = this.talent2,
+            talent_count2 = this.talent_count2,
+            talent3 = this.talent3,
+            talent_count3 = this.talent_count3,
+            experience = this.experience
             
         };
     }
@@ -270,6 +303,7 @@ public class SkillAttributes
     public float blockChance;
     public float healAmount;  
 }
+
 
 
     

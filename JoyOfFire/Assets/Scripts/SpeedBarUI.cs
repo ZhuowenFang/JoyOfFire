@@ -16,7 +16,7 @@ public class SpeedBarUI : MonoBehaviour
     public RectTransform divider;               // 分界线
     public GameObject characterIconPrefab;      // 图标预制件
 
-    private List<SpeedCharacter> speedCharacters = new List<SpeedCharacter>();  // 管理角色列表
+    public List<SpeedCharacter> speedCharacters = new List<SpeedCharacter>();  // 管理角色列表
     private CharacterManager characterManager;   // 引用角色管理器
     private float speedAreaHeight;               // 速度区域高度
 
@@ -42,19 +42,16 @@ public class SpeedBarUI : MonoBehaviour
 
     private void InitializeCharacters()
     {
-        for (int i = 0; i < characterManager.allCharacters.Count; i++)
+        for (int i = 0; i < NewCharacterManager.instance.allCharacters.Count; i++)
         {
-            CharacterAttributes character = characterManager.allCharacters[i];
+            CharacterAttributes character = NewCharacterManager.instance.allCharacters[i];
 
-            // 创建角色图标
             GameObject icon = Instantiate(characterIconPrefab, speedArea);
             RectTransform iconTransform = icon.GetComponent<RectTransform>();
             TMP_Text numberText = icon.GetComponentInChildren<TMP_Text>();
 
-            // 初始化编号显示
             numberText.text = (i + 1).ToString();
 
-            // 添加到管理列表
             speedCharacters.Add(new SpeedCharacter
             {
                 character = character,
