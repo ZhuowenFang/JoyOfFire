@@ -34,7 +34,7 @@ public class APIManager : MonoBehaviour
 
     public void GetLevelData(string level, Action<string> onSuccess, Action<string> onError)
     {
-        string url = $"https://joy-fire-dev.czczcz.xyz/api/v1/level/{level}";
+        string url = $"https://joy-fire-dev.czczcz.xyz/api/v1/level/mmcz/{level}";
         GetRequest(url, onSuccess, onError);
     }
     

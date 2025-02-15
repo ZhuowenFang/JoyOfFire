@@ -84,14 +84,23 @@ public class BattleManager : MonoBehaviour
 
         int characterIndex = nextCharacter.index;
 
-        if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count-1)
+        if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count)
         {
             actionPanel.gameObject.SetActive(false);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
             await Task.Delay(1000);
-            Debug.Log($"敌人 {characterIndex + 1} 行动完成！");
-            speedBarUI.CompleteCurrentTurn();
-            StartNextTurn();
+            BaseEnemy enemyScript = enemyButtons[0].GetComponent<BaseEnemy>();
+            if (enemyScript != null)
+            {
+                enemyScript.TakeTurn();
+            }
+            else
+            {
+                Debug.LogWarning($"Enemy {characterIndex} 没有 BaseEnemy 组件！");
+                EndTurn();
+            }            
+            Debug.Log($"敌人 {characterIndex} 行动完成！");
+
         }
         else
         {
@@ -184,14 +193,14 @@ public class BattleManager : MonoBehaviour
         ApplyDamage(defender, damage, isCritical);
     }
 
-    private void ApplyDamage(CharacterAttributes defender, float damage, bool isCritical)
+    private void ApplyDamage(CharacterAttributes defender, float damage, bool isCritical, bool isEnemy = false)
     {
         float remainingShield = Mathf.Max(defender.shieldAmount - damage, 0);
         float damageToHealth = Mathf.Max(damage - defender.shieldAmount, 0);
         defender.shieldAmount = remainingShield;
         defender.currentHealth -= damageToHealth;
        
-        ShowDamageText(defender.index, damage, isCritical);
+        ShowDamageText(defender.index, damage, isCritical, isEnemy);
 
         if (defender.currentHealth <= 0)
         {
@@ -282,8 +291,9 @@ public class BattleManager : MonoBehaviour
 
 
 
-    private void ShowDamageText(int characterIndex, float damage, bool isCritical)
+    private void ShowDamageText(int characterIndex, float damage, bool isCritical, bool isEnemy = false)
     {
+        Debug.Log($"显示伤害文本：{characterIndex}");
         RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
 
         GameObject damageText = Instantiate(damageTextPrefab, mainCanvas.transform);

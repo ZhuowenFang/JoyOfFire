@@ -38,7 +38,6 @@ public class CharacterManager : MonoBehaviour
     private void InitializeCharacters()
     {
         allCharacters = newCharacterManager.allCharacters;
-        PlayerCharacters = newCharacterManager.allCharacters;
         foreach (Transform child in PlayerCharacterHorizontalLayout.transform)
         {
             Destroy(child.gameObject);
@@ -52,6 +51,7 @@ public class CharacterManager : MonoBehaviour
             allCharacters[i].index = i;
             GameObject Character = Instantiate(PlayerCharacterPrefab, PlayerCharacterHorizontalLayout.transform);
             characterButtons.Add(Character.GetComponent<Button>());
+            PlayerCharacters.Add(allCharacters[i]);
             StartCoroutine(APIManager.instance.LoadImage(allCharacters[i].character_picture, Character.GetComponent<Image>()));
                 
             // BattleManager.instance.characterButtons.Add(Character.GetComponent<Button>());
@@ -71,6 +71,7 @@ public class CharacterManager : MonoBehaviour
             EnemyCharacters.Add(character);
             // BattleManager.instance.characterButtons.Add(monster.GetComponent<Button>());
             // BattleManager.instance.enemyButtons.Add(monster.GetComponent<Button>());
+            monster.GetComponent<BaseEnemy>().enemyAttributes = character;
             allCharacters.Add(character);
             isConfigured.Add(false);
             Debug.Log($"初始化角色索引 {i}");
@@ -110,6 +111,8 @@ public class CharacterManager : MonoBehaviour
         {
             configurator.SaveCharacter();
             allCharacters[currentCharacterIndex] = currentCharacterClone.Clone();
+            EnemyCharacters[0] = currentCharacterClone.Clone();
+            EnemyButtons[0].GetComponent<BaseEnemy>().enemyAttributes = currentCharacterClone.Clone();
             isConfigured[0] = true;
 
             Debug.Log($"角色索引 {currentCharacterIndex} 已配置完成！");

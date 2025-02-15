@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5297355201346045833}
   - component: {fileID: 6588332739967980949}
   - component: {fileID: 7354444334534410993}
+  - component: {fileID: 2167646721452429361}
   m_Layer: 5
   m_Name: Enemy
   m_TagString: Enemy
@@ -120,3 +121,88 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2167646721452429361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7320024146222501121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673e22b42e13a794091d851d7638953f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyName: 
+  enemyAttributes:
+    index: 0
+    characterName: 
+    skillAttributes:
+      cost: 0
+      physicalDamage: 0
+      soulDamage: 0
+      stunChance: 0
+      silenceChance: 0
+      criticalBoost: 0
+      shieldAmount: 0
+      blockChance: 0
+      healAmount: 0
+    intelligence: 0
+    potentialIntelligence: 0
+    agility: 0
+    potentialAgility: 0
+    strength: 0
+    potentialStrength: 0
+    health: 0
+    currentHealth: 0
+    physicalAttack: 0
+    physicalDefense: 0
+    soulAttack: 0
+    soulDefense: 0
+    speed: 0
+    criticalRate: 0
+    hitRate: 0
+    tenacityRate: 0
+    damageX1: 0
+    damageX2: 0
+    timePoint: 0
+    level: 0
+    shieldAmount: 0
+    energy: 0
+    maxEnergy: 0
+    id: 
+    user_id: 
+    basic_information:
+      appearance: 
+      fighting_ability: 
+      gender: 
+      name: 
+      story: 
+    character_picture: 
+    current_ability: []
+    potential_ability: []
+    talent1:
+      abilitydescription: 
+      cost: 
+      description: []
+      icon1: 
+      icon2: 
+      icon3: 
+    talent_count1: []
+    talent2:
+      abilitydescription: 
+      cost: 
+      description: []
+      icon1: 
+      icon2: 
+      icon3: 
+    talent_count2: []
+    talent3:
+      abilitydescription: 
+      cost: 
+      description: []
+      icon1: 
+      icon2: 
+      icon3: 
+    talent_count3: []
+    experience: 

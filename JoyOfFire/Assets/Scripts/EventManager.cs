@@ -244,6 +244,8 @@ public class EventManager : MonoBehaviour
                 ChoiceDetail.gameObject.SetActive(false);
                 if (optionResult["monsters"].Count() != 0 && optionResult["monsters"] is JObject monsters)
                 {
+                    
+                    
                     SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
                 }
 
