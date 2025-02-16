@@ -41,46 +41,46 @@ public class CharacterConfigurator : MonoBehaviour
         agilityInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
         strengthInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
     }
-    public void LoadCharacter(CharacterAttributes charAttr)
-    {
-        character = charAttr;
-        if (character.skillAttributes == null)
-        {
-            character.skillAttributes = new SkillAttributes();
-        }
-        intelligenceInput.onValueChanged.RemoveAllListeners();
-        agilityInput.onValueChanged.RemoveAllListeners();
-        strengthInput.onValueChanged.RemoveAllListeners();
-        nameInput.text = character.characterName;
-        costInput.text = character.skillAttributes.cost.ToString();
-        // skill1Input.text = character.characterSkill1Entry;
-        physicalDamageInput.text = character.skillAttributes.physicalDamage.ToString("F2");
-        soulDamageInput.text = character.skillAttributes.soulDamage.ToString("F2");
-        stunChanceInput.text = character.skillAttributes.stunChance.ToString("F2");
-        silenceChanceInput.text = character.skillAttributes.silenceChance.ToString("F2");
-        criticalBoostInput.text = character.skillAttributes.criticalBoost.ToString("F2");
-        shieldAmountInput.text = character.skillAttributes.shieldAmount.ToString("F2");
-        blockChanceInput.text = character.skillAttributes.blockChance.ToString("F2");
-        healAmountInput.text = character.skillAttributes.healAmount.ToString("F2");
-        intelligenceInput.text = character.intelligence.ToString("F2");
-        agilityInput.text = character.agility.ToString("F2");
-        strengthInput.text = character.strength.ToString("F2");
-        healthInput.text = character.health.ToString("F2");
-        physicalAttackInput.text = character.physicalAttack.ToString("F2");
-        physicalDefenseInput.text = character.physicalDefense.ToString("F2");
-        soulAttackInput.text = character.soulAttack.ToString("F2");
-        soulDefenseInput.text = character.soulDefense.ToString("F2");
-        speedInput.text = character.speed.ToString("F2");
-        criticalRateInput.text = character.criticalRate.ToString("F2");
-        hitRateInput.text = character.hitRate.ToString("F2");
-        tenacityRateInput.text = character.tenacityRate.ToString("F2");
-        damageX1Input.text = character.damageX1.ToString("F2");
-        damageX2Input.text = character.damageX2.ToString("F2");
-        levelInput.text = character.level.ToString();
-        intelligenceInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
-        agilityInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
-        strengthInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
-    }
+    // public void LoadCharacter(CharacterAttributes charAttr)
+    // {
+    //     character = charAttr;
+    //     if (character.skillAttributes == null)
+    //     {
+    //         character.skillAttributes = new SkillAttributes();
+    //     }
+    //     intelligenceInput.onValueChanged.RemoveAllListeners();
+    //     agilityInput.onValueChanged.RemoveAllListeners();
+    //     strengthInput.onValueChanged.RemoveAllListeners();
+    //     nameInput.text = character.characterName;
+    //     costInput.text = character.skillAttributes.cost.ToString();
+    //     // skill1Input.text = character.characterSkill1Entry;
+    //     physicalDamageInput.text = character.skillAttributes.physicalDamage.ToString("F2");
+    //     soulDamageInput.text = character.skillAttributes.soulDamage.ToString("F2");
+    //     stunChanceInput.text = character.skillAttributes.stunChance.ToString("F2");
+    //     silenceChanceInput.text = character.skillAttributes.silenceChance.ToString("F2");
+    //     criticalBoostInput.text = character.skillAttributes.criticalBoost.ToString("F2");
+    //     shieldAmountInput.text = character.skillAttributes.shieldAmount.ToString("F2");
+    //     blockChanceInput.text = character.skillAttributes.blockChance.ToString("F2");
+    //     healAmountInput.text = character.skillAttributes.healAmount.ToString("F2");
+    //     intelligenceInput.text = character.intelligence.ToString("F2");
+    //     agilityInput.text = character.agility.ToString("F2");
+    //     strengthInput.text = character.strength.ToString("F2");
+    //     healthInput.text = character.health.ToString("F2");
+    //     physicalAttackInput.text = character.physicalAttack.ToString("F2");
+    //     physicalDefenseInput.text = character.physicalDefense.ToString("F2");
+    //     soulAttackInput.text = character.soulAttack.ToString("F2");
+    //     soulDefenseInput.text = character.soulDefense.ToString("F2");
+    //     speedInput.text = character.speed.ToString("F2");
+    //     criticalRateInput.text = character.criticalRate.ToString("F2");
+    //     hitRateInput.text = character.hitRate.ToString("F2");
+    //     tenacityRateInput.text = character.tenacityRate.ToString("F2");
+    //     damageX1Input.text = character.damageX1.ToString("F2");
+    //     damageX2Input.text = character.damageX2.ToString("F2");
+    //     levelInput.text = character.level.ToString();
+    //     intelligenceInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
+    //     agilityInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
+    //     strengthInput.onValueChanged.AddListener(_ => UpdateDerivedAttributes());
+    // }
     private void UpdateDerivedAttributes()
     {
         if (float.TryParse(intelligenceInput.text, out float intelligence) &&
@@ -97,51 +97,51 @@ public class CharacterConfigurator : MonoBehaviour
         }
     }
 
-    public void SaveCharacter()
-    {
-        
-        if (!AreAllInputsValid())
-        {
-            Debug.LogError("所有属性必须填写，且不能为零！");
-            return;
-        }
-
-        character.skillAttributes = new SkillAttributes
-        {
-            cost = int.Parse(costInput.text),
-            physicalDamage = float.Parse(physicalDamageInput.text),
-            soulDamage = float.Parse(soulDamageInput.text),
-            stunChance = float.Parse(stunChanceInput.text),
-            silenceChance = float.Parse(silenceChanceInput.text),
-            criticalBoost = float.Parse(criticalBoostInput.text),
-            shieldAmount = float.Parse(shieldAmountInput.text),
-            blockChance = float.Parse(blockChanceInput.text),
-            healAmount = float.Parse(healAmountInput.text)
-        };
-        character.characterName = nameInput.text;
-        character.intelligence = float.Parse(intelligenceInput.text);
-        character.agility = float.Parse(agilityInput.text);
-        character.strength = float.Parse(strengthInput.text);
-        character.health = float.Parse(healthInput.text);
-        character.physicalAttack = float.Parse(physicalAttackInput.text);
-        character.physicalDefense = float.Parse(physicalDefenseInput.text);
-        character.soulAttack = float.Parse(soulAttackInput.text);
-        character.soulDefense = float.Parse(soulDefenseInput.text);
-        character.speed = float.Parse(speedInput.text);
-        character.criticalRate = float.Parse(criticalRateInput.text);
-        character.hitRate = float.Parse(hitRateInput.text);
-        character.tenacityRate = float.Parse(tenacityRateInput.text);
-        character.damageX1 = float.Parse(damageX1Input.text);
-        character.damageX2 = float.Parse(damageX2Input.text);
-        character.level = int.Parse(levelInput.text);
-        character.timePoint = 0f;
-        character.currentHealth = character.health;
-        character.energy = 0;
-        character.maxEnergy = 10;
-
-        Debug.Log("Character attributes saved and calculated.");
-        characterConfiguratorPanel.SetActive(false);
-    }
+    // public void SaveCharacter()
+    // {
+    //     
+    //     if (!AreAllInputsValid())
+    //     {
+    //         Debug.LogError("所有属性必须填写，且不能为零！");
+    //         return;
+    //     }
+    //
+    //     character.skillAttributes = new SkillAttributes
+    //     {
+    //         cost = int.Parse(costInput.text),
+    //         physicalDamage = float.Parse(physicalDamageInput.text),
+    //         soulDamage = float.Parse(soulDamageInput.text),
+    //         stunChance = float.Parse(stunChanceInput.text),
+    //         silenceChance = float.Parse(silenceChanceInput.text),
+    //         criticalBoost = float.Parse(criticalBoostInput.text),
+    //         shieldAmount = float.Parse(shieldAmountInput.text),
+    //         blockChance = float.Parse(blockChanceInput.text),
+    //         healAmount = float.Parse(healAmountInput.text)
+    //     };
+    //     character.characterName = nameInput.text;
+    //     character.intelligence = float.Parse(intelligenceInput.text);
+    //     character.agility = float.Parse(agilityInput.text);
+    //     character.strength = float.Parse(strengthInput.text);
+    //     character.health = float.Parse(healthInput.text);
+    //     character.physicalAttack = float.Parse(physicalAttackInput.text);
+    //     character.physicalDefense = float.Parse(physicalDefenseInput.text);
+    //     character.soulAttack = float.Parse(soulAttackInput.text);
+    //     character.soulDefense = float.Parse(soulDefenseInput.text);
+    //     character.speed = float.Parse(speedInput.text);
+    //     character.criticalRate = float.Parse(criticalRateInput.text);
+    //     character.hitRate = float.Parse(hitRateInput.text);
+    //     character.tenacityRate = float.Parse(tenacityRateInput.text);
+    //     character.damageX1 = float.Parse(damageX1Input.text);
+    //     character.damageX2 = float.Parse(damageX2Input.text);
+    //     character.level = int.Parse(levelInput.text);
+    //     character.timePoint = 0f;
+    //     character.currentHealth = character.health;
+    //     character.energy = 0;
+    //     character.maxEnergy = 10;
+    //
+    //     Debug.Log("Character attributes saved and calculated.");
+    //     characterConfiguratorPanel.SetActive(false);
+    // }
     public bool AreAllInputsValid()
     {
         TMP_InputField[] requiredFields = 
@@ -201,54 +201,33 @@ public class CharacterConfigurator : MonoBehaviour
 
 
 [System.Serializable]
-public class CharacterAttributes
+public class CharacterAttributes : ICharacter
 {
-    public int index; 
-    public string characterName;
-    public SkillAttributes skillAttributes; 
+    // 现在角色可以有多个技能
+    public List<SkillAttributes> skills = new List<SkillAttributes>();
+
     public float intelligence;
     public float potentialIntelligence;
     public float agility;
     public float potentialAgility;
     public float strength;
     public float potentialStrength;
-    public float health;
-    public float currentHealth;
-    public float physicalAttack;
-    public float physicalDefense;
-    public float soulAttack;
-    public float soulDefense;
-    public float speed;
-    public float criticalRate;
-    public float hitRate;
-    public float tenacityRate;
-    public float damageX1;
-    public float damageX2;
-    public float timePoint;
-    public int level;
-    public float shieldAmount;
-    public int energy;
-    public int maxEnergy;
+
     public string id;
     public string user_id;
     public ClassManager.BasicInformation basic_information;
     public string character_picture;
     public List<string> current_ability;
     public List<string> potential_ability;
-    public ClassManager.Talent talent1;
-    public List<string> talent_count1;
-    public ClassManager.Talent talent2;
-    public List<string> talent_count2;
-    public ClassManager.Talent talent3;
-    public List<string> talent_count3;
     public string experience;
+
     public CharacterAttributes Clone()
     {
         return new CharacterAttributes
         {
             index = this.index,
             characterName = this.characterName,
-            skillAttributes = this.skillAttributes,
+            skills = new List<SkillAttributes>(this.skills),
             intelligence = this.intelligence,
             potentialIntelligence = this.potentialIntelligence,
             agility = this.agility,
@@ -256,7 +235,7 @@ public class CharacterAttributes
             strength = this.strength,
             potentialStrength = this.potentialStrength,
             health = this.health,
-            currentHealth = this.health,
+            currentHealth = this.currentHealth,
             physicalAttack = this.physicalAttack,
             physicalDefense = this.physicalDefense,
             soulAttack = this.soulAttack,
@@ -267,25 +246,18 @@ public class CharacterAttributes
             tenacityRate = this.tenacityRate,
             damageX1 = this.damageX1,
             damageX2 = this.damageX2,
-            timePoint = 0f,
-            level = this.level,
+            timePoint = this.timePoint,
             shieldAmount = this.shieldAmount,
             energy = this.energy,
             maxEnergy = this.maxEnergy,
+            level = this.level,
             id = this.id,
             user_id = this.user_id,
             basic_information = this.basic_information,
             character_picture = this.character_picture,
             current_ability = this.current_ability,
             potential_ability = this.potential_ability,
-            talent1 = this.talent1,
-            talent_count1 = this.talent_count1,
-            talent2 = this.talent2,
-            talent_count2 = this.talent_count2,
-            talent3 = this.talent3,
-            talent_count3 = this.talent_count3,
             experience = this.experience
-            
         };
     }
 }
@@ -293,7 +265,12 @@ public class CharacterAttributes
 [System.Serializable]
 public class SkillAttributes
 {
-    public int cost;
+    public string skillName;
+    public string skillDescription;
+    public int skillCost;
+    public string skillIcon;
+    public List<float> skillVector; // 技能属性数值
+
     public float physicalDamage;
     public float soulDamage;
     public float stunChance;
@@ -301,9 +278,133 @@ public class SkillAttributes
     public float criticalBoost;
     public float shieldAmount;
     public float blockChance;
-    public float healAmount;  
+    public float healAmount;
 }
 
+
+[System.Serializable]
+public class MonsterAttributes : ICharacter
+{
+    public string id;
+    public string monsterId;
+    public float sanValue;
+    public List<MonsterSkillAttributes> skills = new List<MonsterSkillAttributes>();
+    
+    public MonsterAttributes Clone()
+    {
+        return new MonsterAttributes
+        {
+            index = this.index,
+            characterName = this.characterName,
+            health = this.health,
+            currentHealth = this.currentHealth,
+            physicalAttack = this.physicalAttack,
+            physicalDefense = this.physicalDefense,
+            soulAttack = this.soulAttack,
+            soulDefense = this.soulDefense,
+            speed = this.speed,
+            criticalRate = this.criticalRate,
+            hitRate = this.hitRate,
+            tenacityRate = this.tenacityRate,
+            damageX1 = this.damageX1,
+            damageX2 = this.damageX2,
+            timePoint = this.timePoint,
+            shieldAmount = this.shieldAmount,
+            energy = this.energy,
+            maxEnergy = this.maxEnergy,
+            level = this.level,
+            id = this.id,
+            monsterId = this.monsterId,
+            sanValue = this.sanValue,
+            skills = CloneSkills(this.skills)
+        };
+    }
+    private List<MonsterSkillAttributes> CloneSkills(List<MonsterSkillAttributes> originalSkills)
+    {
+        List<MonsterSkillAttributes> clonedSkills = new List<MonsterSkillAttributes>();
+        foreach (var skill in originalSkills)
+        {
+            clonedSkills.Add(new MonsterSkillAttributes
+            {
+                skillName = skill.skillName,
+                skillDescription = skill.skillDescription,
+                skillCost = skill.skillCost,
+                skillIcon = skill.skillIcon,
+                skillValues = new List<float>(skill.skillValues),
+
+                physicalDamage = skill.physicalDamage,
+                physicalAttackCount = skill.physicalAttackCount,
+                soulDamage = skill.soulDamage,
+                soulAttackCount = skill.soulAttackCount,
+                sanityLoss = skill.sanityLoss,
+                targetAlly = skill.targetAlly,
+                targetSelf = skill.targetSelf,
+                targetCount = skill.targetCount,
+                criticalChance = skill.criticalChance,
+                shieldValue = skill.shieldValue,
+                blockChance = skill.blockChance,
+                fixedLifesteal = skill.fixedLifesteal,
+                percentLifesteal = skill.percentLifesteal,
+                fixedHeal = skill.fixedHeal,
+                percentHeal = skill.percentHeal,
+                stunChance = skill.stunChance,
+                silenceChance = skill.silenceChance
+            });
+        }
+        return clonedSkills;
+    }
+}
+
+[System.Serializable]
+public class MonsterSkillAttributes
+{
+    public string skillName;
+    public string skillDescription;
+    public int skillCost;
+    public string skillIcon;
+    public List<float> skillValues;
+
+    public float physicalDamage;
+    public float physicalAttackCount;
+    public float soulDamage;
+    public float soulAttackCount;
+    public float sanityLoss;
+    public bool targetAlly;
+    public bool targetSelf;
+    public float targetCount;
+    public float criticalChance;
+    public float shieldValue;
+    public float blockChance;
+    public float fixedLifesteal;
+    public float percentLifesteal;
+    public float fixedHeal;
+    public float percentHeal;
+    public float stunChance;
+    public float silenceChance;
+}
+[System.Serializable]
+public abstract class ICharacter
+{
+    public int index { get; set; }
+    public string characterName { get; set; }
+    public float health { get; set; }
+    public float currentHealth { get; set; }
+    public float physicalAttack { get; set; }
+    public float physicalDefense { get; set; }
+    public float soulAttack { get; set; }
+    public float soulDefense { get; set; }
+    public float speed { get; set; }
+    public float criticalRate { get; set; }
+    public float hitRate { get; set; }
+    public float tenacityRate { get; set; }
+    public float damageX1 { get; set; }
+    public float damageX2 { get; set; }
+    public float timePoint { get; set; }
+    public float shieldAmount { get; set; }
+    public int energy { get; set; }
+    public int maxEnergy { get; set; }
+    public int level { get; set; }
+}
 
 
     

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -36,6 +38,43 @@ public class APIManager : MonoBehaviour
     {
         string url = $"https://joy-fire-dev.czczcz.xyz/api/v1/level/mmcz/{level}";
         GetRequest(url, onSuccess, onError);
+    }
+    
+    public void GetMonsterData(string levelOrder, string monsterId, Action<List<MonsterAttributes>> onSuccess, Action<string> onError)
+    {
+        string url = $"https://joy-fire-dev.czczcz.xyz/api/v1/monsters/level?levelOrder={levelOrder}&monsterId={monsterId}";
+
+        StartCoroutine(GetMonsterRequest(url, onSuccess, onError));
+    }
+
+    private IEnumerator GetMonsterRequest(string url, Action<List<MonsterAttributes>> onSuccess, Action<string> onError)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        {
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                string jsonResponse = request.downloadHandler.text;
+                Debug.Log(jsonResponse);
+                List<ClassManager.MonsterData> monsterDataList = JsonConvert.DeserializeObject<List<ClassManager.MonsterData>>(jsonResponse);
+
+                List<MonsterAttributes> monsters = new List<MonsterAttributes>();
+                foreach (var data in monsterDataList)
+                {
+                    Debug.Log(data);
+                    monsters.Add(NewCharacterManager.ConvertToMonsterAttributes(data));
+                }
+
+                onSuccess?.Invoke(monsters);
+            }
+            else
+            {
+                onError?.Invoke(request.error);
+            }
+        }
     }
     
     public void CreateCharacter(string jsonData, Action<string> onSuccess, Action<string> onError)

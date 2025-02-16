@@ -117,5 +117,54 @@ public class ClassManager : MonoBehaviour
         public string combat; // 战斗
         public string other; // 其他
     }
+    [System.Serializable]
+    public class MonsterData
+    {
+        public string id;
+        public string level_order;
+        public string enemy;  // 怪物名称
+        public string monsterId;
+        public int base_gold_value;
+        public string random;
+        public int level;
+        public int hp;
+        public int san_value;
+        public float physical_attack;
+        public float physical_defense;
+        public float soul_attack;
+        public float soul_defense;
+        public float speed;
+        public float critical_strike_rate;
+        public float hit_rate;
+        public float tenacity_rate;
+    
+        public string passive1;
+        public string passive2;
+    
+        public string skill1;
+        public string skill1_desc;
+        public List<string> skill1_vector;
+        public string skill1_icon;
+        public int? skill1_cost;
+    
+        public string skill2;
+        public string skill2_desc;
+        public List<string> skill2_vector;
+        public string skill2_icon;
+        public int? skill2_cost;
+    
+        public string skill3;
+        public string skill3_desc;
+        public List<string> skill3_vector;
+        public string skill3_icon;
+        public int? skill3_cost;
+    
+        public string skill4;
+        public string skill4_desc;
+        public List<string> skill4_vector;
+        public string skill4_icon;
+        public int? skill4_cost;
+    }
+
 
 }

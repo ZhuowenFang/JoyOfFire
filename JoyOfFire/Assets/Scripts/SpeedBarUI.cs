@@ -7,7 +7,8 @@ public class SpeedBarUI : MonoBehaviour
     [System.Serializable]
     public class SpeedCharacter
     {
-        public CharacterAttributes character;    // 角色属性数据
+        public ICharacter character;
+        public int index;
         public RectTransform iconTransform;     // 图标对象
         public TMP_Text numberText;             // 图标编号显示
     }
@@ -42,9 +43,9 @@ public class SpeedBarUI : MonoBehaviour
 
     private void InitializeCharacters()
     {
-        for (int i = 0; i < NewCharacterManager.instance.allCharacters.Count; i++)
+        for (int i = 0; i < CharacterManager.instance.allCharacters.Count; i++)
         {
-            CharacterAttributes character = NewCharacterManager.instance.allCharacters[i];
+            ICharacter character = CharacterManager.instance.allCharacters[i];
 
             GameObject icon = Instantiate(characterIconPrefab, speedArea);
             RectTransform iconTransform = icon.GetComponent<RectTransform>();
@@ -55,11 +56,11 @@ public class SpeedBarUI : MonoBehaviour
             speedCharacters.Add(new SpeedCharacter
             {
                 character = character,
+                index = character.index,
                 iconTransform = iconTransform,
                 numberText = numberText
             });
 
-            // 初始化时间点
             character.timePoint = MaxDistance / character.speed;
         }
     }
@@ -70,7 +71,7 @@ public class SpeedBarUI : MonoBehaviour
         UpdateDividerPosition();
     }
 
-    public CharacterAttributes GetNextCharacter()
+    public ICharacter GetNextCharacter()
     {
         return speedCharacters.Count > 0 ? speedCharacters[0].character : null;
     }

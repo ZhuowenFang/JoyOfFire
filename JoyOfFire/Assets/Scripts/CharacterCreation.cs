@@ -228,6 +228,7 @@ public class CharacterCreation : MonoBehaviour
         NewCharacterManager.instance.AddCharacter(character);
 
         NewCharacterManager.instance.Role.text = selectedProfession;
+        
     
 
         

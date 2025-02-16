@@ -30,6 +30,7 @@ public class EventManager : MonoBehaviour
     public GameObject RewardPanel;
     public GameObject RewardPrefab;
     public GameObject HorizontalLayoutGroup;
+    public string levelOrder = "1";
     void InitializeLevelPool()
     {
         levelPool = new List<string>();
@@ -90,6 +91,7 @@ public class EventManager : MonoBehaviour
         else
         {
             level = hex.eventStage + "-" + hex.eventNumber;
+            levelOrder = hex.eventStage;
         }
         APIManager.instance.GetLevelData(
             level,
@@ -245,8 +247,30 @@ public class EventManager : MonoBehaviour
                 if (optionResult["monsters"].Count() != 0 && optionResult["monsters"] is JObject monsters)
                 {
                     
-                    
-                    SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
+                    foreach (var monster in monsters)
+                    {
+                        APIManager.instance.GetMonsterData(levelOrder, monster.Key, 
+                            (monsters1) =>
+                            {
+                                Debug.Log($"成功加载 {monsters.Count} 个怪物！");
+                                foreach (var monster1 in monsters1)
+                                {
+                                    for (int i = 0; i < monster.Value.Value<int>(); i++)
+                                    {
+                                        MonsterAttributes cloneMonster = monster1.Clone();
+                                        NewCharacterManager.instance.AddCharacter(cloneMonster);
+                                    }
+                                }
+                                SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
+
+                        
+                            },
+                            (error) =>
+                            {
+                                Debug.LogError($"加载怪物失败: {error}");
+                            });
+                        
+                    }
                 }
 
                 if (optionResult["treasure"].Count() != 0 && optionResult["treasure"] is JObject treasures)

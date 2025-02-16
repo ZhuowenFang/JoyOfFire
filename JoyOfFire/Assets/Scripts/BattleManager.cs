@@ -11,7 +11,6 @@ public class BattleManager : MonoBehaviour
     public SpeedBarUI speedBarUI;
     public RectTransform actionPanel;
     public Button attackButton; 
-    public Button skillButton;
     public Button endTurnButton;
     public List<Button> characterButtons;
     public List<Button> enemyButtons;
@@ -26,6 +25,10 @@ public class BattleManager : MonoBehaviour
     public bool isUsingSkill = false;
     private Dictionary<int, float> textOffsets = new Dictionary<int, float>();
     public TMP_Text energyText;
+    
+    public GameObject skillButtonPrefab;
+    public Transform skillButtonParent;
+    private List<Button> skillButtons = new List<Button>();
     private void Awake()
     {
         instance = this;
@@ -58,12 +61,13 @@ public class BattleManager : MonoBehaviour
             isUsingSkill = false;
             StartEnemySelection();
         });
+        
 
-        skillButton.onClick.AddListener(() =>
-        {
-            isUsingSkill = true;
-            StartEnemySelection();
-        });
+        // skillButton.onClick.AddListener(() =>
+        // {
+        //     isUsingSkill = true;
+        //     StartEnemySelection();
+        // });
         endTurnButton.onClick.AddListener(EndTurn);
         StartNextTurn();
     }
@@ -72,8 +76,8 @@ public class BattleManager : MonoBehaviour
     {
         actionPanel.gameObject.SetActive(false);
         ResetAllCharacterSizes();
-
-        CharacterAttributes nextCharacter = speedBarUI.GetNextCharacter();
+        
+        ICharacter nextCharacter = speedBarUI.GetNextCharacter();
         if (nextCharacter == null)
         {
             Debug.Log("没有角色进行回合！");
@@ -88,8 +92,8 @@ public class BattleManager : MonoBehaviour
         {
             actionPanel.gameObject.SetActive(false);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
-            await Task.Delay(1000);
-            BaseEnemy enemyScript = enemyButtons[0].GetComponent<BaseEnemy>();
+            await Task.Delay(2000);
+            BaseEnemy enemyScript = characterButtons[characterIndex].GetComponent<BaseEnemy>();
             if (enemyScript != null)
             {
                 enemyScript.TakeTurn();
@@ -107,17 +111,60 @@ public class BattleManager : MonoBehaviour
             actionPanel.gameObject.SetActive(true);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
             energyText.text = $"{nextCharacter.energy} / {nextCharacter.maxEnergy}";
-            if (nextCharacter.energy < nextCharacter.skillAttributes.cost)
-            {
-                skillButton.interactable = false;
-            }
-            else
-            {
-                skillButton.interactable = true;
-            }
+
+            GenerateSkillButtons(nextCharacter as CharacterAttributes);
             
         }
     }
+
+    private void GenerateSkillButtons(CharacterAttributes character)
+    {
+        foreach (var btn in skillButtons)
+        {
+            Destroy(btn.gameObject);
+        }
+        skillButtons.Clear();
+
+        foreach (var skill in character.skills)
+        {
+            
+            if (skill.skillName == "") continue;
+            GameObject skillButtonGO = Instantiate(skillButtonPrefab, skillButtonParent);
+            Button skillButton = skillButtonGO.GetComponent<Button>();
+            Text skillText = skillButtonGO.GetComponentInChildren<Text>();
+
+            skillText.text = $"{skill.skillName} (消耗: {skill.skillCost})";
+
+            skillButton.interactable = character.energy >= skill.skillCost;
+
+            skillButton.onClick.AddListener(() => OnSkillSelected(skillButton,character, skill));
+
+            skillButtons.Add(skillButton);
+        }
+    }
+    
+    private void OnSkillSelected(Button skillButton, CharacterAttributes attacker, SkillAttributes skill)
+    {
+        isUsingSkill = true;
+        actionPanel.gameObject.SetActive(false);
+    
+        isSelectingEnemy = true;
+
+        skillButton.onClick.RemoveAllListeners();
+        skillButton.onClick.AddListener(() =>
+        {
+            if (isUsingSkill)
+            {
+                ICharacter defender = CharacterManager.instance.EnemyCharacters[0]; // 这里你需要让玩家选择敌人
+                UseSkill(attacker, defender, skill);
+                attacker.energy -= skill.skillCost;
+                isSelectingEnemy = false;
+                ResetAllCharacterSizes();
+                EndTurn();
+            }
+        });
+    }
+
 
     public void StartEnemySelection()
     {
@@ -148,29 +195,29 @@ public class BattleManager : MonoBehaviour
     {
         if (!isSelectingEnemy) return;
 
-        CharacterAttributes attacker = SpeedBarUI.instance.GetNextCharacter();
-        CharacterAttributes defender = CharacterManager.instance.EnemyCharacters[enemyIndex];
+        ICharacter attacker = SpeedBarUI.instance.GetNextCharacter();
+        ICharacter defender = CharacterManager.instance.EnemyCharacters[enemyIndex];
 
-        if (isUsingSkill)
-        {
-            UseSkill(attacker, defender, attacker.skillAttributes);
-            attacker.energy -= attacker.skillAttributes.cost;
-        }
-        else
-        {
+        // if (isUsingSkill)
+        // {
+        //     UseSkill(attacker, defender, attacker.skillAttributes);
+        //     attacker.energy -= attacker.skillAttributes.cost;
+        // }
+        // else
+        // {
             DealDamage(attacker, defender, 1f);
             if (attacker.energy < attacker.maxEnergy)
             {
                 attacker.energy += 1;
             }
-        }
+        // }
 
         isSelectingEnemy = false;
         ResetAllCharacterSizes();
         EndTurn();
     }
     
-    public void DealDamage(CharacterAttributes attacker, CharacterAttributes defender, float damageMultiplier)
+    public void DealDamage(ICharacter attacker, ICharacter defender, float damageMultiplier)
     {
         float levelDifference = Mathf.Abs(attacker.level - defender.level);
         float damageReductionPercentage = defender.physicalDefense / 
@@ -193,13 +240,14 @@ public class BattleManager : MonoBehaviour
         ApplyDamage(defender, damage, isCritical);
     }
 
-    private void ApplyDamage(CharacterAttributes defender, float damage, bool isCritical, bool isEnemy = false)
+    public void ApplyDamage(ICharacter defender, float damage, bool isCritical, bool isEnemy = false)
     {
         float remainingShield = Mathf.Max(defender.shieldAmount - damage, 0);
         float damageToHealth = Mathf.Max(damage - defender.shieldAmount, 0);
         defender.shieldAmount = remainingShield;
         defender.currentHealth -= damageToHealth;
-       
+        Debug.Log($"{defender.characterName} 受到了 {damageToHealth} 点伤害！");
+        Debug.Log($"敌人现在的生命值：{defender.currentHealth}");
         ShowDamageText(defender.index, damage, isCritical, isEnemy);
 
         if (defender.currentHealth <= 0)
@@ -209,7 +257,7 @@ public class BattleManager : MonoBehaviour
         }
     }
     
-    public void UseSkill(CharacterAttributes attacker, CharacterAttributes defender, SkillAttributes skill)
+    public void UseSkill(ICharacter attacker, ICharacter defender, SkillAttributes skill)
     {
         float levelDifference = Mathf.Abs(attacker.level - defender.level);
 
@@ -246,7 +294,7 @@ public class BattleManager : MonoBehaviour
         ApplySkillEffects(attacker, defender, skill);
     }
 
-    private void ApplySkillEffects(CharacterAttributes attacker, CharacterAttributes defender, SkillAttributes skill)
+    private void ApplySkillEffects(ICharacter attacker, ICharacter defender, SkillAttributes skill)
     {
         // 状态效果应用
         if (skill.stunChance > 0 && Random.value < skill.stunChance)
@@ -314,11 +362,11 @@ public class BattleManager : MonoBehaviour
         damageText.transform.SetAsLastSibling();
 
         
-        Destroy(damageText, 1.5f);
+        Destroy(damageText, 1f);
     }
     
 
-    private void ShowText(int characterIndex, string text,Color color)
+    public void ShowText(int characterIndex, string text,Color color)
     {
         RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
 
