@@ -220,6 +220,7 @@ public class CharacterAttributes : ICharacter
     public List<string> current_ability;
     public List<string> potential_ability;
     public string experience;
+    
 
     public CharacterAttributes Clone()
     {
@@ -289,7 +290,7 @@ public class MonsterAttributes : ICharacter
     public string monsterId;
     public float sanValue;
     public List<MonsterSkillAttributes> skills = new List<MonsterSkillAttributes>();
-    
+
     public MonsterAttributes Clone()
     {
         return new MonsterAttributes
@@ -348,7 +349,26 @@ public class MonsterAttributes : ICharacter
                 fixedHeal = skill.fixedHeal,
                 percentHeal = skill.percentHeal,
                 stunChance = skill.stunChance,
-                silenceChance = skill.silenceChance
+                silenceChance = skill.silenceChance,
+                bindChance = skill.bindChance,
+                bleedStacks = skill.bleedStacks,
+                bleedChance = skill.bleedChance,
+                burnStacks = skill.burnStacks,
+                burnChance = skill.burnChance,
+                poisonStacks = skill.poisonStacks,
+                drunkStacks = skill.drunkStacks,
+                gazeStacks = skill.gazeStacks,
+                executeTarget = skill.executeTarget,
+                specialDish = skill.specialDish,
+                knifeLimit = skill.knifeLimit,
+                knifeHpCost = skill.knifeHpCost,
+                knifeConsume = skill.knifeConsume,
+                damageBoost = skill.damageBoost,
+                taunt = skill.taunt,
+                stealth = skill.stealth,
+                skipTurn = skill.skipTurn,
+                reflectDamage = skill.reflectDamage,
+                dispelDebuff = skill.dispelDebuff
             });
         }
         return clonedSkills;
@@ -381,6 +401,33 @@ public class MonsterSkillAttributes
     public float percentHeal;
     public float stunChance;
     public float silenceChance;
+    public float bindChance;    // 束缚概率
+
+    // **持续伤害状态**
+    public float bleedStacks;   // 流血层数
+    public float bleedChance;   // 流血概率
+    public float burnStacks;    // 灼烧层数
+    public float burnChance;    // 灼烧概率
+    public float poisonStacks;  // 中毒层数
+    public float drunkStacks;   // 醉酒层数
+    public float gazeStacks;    // 凝视层数
+
+    // **特殊效果**
+    public bool executeTarget;  // 宰杀目标（是否触发斩杀机制）
+    public bool specialDish;    // 特色菜肴（可能和餐刀机制有关）
+
+    // **餐刀机制**
+    public float knifeLimit;    // 餐刀生成上限
+    public float knifeHpCost;   // 释放技能消耗生命值
+    public float knifeConsume;  // 消耗餐刀数
+
+    // **其他**
+    public float damageBoost;    // 伤害强化
+    public bool taunt;           // 嘲讽
+    public bool stealth;         // 潜行
+    public bool skipTurn;        // 跳过回合
+    public bool reflectDamage;   // 反伤
+    public bool dispelDebuff;    // 驱散异常状态
 }
 [System.Serializable]
 public abstract class ICharacter
@@ -404,6 +451,45 @@ public abstract class ICharacter
     public int energy { get; set; }
     public int maxEnergy { get; set; }
     public int level { get; set; }
+    public List<BuffEffect> activeBuffs { get; set; }
+}
+[System.Serializable]
+public class BuffEffect
+{
+    public string buffName;  // Buff 名称
+    public BuffType buffType; // Buff 类型
+    public int duration;  // 持续回合数
+    public float value;   // 数值（伤害、加成等）
+    public bool isDebuff; // 是否是负面状态
+
+    public BuffEffect(string name, BuffType type, int turns, float val, bool debuff)
+    {
+        buffName = name;
+        buffType = type;
+        duration = turns;
+        value = val;
+        isDebuff = debuff;
+    }
+}
+
+// Buff 类型
+public enum BuffType
+{
+    Stun,         // 眩晕
+    Silence,      // 沉默
+    Burn,         // 灼烧
+    Poison,       // 中毒
+    Bleed,        // 流血
+    Drunk,        // 醉酒
+    Taunt,        // 嘲讽
+    Shield,       // 护盾
+    HealOverTime, // 持续恢复
+    DamageBoost,  // 伤害提升
+    DefenseBoost, // 防御提升
+    Stealth,      // 潜行
+    SkipTurn,     // 跳过回合
+    Reflect,      // 反伤
+    Dispel,       // 驱散异常状态
 }
 
 

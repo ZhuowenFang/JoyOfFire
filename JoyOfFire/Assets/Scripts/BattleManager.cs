@@ -29,6 +29,8 @@ public class BattleManager : MonoBehaviour
     public GameObject skillButtonPrefab;
     public Transform skillButtonParent;
     private List<Button> skillButtons = new List<Button>();
+    
+    private SkillAttributes selectedSkill;
     private void Awake()
     {
         instance = this;
@@ -62,12 +64,6 @@ public class BattleManager : MonoBehaviour
             StartEnemySelection();
         });
         
-
-        // skillButton.onClick.AddListener(() =>
-        // {
-        //     isUsingSkill = true;
-        //     StartEnemySelection();
-        // });
         endTurnButton.onClick.AddListener(EndTurn);
         StartNextTurn();
     }
@@ -83,9 +79,7 @@ public class BattleManager : MonoBehaviour
             Debug.Log("没有角色进行回合！");
             return;
         }
-
-        Debug.Log($"{nextCharacter.index} 开始行动！");
-
+        
         int characterIndex = nextCharacter.index;
 
         if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count)
@@ -103,7 +97,6 @@ public class BattleManager : MonoBehaviour
                 Debug.LogWarning($"Enemy {characterIndex} 没有 BaseEnemy 组件！");
                 EndTurn();
             }            
-            Debug.Log($"敌人 {characterIndex} 行动完成！");
 
         }
         else
@@ -147,22 +140,9 @@ public class BattleManager : MonoBehaviour
     {
         isUsingSkill = true;
         actionPanel.gameObject.SetActive(false);
-    
-        isSelectingEnemy = true;
-
-        skillButton.onClick.RemoveAllListeners();
-        skillButton.onClick.AddListener(() =>
-        {
-            if (isUsingSkill)
-            {
-                ICharacter defender = CharacterManager.instance.EnemyCharacters[0]; // 这里你需要让玩家选择敌人
-                UseSkill(attacker, defender, skill);
-                attacker.energy -= skill.skillCost;
-                isSelectingEnemy = false;
-                ResetAllCharacterSizes();
-                EndTurn();
-            }
-        });
+        selectedSkill = skill;
+        Debug.Log(skill.physicalDamage);
+        StartEnemySelection();
     }
 
 
@@ -194,23 +174,24 @@ public class BattleManager : MonoBehaviour
     public void OnEnemySelected(int enemyIndex)
     {
         if (!isSelectingEnemy) return;
+        Debug.Log($"选择了敌人 {enemyIndex}！");
 
         ICharacter attacker = SpeedBarUI.instance.GetNextCharacter();
         ICharacter defender = CharacterManager.instance.EnemyCharacters[enemyIndex];
 
-        // if (isUsingSkill)
-        // {
-        //     UseSkill(attacker, defender, attacker.skillAttributes);
-        //     attacker.energy -= attacker.skillAttributes.cost;
-        // }
-        // else
-        // {
+        if (isUsingSkill)
+        {
+            UseSkill(attacker, defender, selectedSkill);
+            attacker.energy -= selectedSkill.skillCost;
+        }
+        else
+        {
             DealDamage(attacker, defender, 1f);
             if (attacker.energy < attacker.maxEnergy)
             {
                 attacker.energy += 1;
             }
-        // }
+        }
 
         isSelectingEnemy = false;
         ResetAllCharacterSizes();
@@ -248,12 +229,13 @@ public class BattleManager : MonoBehaviour
         defender.currentHealth -= damageToHealth;
         Debug.Log($"{defender.characterName} 受到了 {damageToHealth} 点伤害！");
         Debug.Log($"敌人现在的生命值：{defender.currentHealth}");
-        ShowDamageText(defender.index, damage, isCritical, isEnemy);
+        ShowDamageText(defender.index, damageToHealth, isCritical, isEnemy);
 
         if (defender.currentHealth <= 0)
         {
             Debug.Log($"{defender.characterName} 被击败！");
-            // RemoveCharacter(defender);
+            RemoveCharacterFromBattle(defender);
+            CheckBattleOutcome();
         }
     }
     
@@ -264,6 +246,8 @@ public class BattleManager : MonoBehaviour
         // 计算物理伤害
         float physicalDamageReduction = defender.physicalDefense /
             (defender.physicalDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
+        Debug.Log(attacker.physicalAttack);
+        Debug.Log(skill.physicalDamage);
         float physicalDamage = attacker.physicalAttack * skill.physicalDamage * (1 - physicalDamageReduction);
 
         // 计算灵魂伤害
@@ -296,52 +280,53 @@ public class BattleManager : MonoBehaviour
 
     private void ApplySkillEffects(ICharacter attacker, ICharacter defender, SkillAttributes skill)
     {
-        // 状态效果应用
+        // **眩晕**
         if (skill.stunChance > 0 && Random.value < skill.stunChance)
         {
-            ShowText(defender.index, "眩晕!",Color.yellow);
-            Debug.Log($"{defender.characterName} 被眩晕！");
+            defender.activeBuffs.Add(new BuffEffect("眩晕", BuffType.Stun, 1, 0, true));
+            ShowText(defender.index, "眩晕!", Color.yellow);
+            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 眩晕！");
         }
 
+        // **沉默**
         if (skill.silenceChance > 0 && Random.value < skill.silenceChance)
         {
-            ShowText(defender.index, "沉默!",Color.blue);
-            Debug.Log($"{defender.characterName} 被沉默！");
+            defender.activeBuffs.Add(new BuffEffect("沉默", BuffType.Silence, 1, 0, true));
+            ShowText(defender.index, "沉默!", Color.blue);
+            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 沉默！");
         }
 
-        if (skill.blockChance > 0 && Random.value < skill.blockChance)
-        {
-            attacker.tenacityRate += 0.3f;
-            attacker.physicalDefense *= 1.2f;
-            attacker.soulDefense *= 1.2f;
-
-            ShowText(attacker.index, "变得更肉了!",Color.green);
-            Debug.Log($"{attacker.characterName} 变得更肉了！");
-        }
-
+        // **增加护盾**
         if (skill.shieldAmount > 0)
         {
             attacker.shieldAmount += skill.shieldAmount;
-
-            ShowText(attacker.index, $"护盾 +{skill.shieldAmount}",Color.green);
-            Debug.Log($"{attacker.characterName} 获得了 {skill.shieldAmount} 点护盾！");
+            ShowText(attacker.index, $"护盾 +{skill.shieldAmount}", Color.green);
+            Debug.Log($"{attacker.characterName} 获得 {skill.shieldAmount} 点护盾！");
         }
 
+        // **治疗**
         if (skill.healAmount > 0)
         {
             float healedAmount = Mathf.Min(skill.healAmount, attacker.health - attacker.currentHealth);
             attacker.currentHealth = Mathf.Min(attacker.currentHealth + skill.healAmount, attacker.health);
-
-            ShowText(attacker.index, $"治疗 +{healedAmount:F0}",Color.green);
-            Debug.Log($"{attacker.characterName} 回复了 {healedAmount} 点生命值！");
+            ShowText(attacker.index, $"治疗 +{healedAmount:F0}", Color.green);
+            Debug.Log($"{attacker.characterName} 回复 {healedAmount} 点生命值！");
         }
+
+        // **格挡**
+        if (skill.blockChance > 0 && Random.value < skill.blockChance)
+        {
+            attacker.activeBuffs.Add(new BuffEffect("格挡", BuffType.DefenseBoost, 2, 0.2f, false));
+            ShowText(attacker.index, "格挡!", Color.gray);
+            Debug.Log($"{attacker.characterName} 进入格挡状态，伤害减少 20%！");
+        }
+        
     }
 
 
 
     private void ShowDamageText(int characterIndex, float damage, bool isCritical, bool isEnemy = false)
     {
-        Debug.Log($"显示伤害文本：{characterIndex}");
         RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
 
         GameObject damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
@@ -402,10 +387,8 @@ public class BattleManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
-        // 销毁文本对象
         Destroy(textObject);
 
-        // 恢复偏移量
         if (textOffsets.ContainsKey(characterIndex))
         {
             textOffsets[characterIndex] += 100f;
@@ -418,9 +401,106 @@ public class BattleManager : MonoBehaviour
     {
         foreach (var button in characterButtons)
         {
-            button.transform.localScale = Vector3.one;  // 重置图片大小
+            button.transform.localScale = Vector3.one;
         }
     }
+    private void RemoveCharacterFromBattle(ICharacter deadCharacter)
+    {
+        // 根据 deadCharacter 类型判断是玩家还是敌人
+        if (deadCharacter is CharacterAttributes)
+        {
+            // 玩家角色死亡
+            CharacterAttributes deadPlayer = deadCharacter as CharacterAttributes;
+            // 从玩家列表中移除
+            CharacterManager.instance.PlayerCharacters.Remove(deadPlayer);
+            // 从所有角色按钮列表中移除并销毁对应的UI
+            RemoveCharacterButton(deadPlayer.index, false);
+        }
+        else if (deadCharacter is MonsterAttributes)
+        {
+            // 敌人角色死亡
+            MonsterAttributes deadMonster = deadCharacter as MonsterAttributes;
+            CharacterManager.instance.EnemyCharacters.Remove(deadMonster);
+            RemoveCharacterButton(deadMonster.index, true);
+        }
+    
+        // 同时从 SpeedBarUI 中删除该角色（假设 SpeedBarUI 有类似 RemoveCharacter(int index) 方法）
+        speedBarUI.RemoveCharacter(deadCharacter);
+    }
+
+    /// <summary>
+    /// 根据索引移除角色按钮（销毁对应UI对象，并从列表中移除）。
+    /// </summary>
+    private void RemoveCharacterButton(int index, bool isEnemy)
+    {
+        if (index >= 0 && index < CharacterManager.instance.characterButtons.Count)
+        {
+            
+            Button btn = CharacterManager.instance.characterButtons[index];
+            GameObject btnGO = btn.gameObject;
+            Destroy(btnGO);
+            CharacterManager.instance.characterButtons.RemoveAt(index);
+            characterButtons.RemoveAt(index);
+
+            if (CharacterManager.instance.EnemyButtons.Contains(btn))
+            {
+                CharacterManager.instance.EnemyButtons.Remove(btn);
+                
+                enemyButtons.Remove(btn);
+                for (int j = 0; j < enemyButtons.Count; j++)
+                {
+                    int localIndex = j;
+                    enemyButtons[j].onClick.RemoveAllListeners();
+                    enemyButtons[j].onClick.AddListener(() => OnEnemySelected(localIndex));
+                }
+            }
+           
+        }
+
+        if (!isEnemy)
+        {
+            foreach (var character in CharacterManager.instance.PlayerCharacters)
+            {
+                if (character.index >= index)
+                {
+                    character.index--;
+                }
+            }
+        }
+        else
+        {
+            foreach (var character in CharacterManager.instance.EnemyCharacters)
+            {
+                if (character.index >= index)
+                {
+                    character.index--;
+                }
+            }
+            
+        }
+    }
+
+
+    private void CheckBattleOutcome()
+    {
+        // 如果玩家全部死亡，则战斗失败
+        if (CharacterManager.instance.PlayerCharacters.Count == 0)
+        {
+            Debug.Log("所有玩家角色都已死亡，战斗失败！");
+            EndBattle(); // 结束战斗或回到主界面
+            return;
+        }
+    
+        // 如果敌人全部死亡，则战斗胜利
+        if (CharacterManager.instance.EnemyCharacters.Count == 0)
+        {
+            Debug.Log("所有敌人角色都已死亡，战斗胜利！");
+            EndBattle(); // 或者进入奖励界面等
+            return;
+        }
+    }
+
+
 
     public void EndTurn()
     {

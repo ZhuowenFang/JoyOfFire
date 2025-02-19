@@ -37,8 +37,6 @@ public class SpeedBarUI : MonoBehaviour
         InitializeCharacters();
         SortIconsByTimePoint();
         UpdateDividerPosition();
-        // BattleManager.instance.StartNextTurn();
-        
     }
 
     private void InitializeCharacters()
@@ -148,6 +146,25 @@ public class SpeedBarUI : MonoBehaviour
         {
             roundNumber++;
             Debug.Log($"进入第 {roundNumber} 回合！");
+        }
+    }
+
+    /// <summary>
+    /// 从速度条中删除指定角色
+    /// </summary>
+    public void RemoveCharacter(ICharacter character)
+    {
+        SpeedCharacter toRemove = speedCharacters.Find(sc => sc.character == character);
+        if (toRemove != null)
+        {
+            speedCharacters.Remove(toRemove);
+            if (toRemove.iconTransform != null)
+            {
+                Destroy(toRemove.iconTransform.gameObject);
+            }
+            // 重新排序并更新分界线
+            SortIconsByTimePoint();
+            UpdateDividerPosition();
         }
     }
 }
