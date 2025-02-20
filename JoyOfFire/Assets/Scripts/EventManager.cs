@@ -261,7 +261,6 @@ public class EventManager : MonoBehaviour
                                         NewCharacterManager.instance.AddCharacter(cloneMonster);
                                     }
                                 }
-                                SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
 
                         
                             },
@@ -271,6 +270,8 @@ public class EventManager : MonoBehaviour
                             });
                         
                     }
+                    SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
+
                 }
 
                 if (optionResult["treasure"].Count() != 0 && optionResult["treasure"] is JObject treasures)

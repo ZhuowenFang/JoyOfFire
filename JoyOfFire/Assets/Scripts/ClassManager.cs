@@ -111,6 +111,7 @@ public class ClassManager : MonoBehaviour
     [System.Serializable]
     public class CharacterCreationData
     {
+        public string userId;
         public string sex; // 性别
         public string profession; // 职业
         public string clothes; // 衣服

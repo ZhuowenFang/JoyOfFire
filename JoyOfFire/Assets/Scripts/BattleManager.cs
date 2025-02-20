@@ -511,6 +511,30 @@ public class BattleManager : MonoBehaviour
     }
     public void EndBattle()
     {
+
+        List<ICharacter> toRemove = new List<ICharacter>();
+
+        foreach (ICharacter character in NewCharacterManager.instance.allCharacters)
+        {
+            if (character is CharacterAttributes player)
+            {
+                player.currentHealth = player.health;
+                player.energy = 0;
+                player.activeBuffs?.Clear();
+            }
+            else
+            {
+                toRemove.Add(character);
+            }
+        }
+
+        // 退出 foreach 后再移除
+        foreach (ICharacter dead in toRemove)
+        {
+            NewCharacterManager.instance.allCharacters.Remove(dead);
+        }
+
         SceneManager.UnloadSceneAsync("Battle");
     }
+
 }

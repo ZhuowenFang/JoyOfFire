@@ -138,12 +138,12 @@ public class CharacterCreation : MonoBehaviour
         string combat = combatInput.text;
         string other = otherInput.text;
 
-        if (string.IsNullOrEmpty(selectedGender) ||
-            string.IsNullOrEmpty(clothes) || string.IsNullOrEmpty(combat) || string.IsNullOrEmpty(other) || string.IsNullOrEmpty(profession))
-        {
-            Debug.LogError("请填写所有字段！");
-            return;
-        }
+        // if (string.IsNullOrEmpty(selectedGender) ||
+        //     string.IsNullOrEmpty(clothes) || string.IsNullOrEmpty(combat) || string.IsNullOrEmpty(other) || string.IsNullOrEmpty(profession))
+        // {
+        //     Debug.LogError("请填写所有字段！");
+        //     return;
+        // }
         if (ContainsForbiddenWord(profession) || ContainsForbiddenWord(clothes) || ContainsForbiddenWord(combat) || ContainsForbiddenWord(other))
         {
             
@@ -152,6 +152,7 @@ public class CharacterCreation : MonoBehaviour
         }
         ClassManager.CharacterCreationData characterCreationData = new ClassManager.CharacterCreationData
         {
+            userId = "1",
             sex = selectedGender,
             profession = profession,
             clothes = clothes,
@@ -162,72 +163,78 @@ public class CharacterCreation : MonoBehaviour
         string jsonData = JsonUtility.ToJson(characterCreationData);
 
         Debug.Log($"角色数据: {jsonData}");
-        // APIManager.instance.CreateCharacter(
-        //     jsonData,
-        //     onSuccess: (response) =>
-        //     {
-        //         WaitingPanel.SetActive(false);
-        //         Debug.Log($"Character Created: {response}");
-        //         var characterResponse = JsonConvert.DeserializeObject<CharacterAttributesResponse>(response);
-        //         var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse.data);
-        //         NewCharacterManager.instance.AddCharacter(character);
-        //         NewCharacterManager.instance.Role.text = selectedProfession;
+        APIManager.instance.CreateCharacter(
+            jsonData,
+            onSuccess: (response) =>
+            {
+                WaitingPanel.SetActive(false);
+                Debug.Log($"Character Created: {response}");
+                var characterResponse = JsonConvert.DeserializeObject<CharacterAttributesResponse>(response);
+                var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse.data);
+                NewCharacterManager.instance.AddCharacter(character);
+                NewCharacterManager.instance.Role.text = selectedProfession;
+                // var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
+                //
+                // var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
+                // NewCharacterManager.instance.AddCharacter(character);
+                //
+                // NewCharacterManager.instance.Role.text = selectedProfession;
+            },
+            onError: (error) =>
+            {
+                Debug.LogError($"Error creating character: {error}");
+            }
+        );
+        // string mockResponse = @"{
+        //     ""basic_information"": {
+        //         ""appearance"": ""身穿白大褂，手持听诊器，周围狂风呼啸"",
+        //         ""fighting_ability"": ""狂风之力，可辅助可攻击"",
+        //         ""gender"": ""男"",
+        //         ""name"": ""狂风医生"",
+        //         ""story"": ""拥有狂风之力的医生，在克苏鲁世界救死扶伤""
         //     },
-        //     onError: (error) =>
-        //     {
-        //         Debug.LogError($"Error creating character: {error}");
-        //     }
-        // );
-        string mockResponse = @"{
-            ""basic_information"": {
-                ""appearance"": ""身穿白大褂，手持听诊器，周围狂风呼啸"",
-                ""fighting_ability"": ""狂风之力，可辅助可攻击"",
-                ""gender"": ""男"",
-                ""name"": ""狂风医生"",
-                ""story"": ""拥有狂风之力的医生，在克苏鲁世界救死扶伤""
-            },
-            ""character_picture"": ""https://s.coze.cn/t/CnQK0oHlBLj415s2/"",
-            ""current_ability"": [""- 智力：3"", ""- 力量：2"", ""- 敏捷：1""],
-            ""potential_ability"": [""- 智力：25"", ""- 力量：23"", ""- 敏捷：15""],
-            ""talent1"": {
-                ""abilitydescription"": ""以风之力进行诊疗，造成 148.14% 的物理伤害，同时给自己增加 51.04 的护盾。"",
-                ""cost"": ""2"",
-                ""description"": [{
-                    ""talent_description"": ""以风之力治疗与攻击"",
-                    ""talent_name"": ""风暴诊疗""
-                }],
-                ""icon1"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
-            },
-            ""talent_count1"": [""1.4814"", ""0.0000"", ""0.0000"", ""0.0000"", ""0.0000"", ""51.0398"", ""0.0000"", ""0.0000""],
-            ""talent2"": {
-                ""abilitydescription"": """",
-                ""cost"": """",
-                ""description"": [{
-                    ""talent_description"": """",
-                    ""talent_name"": """"
-                }],
-                ""icon2"": """"
-            },
-            ""talent_count2"": [],
-            ""talent3"": {
-                ""abilitydescription"": """",
-                ""cost"": """",
-                ""description"": [{
-                    ""talent_description"": """",
-                    ""talent_name"": """"
-                }],
-                ""icon3"": """"
-            },
-            ""talent_count3"": [],
-            ""experience"": ""0""
-        }";
-
-        var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
-
-        var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
-        NewCharacterManager.instance.AddCharacter(character);
-
-        NewCharacterManager.instance.Role.text = selectedProfession;
+        //     ""character_picture"": ""https://s.coze.cn/t/CnQK0oHlBLj415s2/"",
+        //     ""current_ability"": [""- 智力：3"", ""- 力量：2"", ""- 敏捷：1""],
+        //     ""potential_ability"": [""- 智力：25"", ""- 力量：23"", ""- 敏捷：15""],
+        //     ""talent1"": {
+        //         ""abilitydescription"": ""以风之力进行诊疗，造成 148.14% 的物理伤害，同时给自己增加 51.04 的护盾。"",
+        //         ""cost"": ""2"",
+        //         ""description"": [{
+        //             ""talent_description"": ""以风之力治疗与攻击"",
+        //             ""talent_name"": ""风暴诊疗""
+        //         }],
+        //         ""icon1"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
+        //     },
+        //     ""talent_count1"": [""1.4814"", ""0.0000"", ""0.0000"", ""0.0000"", ""0.0000"", ""51.0398"", ""0.0000"", ""0.0000""],
+        //     ""talent2"": {
+        //         ""abilitydescription"": """",
+        //         ""cost"": """",
+        //         ""description"": [{
+        //             ""talent_description"": """",
+        //             ""talent_name"": """"
+        //         }],
+        //         ""icon2"": """"
+        //     },
+        //     ""talent_count2"": [],
+        //     ""talent3"": {
+        //         ""abilitydescription"": """",
+        //         ""cost"": """",
+        //         ""description"": [{
+        //             ""talent_description"": """",
+        //             ""talent_name"": """"
+        //         }],
+        //         ""icon3"": """"
+        //     },
+        //     ""talent_count3"": [],
+        //     ""experience"": ""0""
+        // }";
+        //
+        // var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
+        //
+        // var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
+        // NewCharacterManager.instance.AddCharacter(character);
+        //
+        // NewCharacterManager.instance.Role.text = selectedProfession;
         
     
 
