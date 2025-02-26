@@ -277,6 +277,7 @@ public class EventManager : MonoBehaviour
                 if (optionResult["treasure"].Count() != 0 && optionResult["treasure"] is JObject treasures)
                 {
                     RewardPanel.SetActive(true);
+                    
 
                     foreach (Transform child in HorizontalLayoutGroup.transform)
                     {

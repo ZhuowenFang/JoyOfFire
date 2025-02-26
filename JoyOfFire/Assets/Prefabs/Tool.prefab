@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5458\u5DE5\u62DB\u52DF\u901A\u544A"
+  m_Text: 
 --- !u!1 &1047351819228498701
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1047351819228498701}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -412,15 +412,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: 
-  itemSprite: {fileID: 0}
+  itemSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   isFull: 0
   itemDescription: 
   emptySlotSprite: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  itemNumber: {fileID: 0}
+  itemNumber: {fileID: 5749372062030832111}
   itemIcon: {fileID: 3306777926572865955}
   itemDesciptionImage: {fileID: 0}
   itemDescriptionText: {fileID: 0}
   itemNameText: {fileID: 0}
+  itemDesciptionNumber: {fileID: 0}
   selectedShader: {fileID: 3003959915289895369}
   isSelected: 0
 --- !u!1 &6911008051527418199
@@ -501,4 +502,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 3
+  m_Text: 

@@ -40,6 +40,13 @@ public class APIManager : MonoBehaviour
         GetRequest(url, onSuccess, onError);
     }
     
+    public void GetItemData(string itemId, Action<string> onSuccess, Action<string> onError)
+    {
+        string url = $"https://joy-fire-dev.czczcz.xyz/api/v1/items/{itemId}";
+        GetRequest(url, onSuccess, onError);
+    }
+
+    
     public void GetMonsterData(string levelOrder, string monsterId, Action<List<MonsterAttributes>> onSuccess, Action<string> onError)
     {
         string url = $"https://joy-fire-dev.czczcz.xyz/api/v1/monsters/level?levelOrder={levelOrder}&monsterId={monsterId}";

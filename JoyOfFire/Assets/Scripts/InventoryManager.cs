@@ -12,8 +12,8 @@ public class InventoryManager : MonoBehaviour
 
     public ItemSlot[] itemSlots;
     public Image itemDesciptionImage;
-    public TMP_Text itemDescriptionText;
-    public TMP_Text itemNameText;
+    public Text itemDescriptionText;
+    public Text itemNameText;
     public Sprite emptySlotSprite;
     public static InventoryManager instance;
     void Awake()
