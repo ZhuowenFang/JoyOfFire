@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef1c5e06b9284040b18672558933e71, type: 3}
+  m_Name: Gold_plate
+  m_EditorClassIdentifier: 
+  itemName: Gold_plate
+  chineseName: "\u91D1\u8272\u9910\u76D8"
+  description: "\u4E00\u4E2A\u5C0F\u5DE7\u7684\u91D1\u8272\u9910\u76D8\uFF0C\u62FF\u7740\u5C31\u8BA9\u4EBA\u89C9\u5F97\u65E0\u6BD4\u9965\u997F"
+  type: 0
+  effectType: 0
+  icon: {fileID: 21300000, guid: 02d66582884ec8d4cb90cc806a0c02c2, type: 3}
+  useCustomScript: 0
+  itemScriptName: 

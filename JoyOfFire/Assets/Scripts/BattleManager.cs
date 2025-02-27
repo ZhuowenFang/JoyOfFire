@@ -307,8 +307,13 @@ public class BattleManager : MonoBehaviour
         // **治疗**
         if (skill.healAmount > 0)
         {
-            float healedAmount = Mathf.Min(skill.healAmount, attacker.health - attacker.currentHealth);
-            attacker.currentHealth = Mathf.Min(attacker.currentHealth + skill.healAmount, attacker.health);
+            float healDiscount = 1f;
+            if(InventoryManager.instance.activeItems.ContainsKey("Gold_plate"))
+            {
+                healDiscount = 0.8f;
+            }
+            float healedAmount = Mathf.Min(skill.healAmount * healDiscount, attacker.health - attacker.currentHealth);
+            attacker.currentHealth = Mathf.Min(attacker.currentHealth + skill.healAmount * healDiscount, attacker.health);
             ShowText(attacker.index, $"治疗 +{healedAmount:F0}", Color.green);
             Debug.Log($"{attacker.characterName} 回复 {healedAmount} 点生命值！");
         }

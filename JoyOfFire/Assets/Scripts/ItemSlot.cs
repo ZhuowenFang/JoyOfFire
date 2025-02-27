@@ -73,7 +73,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         return itemCount;
     }
 
-    private void UpdateItemNumber()
+    public void UpdateItemNumber()
     {
         if (itemCount < 2)
         {

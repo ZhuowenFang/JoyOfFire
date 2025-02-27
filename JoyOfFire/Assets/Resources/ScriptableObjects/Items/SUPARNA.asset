@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef1c5e06b9284040b18672558933e71, type: 3}
+  m_Name: SUPARNA
+  m_EditorClassIdentifier: 
+  itemName: SUPARNA
+  chineseName: "\u201C\u743C\u9E1F\u201D\u6218\u672F\u62A4\u76FE"
+  description: "x\u4E8B\u52A1\u6240\u914D\u7ED9\u7684\u5C0F\u578B\u9632\u7206\u76FE\uFF0C\u8F7B\u5DE7\u8010\u7528"
+  IsConsumable: 0
+  type: 0
+  effectType: 0
+  icon: {fileID: 21300000, guid: 55c21f165767aa7489a6112ab867d5ff, type: 3}
+  useCustomScript: 0
+  itemScriptName: 

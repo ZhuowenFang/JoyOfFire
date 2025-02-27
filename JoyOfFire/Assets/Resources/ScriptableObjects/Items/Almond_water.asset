@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef1c5e06b9284040b18672558933e71, type: 3}
+  m_Name: Almond_water
+  m_EditorClassIdentifier: 
+  itemName: Almond_water
+  chineseName: "\u674F\u4EC1\u6C34"
+  description: "\u4F60\u539F\u672C\u4E0D\u6253\u7B97\u89E6\u78B0\u8FD9\u74F6\u6697\u9EC4\u8272\u3001\u6563\u53D1\u7740\u67D0\u79CD\u81ED\u5473\u7684\u3001\u82E6\u6DA9\u7684\u6DB2\u4F53\u3002\u53EF\u5982\u4ECA\u6076\u9B54\u4F4E\u8BED\u5728\u8033\u7554\u56DE\u54CD\uFF0C\u4F60\u771F\u7684\u8FD8\u6709\u9009\u62E9\u5417\uFF1F"
+  IsConsumable: 1
+  type: 4
+  effectType: 0
+  icon: {fileID: 21300000, guid: f4d1a58539c68a94986f3c6993943020, type: 3}
+  useCustomScript: 0
+  itemScriptName: 

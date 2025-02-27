@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef1c5e06b9284040b18672558933e71, type: 3}
+  m_Name: Jelly_fish_mucus
+  m_EditorClassIdentifier: 
+  itemName: Jelly_fish_mucus
+  chineseName: "\u6C34\u6BCD\u7C98\u6DB2"
+  description: "\u4E00\u5C0F\u74F6\u7C89\u8272\u7684\u7C98\u6DB2\uFF0C\u636E\u738B\u8BF4\u80FD\u6291\u5236\u7578\u53D8\u4F53\u7684\u518D\u751F"
+  IsConsumable: 1
+  type: 0
+  effectType: 1
+  icon: {fileID: 21300000, guid: f96aaeda2ce1aba419aea231052373de, type: 3}
+  useCustomScript: 0
+  itemScriptName: 

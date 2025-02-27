@@ -7,6 +7,7 @@ public interface IItem
     string ItemName { get; }
     string Description { get; }
     ItemType Type { get; }
+    bool IsConsumable { get; }
     ItemEffectType EffectType { get; }
     void OnAcquire();    // 获得道具时调用，用于注册被动效果
     void OnRemove();     // 失去道具时调用，用于注销被动效果
@@ -18,7 +19,9 @@ public enum ItemType
     Combat,
     Exploration,
     Mission,
-    Upgrade
+    Upgrade,
+    Supply,
+    Gold
 }
 
 public enum ItemEffectType

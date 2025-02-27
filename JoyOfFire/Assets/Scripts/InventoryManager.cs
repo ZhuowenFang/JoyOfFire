@@ -18,7 +18,7 @@ public class InventoryManager : MonoBehaviour
     public Sprite emptySlotSprite;
     public static InventoryManager instance;
     [SerializeField] private ItemDatabase itemDatabase;
-    private Dictionary<string, (BaseItem item, int count)> activeItems = new Dictionary<string, (BaseItem, int)>();    
+    public Dictionary<string, (BaseItem item, int count)> activeItems = new Dictionary<string, (BaseItem, int)>();    
     void Awake()
     {
         instance = this;
@@ -117,6 +117,14 @@ public class InventoryManager : MonoBehaviour
         
         // UpdateUI();
     }
+    
+    public void initialNumbers()
+    {
+        foreach (ItemSlot itemSlot in itemSlots)
+        {
+            itemSlot.UpdateItemNumber();
+        }
+    }
 
     public void UpdateUI()
     {
@@ -129,13 +137,10 @@ public class InventoryManager : MonoBehaviour
         foreach (var (itemName, itemData) in activeItems)
         {
             var (item, count) = itemData;
-            Debug.LogError($"更新UI: {itemName} - {count}");
             foreach (ItemSlot itemSlot in itemSlots)
             {
-                Debug.LogError($"检查格子: {itemSlot.itemSlotName.text}");
                 if (itemSlot.isFull && itemSlot.itemSlotName.text == itemName)
                 {
-                    Debug.LogError($"更新数量: {itemSlot.itemSlotName.text} - {count}");
                     itemSlot.AddItem(item.data.chineseName, item.data.icon, item.data.description, count);
                     return;
                 }

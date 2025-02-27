@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef1c5e06b9284040b18672558933e71, type: 3}
+  m_Name: Sweet_brewing
+  m_EditorClassIdentifier: 
+  itemName: Sweet_brewing
+  chineseName: "\u7518\u751C\u8840\u917F"
+  description: "\u5982\u7EA2\u5B9D\u77F3\u822C\u6F84\u6E05\u7684\u6DB2\u4F53\uFF0C\u95FB\u8D77\u6765\u5FAE\u751C\u3002\u5165\u53E3\u540E\u4EFF\u4F5B\u6709\u707C\u70ED\u7684\u529B\u91CF\u5728\u4F53\u5185\u6D8C\u52A8\u3002\u5B83\u7684\u5236\u4F5C\u65B9\u6CD5\u662F\u4E2A\u79D8\u5BC6"
+  IsConsumable: 0
+  type: 0
+  effectType: 0
+  icon: {fileID: 21300000, guid: 732f3751b3f8daa4681cc01fa8592346, type: 3}
+  useCustomScript: 0
+  itemScriptName: 

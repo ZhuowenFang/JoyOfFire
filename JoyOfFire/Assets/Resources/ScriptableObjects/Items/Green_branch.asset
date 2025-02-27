@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef1c5e06b9284040b18672558933e71, type: 3}
+  m_Name: Green_branch
+  m_EditorClassIdentifier: 
+  itemName: Green_branch
+  chineseName: "\u7FE0\u679D"
+  description: "\u4E00\u6BB5\u82CD\u7FE0\u6B32\u6EF4\u7684\u679D\u6761\uFF0C\u6563\u53D1\u7740\u6D53\u90C1\u7684\u751F\u547D\u6C14\u606F\u3002\u63E1\u5728\u624B\u4E2D\u65F6\uFF0C\u5C31\u4EFF\u4F5B\u6574\u4E2A\u68EE\u6797\u90FD\u5728\u8033\u8FB9\u4F4E\u8BED"
+  IsConsumable: 0
+  type: 0
+  effectType: 0
+  icon: {fileID: 21300000, guid: c14b1240d4a799447a84981a71c6cd67, type: 3}
+  useCustomScript: 0
+  itemScriptName: 

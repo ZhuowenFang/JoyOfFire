@@ -110,7 +110,6 @@ public class EventManager : MonoBehaviour
                     
                     CharacterPanel.SetActive(false);
                 });
-                InventoryManager.instance.ObtainItem("Dream_ticket",5);
 
             },
             onError: (error) =>
@@ -250,12 +249,14 @@ public class EventManager : MonoBehaviour
                 if (optionResult["monsters"].Count() != 0 && optionResult["monsters"] is JObject monsters)
                 {
                     
+                    int totalAPICalls = monsters.Count; // 总共需要调用的怪物 API 数量
+                    int finishedAPICalls = 0;            // 已完成的调用数量
+
                     foreach (var monster in monsters)
                     {
                         APIManager.instance.GetMonsterData(levelOrder, monster.Key, 
                             (monsters1) =>
                             {
-                                Debug.Log($"成功加载 {monsters.Count} 个怪物！");
                                 foreach (var monster1 in monsters1)
                                 {
                                     for (int i = 0; i < monster.Value.Value<int>(); i++)
@@ -264,8 +265,12 @@ public class EventManager : MonoBehaviour
                                         NewCharacterManager.instance.AddCharacter(cloneMonster);
                                     }
                                 }
-
-                        
+                                finishedAPICalls++;
+                                // 检查是否所有API调用都完成了
+                                if (finishedAPICalls >= totalAPICalls)
+                                {
+                                    SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
+                                }
                             },
                             (error) =>
                             {
@@ -292,7 +297,11 @@ public class EventManager : MonoBehaviour
                         GameObject newReward = Instantiate(RewardPrefab, HorizontalLayoutGroup.transform);
 
                         Text nameText = newReward.transform.Find("name").GetComponent<Text>();
-                        nameText.text = treasure.Key;
+                        InventoryManager.instance.ObtainItem(treasure.Key,treasure.Value.Value<int>());
+                        nameText.text = InventoryManager.instance.activeItems[treasure.Key].item.data.chineseName;
+                        Image rewardImage = newReward.transform.Find("Image").GetComponent<Image>();
+                        rewardImage.sprite = InventoryManager.instance.activeItems[treasure.Key].item.data.icon;
+                        
                     }
                 }
                 CharacterButton.SetActive(true);

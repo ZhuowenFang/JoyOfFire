@@ -7,6 +7,7 @@ public abstract class BaseItem : MonoBehaviour, IItem
     [SerializeField] protected string itemName;
     [SerializeField] protected string description;
     [SerializeField] protected ItemType type;
+    [SerializeField] protected bool isConsumable;
     [SerializeField] protected ItemEffectType effectType;
     [SerializeField] protected Sprite icon;
 
@@ -17,6 +18,9 @@ public abstract class BaseItem : MonoBehaviour, IItem
     public ItemType Type => data != null ? data.type : type;
     public ItemEffectType EffectType => data != null ? data.effectType : effectType;
     public Sprite Icon => data != null ? data.icon : icon;
+    
+    public bool IsConsumable => data != null ? data.IsConsumable : isConsumable;
+    
 
     public void Initialize(ItemData itemData)
     {
@@ -24,7 +28,8 @@ public abstract class BaseItem : MonoBehaviour, IItem
         itemName = data.itemName;
         description = data.description;
         type = data.type;
-        effectType = data.effectType;
+        isConsumable = data.IsConsumable;
+        // effectType = data.effectType;
         icon = data.icon;
     }
 

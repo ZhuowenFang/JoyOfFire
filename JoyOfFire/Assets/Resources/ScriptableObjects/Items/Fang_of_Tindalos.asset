@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7ef1c5e06b9284040b18672558933e71, type: 3}
-  m_Name: Dream_ticket
+  m_Name: Fang_of_Tindalos
   m_EditorClassIdentifier: 
-  itemName: Dream_ticket
-  chineseName: "\u7F8E\u68A6\u6210\u771F\u5165\u573A\u5238"
-  description: "\u4E00\u5F20\u70EB\u91D1\u7684\u5956\u5238\uFF0C\u7528\u4E8E\u8FDB\u5165\u7F8E\u68A6\u6210\u771F\u9910\u5385"
-  type: 2
+  itemName: Fang_of_Tindalos
+  chineseName: "\u5EF7\u8FBE\u7F57\u65AF\u7684\u72AC\u7259"
+  description: "\u6765\u81EA\u5EF7\u8FBE\u7F57\u65AF\u7684\u89C6\u7EBF\u8F6C\u79FB\u5230\u4E86\u4F60\u7684\u8EAB\u4E0A\u3002\u73B0\u5728\uFF0C\u8BF7\u8BD5\u7740\u6D3B\u4E0B\u53BB\u5427\u2026\u2026\u3002"
+  IsConsumable: 0
+  type: 0
   effectType: 0
-  icon: {fileID: 21300000, guid: 174bc5fbbef3ed74cabd28aa6b154cce, type: 3}
+  icon: {fileID: 21300000, guid: 00e8285ffecd9438db53050928a10cec, type: 3}
   useCustomScript: 0
   itemScriptName: 

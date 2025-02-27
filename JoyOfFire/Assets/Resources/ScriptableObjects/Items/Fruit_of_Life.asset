@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef1c5e06b9284040b18672558933e71, type: 3}
+  m_Name: Fruit_of_Life
+  m_EditorClassIdentifier: 
+  itemName: Fruit_of_Life
+  chineseName: "\u751F\u547D\u679C\u5B9E"
+  description: "\u4F20\u8BF4\u4E2D\u4E16\u754C\u6811\u4E0A\u7ED3\u7684\u679C\u5B9E\uFF0C\u4F1A\u8BA9\u4F7F\u7528\u8005\u611F\u89C9\u795E\u6E05\u6C14\u723D\u3002\u5B9E\u9645\u4E0A\u662F\u5DE5\u4E1A\u4EA7\u7269"
+  IsConsumable: 1
+  type: 4
+  effectType: 0
+  icon: {fileID: 21300000, guid: 194836bc3043dd048a870327009eae51, type: 3}
+  useCustomScript: 0
+  itemScriptName: 
