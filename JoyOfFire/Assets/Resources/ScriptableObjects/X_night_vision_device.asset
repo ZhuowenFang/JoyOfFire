@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ef1c5e06b9284040b18672558933e71, type: 3}
+  m_Name: X_night_vision_device
+  m_EditorClassIdentifier: 
+  itemName: X_night_vision_device
+  chineseName: "X\u4E8B\u52A1\u6240\u8BD5\u5236\u591C\u89C6\u4EEA"
+  description: "X\u4E8B\u52A1\u6240\u7814\u53D1\u79D1\u4E13\u95E8\u5236\u4F5C\u7684\u88C5\u5907\uFF0C\u7528\u4E8E\u8FDB\u884C\u591C\u95F4\u8C03\u67E5\uFF0C\u516B\u9636\u8C03\u67E5\u5458\u65B9\u53EF\u7533\u9886"
+  type: 1
+  effectType: 0
+  icon: {fileID: 21300000, guid: 0f10df9b498ebaf4cb2e2da00f0403ef, type: 3}
+  useCustomScript: 0
+  itemScriptName: 

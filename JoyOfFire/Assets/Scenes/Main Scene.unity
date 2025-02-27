@@ -3505,6 +3505,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 2019133337}
+        m_TargetAssemblyTypeName: InventoryManager, Assembly-CSharp
+        m_MethodName: UpdateUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &201398496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25223,7 +25235,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1461587534
 MonoBehaviour:
@@ -34737,6 +34749,7 @@ MonoBehaviour:
   itemDescriptionText: {fileID: 4799284225544553618}
   itemNameText: {fileID: 4799284225544553617}
   emptySlotSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  itemDatabase: {fileID: 11400000, guid: 645eaccf4a073f945a1c699d85d1d6c5, type: 2}
 --- !u!114 &2028083991 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4897438791553712513, guid: 18bab7ec052fdfb41a2f13fc94b14524, type: 3}

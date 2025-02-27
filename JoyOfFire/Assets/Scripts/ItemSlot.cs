@@ -7,6 +7,7 @@ using TMPro;
 
 public class ItemSlot : MonoBehaviour, IPointerClickHandler
 {
+    public Text itemSlotName;
     public string itemName;
     public Sprite itemSprite;
     public bool isFull;
@@ -24,7 +25,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public bool isSelected;
 
     private InventoryManager inventoryManager;
-    private int itemCount;
+    public int itemCount;
 
     void Start()
     {
@@ -32,36 +33,44 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemNumber.text = "";
     }
 
-    public void AddItem(string itemName, Sprite itemImage, string itemDescription)
+    public void AddItem(string itemName, Sprite itemImage, string itemDescription, int count)
     {
-        if (isFull && this.itemName == itemName)
+        if (isFull && itemSlotName.text == itemName)
         {
-            itemCount++;
+            Debug.LogError("Item already exists in slot");
+            itemCount += count;
             UpdateItemNumber();
         }
         else
         {
-            this.itemSprite = itemImage;
             this.itemName = itemName;
+            itemSprite = itemImage;
+            itemSlotName.text = itemName;
             this.itemDescription = itemDescription;
             isFull = true;
-            itemCount = 1;
+            itemCount = count;
             itemIcon.sprite = itemImage;
+            Debug.Log(itemCount);
             UpdateItemNumber();
         }
     }
 
-    public void RemoveItem()
+    // public void RemoveItem(int count = 1)
+    // {
+    //     itemCount -= count;
+    //     if (itemCount <= 0)
+    //     {
+    //         ClearSlot();
+    //     }
+    //     else
+    //     {
+    //         UpdateItemNumber();
+    //     }
+    // }
+
+    public int GetItemCount()
     {
-        itemCount--;
-        if (itemCount <= 0)
-        {
-            ClearSlot();
-        }
-        else
-        {
-            UpdateItemNumber();
-        }
+        return itemCount;
     }
 
     private void UpdateItemNumber()
@@ -78,7 +87,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
 
     public void ClearSlot()
     {
-        itemName = "";
+        itemSlotName.text = "";
         itemSprite = null;
         itemDescription = "";
         isFull = false;
@@ -101,7 +110,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         InventoryManager.instance.DeselectAll();
         selectedShader.SetActive(true);
         isSelected = true;
-        itemNameText.text = itemName;
+        itemNameText.text = itemSlotName.text;
         itemDescriptionText.text = itemDescription;
         itemDesciptionImage.sprite = itemSprite;
         itemDesciptionNumber.text = itemNumber.text;

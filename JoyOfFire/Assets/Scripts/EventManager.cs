@@ -107,8 +107,11 @@ public class EventManager : MonoBehaviour
                 ConfirmButton.onClick.AddListener(() =>
                 {
                     ParseLevelData();
+                    
                     CharacterPanel.SetActive(false);
                 });
+                InventoryManager.instance.ObtainItem("Dream_ticket",5);
+
             },
             onError: (error) =>
             {
