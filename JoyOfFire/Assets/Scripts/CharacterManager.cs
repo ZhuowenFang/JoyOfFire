@@ -71,6 +71,7 @@ public class CharacterManager : MonoBehaviour
             else if (allCharacters[i] is MonsterAttributes enemy)
             {
                 GameObject enemyObj = Instantiate(EnemyCharacterPrefab, EnemyCharacterHorizontalLayout.transform);
+                enemyObj.GetComponent<Image>().sprite = Resources.Load<Sprite>($"EnemyPics/{enemy.monsterId}");
                 characterButtons.Add(enemyObj.GetComponent<Button>());
                 EnemyButtons.Add(enemyObj.GetComponent<Button>());
 

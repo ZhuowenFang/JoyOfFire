@@ -205,7 +205,7 @@ public class CharacterCreation : MonoBehaviour
                 }],
                 ""icon1"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
             },
-            ""talent_count1"": [""1.4814"", ""0.0000"", ""0.0000"", ""0.0000"", ""0.0000"", ""51.0398"", ""0.0000"", ""0.0000""],
+            ""talent_count1"": [""1.4814"", ""0.0000"", ""1"", ""1"", ""1"", ""51.0398"", ""0.0000"", ""0.0000""],
             ""talent2"": {
                 ""abilitydescription"": """",
                 ""cost"": """",

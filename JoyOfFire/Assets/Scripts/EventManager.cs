@@ -249,8 +249,8 @@ public class EventManager : MonoBehaviour
                 if (optionResult["monsters"].Count() != 0 && optionResult["monsters"] is JObject monsters)
                 {
                     
-                    int totalAPICalls = monsters.Count; // 总共需要调用的怪物 API 数量
-                    int finishedAPICalls = 0;            // 已完成的调用数量
+                    int totalAPICalls = monsters.Count;
+                    int finishedAPICalls = 0;
 
                     foreach (var monster in monsters)
                     {
@@ -266,7 +266,6 @@ public class EventManager : MonoBehaviour
                                     }
                                 }
                                 finishedAPICalls++;
-                                // 检查是否所有API调用都完成了
                                 if (finishedAPICalls >= totalAPICalls)
                                 {
                                     SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
@@ -278,7 +277,7 @@ public class EventManager : MonoBehaviour
                             });
                         
                     }
-                    SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
+                    // SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
 
                 }
 

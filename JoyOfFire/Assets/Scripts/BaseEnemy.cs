@@ -13,7 +13,7 @@ public class BaseEnemy : MonoBehaviour
 
         foreach (var skill in enemyAttributes.skills)
         {
-            if (enemyAttributes.energy >= skill.skillCost)
+            if (enemyAttributes.energy >= skill.skillCost && BattleManager.instance.canUseSkill)
             {
                 UseSkill(enemyAttributes, GetRandomPlayer(), skill);
                 enemyAttributes.energy -= skill.skillCost;
@@ -43,8 +43,11 @@ public class BaseEnemy : MonoBehaviour
         float totalPhysicalDamage = 0f;
         float totalSoulDamage = 0f;
     
-        Debug.Log($"⚔ {attacker.characterName} 使用技能 {skill.skillName} (消耗: {skill.skillCost}) 对 {defender.characterName} 造成伤害！");
-
+        System.Reflection.FieldInfo[] fields = typeof(MonsterSkillAttributes).GetFields();
+        foreach (var field in fields)
+        {
+            Debug.Log($"{field.Name} : {field.GetValue(skill)}");
+        }
         for (int i = 0; i < skill.physicalAttackCount; i++)
         {
             float levelDifference = Mathf.Abs(attacker.level - defender.level);
@@ -75,7 +78,7 @@ public class BaseEnemy : MonoBehaviour
             Debug.Log($"⚔ {attacker.characterName} 对 {defender.characterName} 造成 {totalDamage:F0} 点伤害！");
         }
 
-        BattleManager.instance.ApplyDamage(defender, totalDamage, isCritical);
+        BattleManager.instance.ApplyDamage(defender,defender, totalDamage, isCritical,true);
 
         ApplySkillEffects(attacker, defender, skill);
     }
@@ -84,20 +87,18 @@ public class BaseEnemy : MonoBehaviour
 
     public virtual void ApplySkillEffects(MonsterAttributes attacker, ICharacter defender, MonsterSkillAttributes skill)
     {
+        
         // **眩晕**
         if (skill.stunChance > 0 && Random.value < skill.stunChance)
         {
-            defender.activeBuffs.Add(new BuffEffect("眩晕", BuffType.Stun, 1, 0, true));
-            BattleManager.instance.ShowText(defender.index, "眩晕!", Color.yellow);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 眩晕！");
+            BattleManager.instance.AddBuff(attacker, defender, "眩晕", BuffType.Stun, 1, 1, true,1);
+
         }
 
         // **沉默**
         if (skill.silenceChance > 0 && Random.value < skill.silenceChance)
         {
-            defender.activeBuffs.Add(new BuffEffect("沉默", BuffType.Silence, 1, 0, true));
-            BattleManager.instance.ShowText(defender.index, "沉默!", Color.blue);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 沉默！");
+            BattleManager.instance.AddBuff(attacker, defender, "沉默", BuffType.Silence, 1, 1, true,1);
         }
 
         // **护盾**
@@ -129,58 +130,72 @@ public class BaseEnemy : MonoBehaviour
         // **流血**
         if (skill.bleedChance > 0 && Random.value < skill.bleedChance)
         {
-            defender.activeBuffs.Add(new BuffEffect("流血", BuffType.Bleed, 3, skill.bleedStacks, true));
-            BattleManager.instance.ShowText(defender.index, $"流血 +{skill.bleedStacks}", Color.red);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 施加流血 {skill.bleedStacks} 层！");
+            BattleManager.instance.AddBuff(attacker, defender, "流血", BuffType.Bleed, 1, skill.bleedStacks, true,25);
+            Debug.Log($"{attacker.characterName} 对 {defender.characterName} 造成流血效果！");
+            
         }
 
         // **灼烧**
         if (skill.burnChance > 0 && Random.value < skill.burnChance)
         {
-            defender.activeBuffs.Add(new BuffEffect("灼烧", BuffType.Burn, 3, skill.burnStacks, true));
-            BattleManager.instance.ShowText(defender.index, $"灼烧 +{skill.burnStacks}", Color.red);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 施加灼烧 {skill.burnStacks} 层！");
+            BattleManager.instance.AddBuff(attacker, defender, "灼烧", BuffType.Burn, 1, skill.burnStacks, true,25);
+
         }
 
         // **中毒**
         if (skill.poisonStacks != 0)
         {
-            defender.activeBuffs.Add(new BuffEffect("中毒", BuffType.Poison, 3, skill.poisonStacks, true));
-            BattleManager.instance.ShowText(defender.index, "中毒!", Color.green);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 中毒！");
+            BattleManager.instance.AddBuff(attacker, defender, "中毒", BuffType.Poison, 1, skill.poisonStacks, true, 25);
+
         }
-        
         // **醉酒**
         if (skill.drunkStacks != 0)
         {
-            defender.activeBuffs.Add(new BuffEffect("醉酒", BuffType.Drunk, 3, skill.drunkStacks, true));
-            BattleManager.instance.ShowText(defender.index, "醉酒!", Color.cyan);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 醉酒！");
+            BattleManager.instance.AddBuff(attacker, defender, "醉酒", BuffType.Drunk, 1, skill.drunkStacks, true, 5);
         }
         
         // **嘲讽**
         if (skill.taunt)
         {
-            defender.activeBuffs.Add(new BuffEffect("嘲讽", BuffType.Taunt, 2, 0, true));
-            BattleManager.instance.ShowText(defender.index, "被嘲讽!", Color.magenta);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 嘲讽！");
+            BattleManager.instance.AddBuff(attacker, attacker, "嘲讽", BuffType.Taunt, 1, 1, true,1);
+
         }
         
         // **反伤**
         if (skill.reflectDamage)
         {
-            attacker.activeBuffs.Add(new BuffEffect("反伤", BuffType.Reflect, 2, 0.3f, false));
-            BattleManager.instance.ShowText(attacker.index, "反伤!", Color.blue);
-            Debug.Log($"{attacker.characterName} 进入反伤状态！");
+            BattleManager.instance.AddBuff(attacker, attacker, "反伤", BuffType.Reflect, 1, 1, true,1);
+  
         }
         
         // **跳过回合**
         if (skill.skipTurn)
         {
-            defender.activeBuffs.Add(new BuffEffect("跳过回合", BuffType.SkipTurn, 1, 0, true));
-            BattleManager.instance.ShowText(defender.index, "跳过回合!", Color.gray);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 施加跳过回合！");
+            BattleManager.instance.AddBuff(attacker, defender, "跳过回合", BuffType.SkipTurn, 1, 1, true,1);
         }
+        
+        // **凝视**
+        if (skill.gazeStacks != 0)
+        {
+            BattleManager.instance.AddBuff(attacker, defender, "凝视", BuffType.Gaze, 1, skill.gazeStacks, true, 13);
+        }
+        
+        // **宰杀**
+        if (skill.executeTarget)
+        {
+            BattleManager.instance.AddBuff(attacker, defender, "宰杀", BuffType.Execute, 1, 1, true,1);
+        }
+        
+        // **潜行**
+        if (skill.stealth)
+        {
+            BattleManager.instance.AddBuff(attacker, attacker, "潜行", BuffType.Stealth, 1, 1, true,1);
+        }
+        
+        
+        BattleManager.instance.UpdateButtonHealthFill();
+        
+        
     }
 
 
@@ -191,7 +206,7 @@ public class BaseEnemy : MonoBehaviour
         CharacterAttributes target = GetRandomPlayer();
         if (target == null) return;
 
-        BattleManager.instance.DealDamage(enemyAttributes, target, 1f);
+        BattleManager.instance.DealDamage(enemyAttributes, target, 1f, true);
     }
 
 

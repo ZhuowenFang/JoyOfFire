@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
+
 public class CharacterConfigurator : MonoBehaviour
 {
     public TMP_InputField nameInput;
@@ -451,24 +453,28 @@ public abstract class ICharacter
     public int energy { get; set; }
     public int maxEnergy { get; set; }
     public int level { get; set; }
-    public List<BuffEffect> activeBuffs { get; set; }
+    public List<BuffEffect> activeBuffs { get; set; } = new List<BuffEffect>();
 }
 [System.Serializable]
 public class BuffEffect
 {
+    public ICharacter attacker; // 施加者
     public string buffName;  // Buff 名称
     public BuffType buffType; // Buff 类型
     public int duration;  // 持续回合数
-    public float value;   // 数值（伤害、加成等）
-    public bool isDebuff; // 是否是负面状态
+    public float stack;   // 数值（伤害、加成等）
+    public bool isDebuff;
+    public int maxStack;
 
-    public BuffEffect(string name, BuffType type, int turns, float val, bool debuff)
+    public BuffEffect(ICharacter Attacker, string name, BuffType type, int turns, float stackVal, bool debuff, int maxStackVal)
     {
+        attacker = Attacker;
         buffName = name;
         buffType = type;
         duration = turns;
-        value = val;
+        stack = stackVal;
         isDebuff = debuff;
+        maxStack = maxStackVal;
     }
 }
 
@@ -485,11 +491,16 @@ public enum BuffType
     Shield,       // 护盾
     HealOverTime, // 持续恢复
     DamageBoost,  // 伤害提升
-    DefenseBoost, // 防御提升
+    Block, // 防御提升
     Stealth,      // 潜行
     SkipTurn,     // 跳过回合
     Reflect,      // 反伤
     Dispel,       // 驱散异常状态
+    Gaze,        // 凝视
+    Cuisine,    // 特色菜肴
+    Knife,      // 餐刀
+    Dream,      // 梦境
+    Execute
 }
 
 

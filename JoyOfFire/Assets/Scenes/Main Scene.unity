@@ -4425,7 +4425,7 @@ MonoBehaviour:
   criticalRateText: {fileID: 1411382396}
   hitRateText: {fileID: 900375050}
   tenacityRateText: {fileID: 2009902022}
-  Role: {fileID: 0}
+  Role: {fileID: 1168741577}
   Gender: {fileID: 1585633256}
   characterImage: {fileID: 576447023}
   StrengthBar: {fileID: 776934279}
@@ -19140,7 +19140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7062369928631782829, guid: 3e95cc02d32f243d5a64c0548b51de8c, type: 3}
       propertyPath: eventNumber
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7266928023053759910, guid: 3e95cc02d32f243d5a64c0548b51de8c, type: 3}
       propertyPath: m_LocalPosition.x

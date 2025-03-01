@@ -349,8 +349,28 @@ public class NewCharacterManager : MonoBehaviour
             fixedHeal = TryParseFloat(skillVector[13]),
             percentHeal = TryParseFloat(skillVector[14]),
             stunChance = TryParseFloat(skillVector[15]),
-            silenceChance = TryParseFloat(skillVector[16])
+            silenceChance = TryParseFloat(skillVector[16]),
+            bindChance = TryParseFloat(skillVector[17]),
+            bleedStacks = TryParseFloat(skillVector[18]),
+            bleedChance = TryParseFloat(skillVector[19]),
+            burnStacks = TryParseFloat(skillVector[20]),
+            burnChance = TryParseFloat(skillVector[21]),
+            poisonStacks = TryParseFloat(skillVector[22]),
+            drunkStacks = TryParseFloat(skillVector[23]),
+            gazeStacks = TryParseFloat(skillVector[24]),
+            executeTarget = TryParseFloat(skillVector[25]) > 0,
+            specialDish = TryParseFloat(skillVector[26]) > 0,
+            knifeLimit = TryParseFloat(skillVector[27]),
+            knifeHpCost = TryParseFloat(skillVector[28]),
+            knifeConsume = TryParseFloat(skillVector[29]),
+            damageBoost = TryParseFloat(skillVector[30]),
+            taunt = TryParseFloat(skillVector[31]) > 0,
+            stealth = TryParseFloat(skillVector[32]) > 0,
+            skipTurn = TryParseFloat(skillVector[33]) > 0,
+            reflectDamage = TryParseFloat(skillVector[34]) > 0,
+            dispelDebuff = TryParseFloat(skillVector[35]) > 0,
         };
+
     }
 
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class BattleManager : MonoBehaviour
     public Button endTurnButton;
     public List<Button> characterButtons;
     public List<Button> enemyButtons;
+    public GameObject buffIconPrefab;
 
     private bool isSelectingEnemy = false;
     private float animationTimer = 0f;
@@ -29,8 +31,11 @@ public class BattleManager : MonoBehaviour
     public GameObject skillButtonPrefab;
     public Transform skillButtonParent;
     private List<Button> skillButtons = new List<Button>();
-    
+    private bool skippingTurn = false;
     private SkillAttributes selectedSkill;
+    public bool canUseSkill = true;
+    private bool enemyHasTaunt = false;
+    public ICharacter randomTarget;
     private void Awake()
     {
         instance = this;
@@ -70,6 +75,7 @@ public class BattleManager : MonoBehaviour
 
     public async void StartNextTurn()
     {
+        canUseSkill = true;
         actionPanel.gameObject.SetActive(false);
         ResetAllCharacterSizes();
         
@@ -81,15 +87,24 @@ public class BattleManager : MonoBehaviour
         }
         
         int characterIndex = nextCharacter.index;
-
+        await Task.Delay(2000);
         if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count)
         {
             actionPanel.gameObject.SetActive(false);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
             await Task.Delay(2000);
+            ProcessBuffs(nextCharacter);
+
             BaseEnemy enemyScript = characterButtons[characterIndex].GetComponent<BaseEnemy>();
             if (enemyScript != null)
             {
+                if (skippingTurn)
+                {
+                    await Task.Delay(1000);
+                    skippingTurn = false;
+                    EndTurn();
+                    return;
+                }
                 enemyScript.TakeTurn();
             }
             else
@@ -101,6 +116,15 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            ProcessBuffs(nextCharacter);
+
+            if (skippingTurn)
+            {
+                await Task.Delay(1000);
+                skippingTurn = false;
+                EndTurn();
+                return;
+            }
             actionPanel.gameObject.SetActive(true);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
             energyText.text = $"{nextCharacter.energy} / {nextCharacter.maxEnergy}";
@@ -127,9 +151,12 @@ public class BattleManager : MonoBehaviour
             Text skillText = skillButtonGO.GetComponentInChildren<Text>();
 
             skillText.text = $"{skill.skillName} (消耗: {skill.skillCost})";
-
+            
             skillButton.interactable = character.energy >= skill.skillCost;
-
+            if (!canUseSkill)
+            {
+                skillButton.interactable = false;
+            }
             skillButton.onClick.AddListener(() => OnSkillSelected(skillButton,character, skill));
 
             skillButtons.Add(skillButton);
@@ -148,6 +175,38 @@ public class BattleManager : MonoBehaviour
 
     public void StartEnemySelection()
     {
+        enemyHasTaunt = enemyButtons.Any(enemy =>
+        {
+            var enemyData = enemy.GetComponent<BaseEnemy>()?.enemyAttributes;
+            return enemyData != null && enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Taunt);
+        });
+
+        foreach (var enemy in enemyButtons)
+        {
+            var enemyData = enemy.GetComponent<BaseEnemy>()?.enemyAttributes;
+            if (enemyData != null && enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Stealth))
+            {
+                enemy.interactable = false;
+                enemy.transform.localScale = Vector3.one;
+            }
+            else if (enemyHasTaunt)
+            {
+                if (enemyData == null || !enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Taunt))
+                {
+                    enemy.interactable = false;
+                    enemy.transform.localScale = Vector3.one;
+                }
+                else
+                {
+                    enemy.interactable = true;
+                }
+            }
+            else
+            {
+                enemy.interactable = true;
+            }
+        }
+
         isSelectingEnemy = true;
         actionPanel.gameObject.SetActive(false);
     }
@@ -167,9 +226,29 @@ public class BattleManager : MonoBehaviour
 
         foreach (var enemy in enemyButtons)
         {
-            enemy.transform.localScale = Vector3.one * scale;
+            var enemyData = enemy.GetComponent<BaseEnemy>()?.enemyAttributes;
+            if (enemyData != null && enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Stealth))
+            {
+                enemy.transform.localScale = Vector3.one;
+            }
+            else if (enemyHasTaunt)
+            {
+                if (enemyData != null && enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Taunt))
+                {
+                    enemy.transform.localScale = Vector3.one * scale;
+                }
+                else
+                {
+                    enemy.transform.localScale = Vector3.one;
+                }
+            }
+            else
+            {
+                enemy.transform.localScale = Vector3.one * scale;
+            }
         }
     }
+
 
     public void OnEnemySelected(int enemyIndex)
     {
@@ -179,26 +258,61 @@ public class BattleManager : MonoBehaviour
         ICharacter attacker = SpeedBarUI.instance.GetNextCharacter();
         ICharacter defender = CharacterManager.instance.EnemyCharacters[enemyIndex];
 
-        if (isUsingSkill)
+        if (randomTarget != null)
         {
-            UseSkill(attacker, defender, selectedSkill);
-            attacker.energy -= selectedSkill.skillCost;
+            defender = randomTarget;
+            randomTarget = null;
+            bool targetIsPlayer;
+            if (defender is MonsterAttributes)
+            {
+                targetIsPlayer = false;
+            }
+            else
+            {
+                targetIsPlayer = true;
+            }
+            if (isUsingSkill)
+            {
+                UseSkill(attacker, defender, selectedSkill,targetIsPlayer);
+                attacker.energy -= selectedSkill.skillCost;
+            }
+            else
+            {
+                DealDamage(attacker, defender, 1f,targetIsPlayer);
+                if (attacker.energy < attacker.maxEnergy)
+                {
+                    attacker.energy += 1;
+                }
+            }
+
+            isSelectingEnemy = false;
+            ResetAllCharacterSizes();
+            EndTurn();
         }
         else
         {
-            DealDamage(attacker, defender, 1f);
-            if (attacker.energy < attacker.maxEnergy)
+            if (isUsingSkill)
             {
-                attacker.energy += 1;
+                UseSkill(attacker, defender, selectedSkill);
+                attacker.energy -= selectedSkill.skillCost;
             }
-        }
+            else
+            {
+                DealDamage(attacker, defender, 1f);
+                if (attacker.energy < attacker.maxEnergy)
+                {
+                    attacker.energy += 1;
+                }
+            }
 
-        isSelectingEnemy = false;
-        ResetAllCharacterSizes();
-        EndTurn();
+            isSelectingEnemy = false;
+            ResetAllCharacterSizes();
+            EndTurn();
+        }
+        
     }
     
-    public void DealDamage(ICharacter attacker, ICharacter defender, float damageMultiplier)
+    public void DealDamage(ICharacter attacker, ICharacter defender, float damageMultiplier, bool targetIsPlayer = false)
     {
         float levelDifference = Mathf.Abs(attacker.level - defender.level);
         float damageReductionPercentage = defender.physicalDefense / 
@@ -218,10 +332,10 @@ public class BattleManager : MonoBehaviour
             Debug.Log($"普通攻击造成了 {damage} 点伤害！");
         }
 
-        ApplyDamage(defender, damage, isCritical);
+        ApplyDamage(attacker,defender, damage, isCritical, targetIsPlayer);
     }
 
-    public void ApplyDamage(ICharacter defender, float damage, bool isCritical, bool isEnemy = false)
+    public void ApplyDamage(ICharacter IfReflectCharacter, ICharacter defender, float damage, bool isCritical, bool targetIsPlayer = false)
     {
         float remainingShield = Mathf.Max(defender.shieldAmount - damage, 0);
         float damageToHealth = Mathf.Max(damage - defender.shieldAmount, 0);
@@ -229,7 +343,20 @@ public class BattleManager : MonoBehaviour
         defender.currentHealth -= damageToHealth;
         Debug.Log($"{defender.characterName} 受到了 {damageToHealth} 点伤害！");
         Debug.Log($"敌人现在的生命值：{defender.currentHealth}");
-        ShowDamageText(defender.index, damageToHealth, isCritical, isEnemy);
+        ShowDamageText(defender.index, damageToHealth, isCritical, targetIsPlayer);
+        UpdateButtonHealthFill();
+
+        if (defender.activeBuffs.Exists(b => b.buffType == BuffType.Reflect))
+        {
+            float reflectedDamage = damageToHealth * 0.5f;
+            float attackerRemainingShield = Mathf.Max(IfReflectCharacter.shieldAmount - reflectedDamage, 0);
+            float damageToAttackerHealth = Mathf.Max(reflectedDamage - IfReflectCharacter.shieldAmount, 0);
+            IfReflectCharacter.shieldAmount = attackerRemainingShield;
+            IfReflectCharacter.currentHealth -= damageToAttackerHealth;
+            Debug.Log($"{IfReflectCharacter.characterName} 受到了 {damageToAttackerHealth} 点反弹伤害！");
+            ShowDamageText(IfReflectCharacter.index, damageToAttackerHealth, false, true);
+            UpdateButtonHealthFill(); // 根据需要更新攻击者的UI
+        }
 
         if (defender.currentHealth <= 0)
         {
@@ -238,16 +365,16 @@ public class BattleManager : MonoBehaviour
             CheckBattleOutcome();
         }
     }
+
     
-    public void UseSkill(ICharacter attacker, ICharacter defender, SkillAttributes skill)
+    public void UseSkill(ICharacter attacker, ICharacter defender, SkillAttributes skill, bool targetIsPlayer = false)
     {
         float levelDifference = Mathf.Abs(attacker.level - defender.level);
 
         // 计算物理伤害
         float physicalDamageReduction = defender.physicalDefense /
             (defender.physicalDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
-        Debug.Log(attacker.physicalAttack);
-        Debug.Log(skill.physicalDamage);
+
         float physicalDamage = attacker.physicalAttack * skill.physicalDamage * (1 - physicalDamageReduction);
 
         // 计算灵魂伤害
@@ -272,36 +399,334 @@ public class BattleManager : MonoBehaviour
         }
 
         // 应用伤害
-        ApplyDamage(defender, totalDamage,isCritical);
+        ApplyDamage(attacker, defender,totalDamage,isCritical,targetIsPlayer);
 
         // 技能附加效果
         ApplySkillEffects(attacker, defender, skill);
     }
+    
+    public void AddBuff(ICharacter attcker, ICharacter defender, string name, BuffType buffType, int turns, float stackVal, bool debuff, int maxStacksVal)
+    {
+        BuffEffect existingBuff = defender.activeBuffs.Find(b => b.buffType == buffType);
+        if (existingBuff != null)
+        {   
+            if (existingBuff.stack + stackVal >= maxStacksVal)
+            {
+                existingBuff.stack = maxStacksVal;
+            }
+            else
+            {
+                existingBuff.stack += stackVal;
+            }
+            Debug.Log($"增加了 {name} 的层数，当前层数：{existingBuff.stack}");
+        }
+        else
+        {
+            BuffEffect newBuff = new BuffEffect(attcker, name, buffType, turns, stackVal, debuff, maxStacksVal);
+            defender.activeBuffs.Add(newBuff);
+        }
+        Button targetButton = null;
+        targetButton = CharacterManager.instance.characterButtons[defender.index];
+        
+        if (targetButton == null)
+        {
+            Debug.LogError("找不到对应的角色按钮");
+            return;
+        }
+        
+        Transform buffGroup = targetButton.transform.Find("BuffGroup");
+        if (buffGroup == null)
+        {
+            Debug.LogError("未在按钮下找到 BuffGroup 子物体");
+            return;
+        }
+        
+        BuffIcon[] existingIcons = buffGroup.GetComponentsInChildren<BuffIcon>();
+        BuffIcon matchingIcon = null;
+        foreach (var icon in existingIcons)
+        {
+            if (icon.buffType == buffType)
+            {
+                matchingIcon = icon;
+                break;
+            }
+        }
+        
+        if (matchingIcon != null)
+        {
+            Text stackText = matchingIcon.transform.Find("Stack").GetComponent<Text>();
+            if (stackText != null)
+            {
+                if (int.Parse(stackText.text) + stackVal >= maxStacksVal)
+                {
+                    stackText.text = maxStacksVal.ToString();
+                }
+                else
+                {
+                    stackText.text = (int.Parse(stackText.text) + stackVal).ToString();
+                }
+                Debug.Log($"增加了图标 {name} 的层数，当前层数：{stackText.text}");
+
+            }
+            else
+            {
+                Debug.LogError("未找到 BuffIcon 下的 Stack 文本组件");
+            }
+        }
+        else
+        {
+            GameObject buffIconGO = Instantiate(buffIconPrefab, buffGroup);
+            BuffIcon buffIconScript = buffIconGO.GetComponent<BuffIcon>();
+            if (buffIconScript != null)
+            {
+                buffIconScript.buffType = buffType;
+            }
+            
+            Sprite buffSprite = Resources.Load<Sprite>("buffIcons/" + buffType.ToString());
+            if (buffSprite != null)
+            {
+                Image iconImage = buffIconGO.GetComponent<Image>();
+                if (iconImage != null)
+                {
+                    iconImage.sprite = buffSprite;
+                }
+                else
+                {
+                    Debug.LogError("buffIconPrefab 上没有找到 Image 组件");
+                }
+            }
+            else
+            {
+                Debug.LogError("无法加载 buffSprite，检查路径或文件名: " + buffType.ToString());
+            }
+            
+            Transform stackTransform = buffIconGO.transform.Find("Stack");
+            if (stackTransform != null)
+            {
+                Text stackText = stackTransform.GetComponent<Text>();
+                if (stackText != null)
+                {
+                    stackText.text = stackVal.ToString();
+                }
+                else
+                {
+                    Debug.LogError("未找到 Stack 子物体上的 Text 组件");
+                }
+            }
+            else
+            {
+                Debug.LogError("未找到 buffIconPrefab 下的 Stack 子物体");
+            }
+        }
+    }
+    
+    public void ProcessBuffs(ICharacter character)
+    {
+        List<BuffEffect> buffsToRemove = new List<BuffEffect>();
+
+        foreach (var buff in character.activeBuffs)
+        {
+            switch (buff.buffType)
+            {
+                case BuffType.Stun:
+                    skippingTurn = true;
+                    buffsToRemove.Add(buff);
+                    break;
+                case BuffType.Silence:
+                    canUseSkill = false;
+                    buffsToRemove.Add(buff);
+                    break;
+                case BuffType.Block:
+                    buffsToRemove.Add(buff);
+                    break;
+                case BuffType.Bleed:
+                    float bleedDamage = buff.stack * 0.01f * character.health;
+                    ApplyDamage(character,character, bleedDamage, false, true);
+                    buff.stack = Mathf.FloorToInt(buff.stack / 3);
+                    if (buff.stack <= 0)
+                    {
+                        buffsToRemove.Add(buff);
+                    }
+                    else
+                    {
+                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
+                    }
+                    break;
+                case BuffType.Burn:
+                    float burnDamage = buff.stack * 0.01f * character.physicalAttack;
+                    ApplyDamage(character,character, burnDamage, false,true);
+                    buff.stack = Mathf.FloorToInt(buff.stack / 3);
+                    if (buff.stack <= 0)
+                    {
+                        buffsToRemove.Add(buff);
+                    }
+                    else
+                    {
+                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
+                    }
+                    break;
+                case BuffType.SkipTurn:
+                    skippingTurn = true;
+                    buffsToRemove.Add(buff);
+                    break;
+                case BuffType.Gaze:
+                    float gazeDamage = buff.stack;
+                    ApplyDamage(character,character, gazeDamage, false,true);
+                    buff.stack = Mathf.FloorToInt(buff.stack / 2);
+                    if (buff.stack <= 0)
+                    {
+                        buffsToRemove.Add(buff);
+                    }
+                    else
+                    {
+                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
+                    }
+                    break;
+                case BuffType.Poison:
+                    float poisonDamage = buff.stack;
+                    ApplyDamage(character,character, poisonDamage, false,true);
+                    buff.stack = Mathf.FloorToInt(buff.stack / 2);
+                    if (buff.stack <= 0)
+                    {
+                        buffsToRemove.Add(buff);
+                    }
+                    else
+                    {
+                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
+                    }
+                    break;
+                case BuffType.Taunt:
+                    buffsToRemove.Add(buff);
+                    break;
+                case BuffType.Drunk:
+                    List<ICharacter> potentialTargets = NewCharacterManager.instance.allCharacters
+                        .Where(c => c != character)
+                        .ToList();
+                    if (potentialTargets.Count > 0 && Random.value < buff.stack * 0.2f)
+                    {
+                        int randomIndex = Random.Range(0, potentialTargets.Count);
+                        randomTarget = potentialTargets[randomIndex];
+                    }
+                    buff.stack--;
+                    if (buff.stack <= 0)
+                    {
+                        buffsToRemove.Add(buff);
+                    }
+                    else
+                    {
+                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
+                    }
+                    break;
+                case BuffType.Reflect:
+                    buffsToRemove.Add(buff);
+                    break;
+                case BuffType.Stealth:
+                    buffsToRemove.Add(buff);
+                    break;
+                
+            }
+        }
+
+        foreach (var buff in buffsToRemove)
+        {
+            character.activeBuffs.Remove(buff);
+            RemoveBuffIcon(character, buff.buffType);
+        }
+    }
+
+
+    public void RemoveBuffIcon(ICharacter character, BuffType buffType)
+    {
+        Button targetButton = null;
+        targetButton = CharacterManager.instance.characterButtons[character.index];
+
+        if (targetButton == null)
+        {
+            Debug.LogError("未找到对应的角色按钮");
+            return;
+        }
+
+        Transform buffGroup = targetButton.transform.Find("BuffGroup");
+        if (buffGroup == null)
+        {
+            Debug.LogError("未在角色按钮下找到 BuffGroup");
+            return;
+        }
+
+        BuffIcon[] icons = buffGroup.GetComponentsInChildren<BuffIcon>();
+        foreach (var icon in icons)
+        {
+            if (icon.buffType == buffType)
+            {
+                Destroy(icon.gameObject);
+                break;
+            }
+        }
+    }
+    public void UpdateBuffIconStack(ICharacter character, BuffType buffType, float newStack)
+    {
+        Button targetButton = CharacterManager.instance.characterButtons[character.index];
+        if (targetButton == null)
+        {
+            Debug.LogError("找不到对应的角色按钮");
+            return;
+        }
+
+        Transform buffGroup = targetButton.transform.Find("BuffGroup");
+        if (buffGroup == null)
+        {
+            Debug.LogError("未在角色按钮下找到 BuffGroup 子物体");
+            return;
+        }
+
+        BuffIcon[] icons = buffGroup.GetComponentsInChildren<BuffIcon>();
+        foreach (var icon in icons)
+        {
+            if (icon.buffType == buffType)
+            {
+                Transform stackTransform = icon.transform.Find("Stack");
+                if (stackTransform != null)
+                {
+                    Text stackText = stackTransform.GetComponent<Text>();
+                    if (stackText != null)
+                    {
+                        stackText.text = newStack.ToString();
+                        Debug.Log($"更新图标 {buffType} 的层数为：{stackText.text}");
+                    }
+                    else
+                    {
+                        Debug.LogError("未找到 BuffIcon 下的 Stack 文本组件");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("未找到 BuffIcon 下的 Stack 子物体");
+                }
+                break;
+            }
+        }
+    }
+
 
     private void ApplySkillEffects(ICharacter attacker, ICharacter defender, SkillAttributes skill)
     {
         // **眩晕**
         if (skill.stunChance > 0 && Random.value < skill.stunChance)
         {
-            defender.activeBuffs.Add(new BuffEffect("眩晕", BuffType.Stun, 1, 0, true));
-            ShowText(defender.index, "眩晕!", Color.yellow);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 眩晕！");
+            AddBuff(attacker, defender, "眩晕", BuffType.Stun, 1, 1, true,1);
         }
 
         // **沉默**
         if (skill.silenceChance > 0 && Random.value < skill.silenceChance)
         {
-            defender.activeBuffs.Add(new BuffEffect("沉默", BuffType.Silence, 1, 0, true));
-            ShowText(defender.index, "沉默!", Color.blue);
-            Debug.Log($"{defender.characterName} 被 {attacker.characterName} 沉默！");
+            AddBuff(attacker, defender, "沉默", BuffType.Silence, 1, 1, true,1);
+
         }
 
         // **增加护盾**
         if (skill.shieldAmount > 0)
         {
             attacker.shieldAmount += skill.shieldAmount;
-            ShowText(attacker.index, $"护盾 +{skill.shieldAmount}", Color.green);
-            Debug.Log($"{attacker.characterName} 获得 {skill.shieldAmount} 点护盾！");
         }
 
         // **治疗**
@@ -312,42 +737,46 @@ public class BattleManager : MonoBehaviour
             {
                 healDiscount = 0.8f;
             }
-            float healedAmount = Mathf.Min(skill.healAmount * healDiscount, attacker.health - attacker.currentHealth);
             attacker.currentHealth = Mathf.Min(attacker.currentHealth + skill.healAmount * healDiscount, attacker.health);
-            ShowText(attacker.index, $"治疗 +{healedAmount:F0}", Color.green);
-            Debug.Log($"{attacker.characterName} 回复 {healedAmount} 点生命值！");
         }
 
         // **格挡**
         if (skill.blockChance > 0 && Random.value < skill.blockChance)
         {
-            attacker.activeBuffs.Add(new BuffEffect("格挡", BuffType.DefenseBoost, 2, 0.2f, false));
-            ShowText(attacker.index, "格挡!", Color.gray);
-            Debug.Log($"{attacker.characterName} 进入格挡状态，伤害减少 20%！");
+            AddBuff(attacker, defender, "格挡", BuffType.Block, 1, 1, false,1);
         }
-        
+        UpdateButtonHealthFill();
     }
 
 
 
-    private void ShowDamageText(int characterIndex, float damage, bool isCritical, bool isEnemy = false)
+    private void ShowDamageText(int characterIndex, float damage, bool isCritical, bool targetIsPlayer = false)
     {
         RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
 
         GameObject damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
         if (isCritical)
         {
-            damageText.GetComponent<TMP_Text>().text = $"暴击！-{damage:F0}";
+            damageText.GetComponent<Text>().text = $"暴击！-{damage:F0}";
         }
         else
         {
-            damageText.GetComponent<TMP_Text>().text = $"-{damage:F0}";
+            damageText.GetComponent<Text>().text = $"-{damage:F0}";
 
         }
 
         RectTransform textRect = damageText.GetComponent<RectTransform>();
         textRect.SetParent(mainCanvas.transform, false);
-        textRect.localPosition = targetRect.localPosition + new Vector3(0, 300, 0);
+        if (!targetIsPlayer)
+        {
+            textRect.localPosition = targetRect.localPosition + new Vector3(0, 250, 0);
+        }
+        else
+        {
+            textRect.localPosition = targetRect.localPosition + new Vector3(0, 130, 0);
+
+        }
+        
 
         damageText.transform.SetAsLastSibling();
 
@@ -356,36 +785,32 @@ public class BattleManager : MonoBehaviour
     }
     
 
-    public void ShowText(int characterIndex, string text,Color color)
+    public void ShowText(int characterIndex, string text,Color color, bool targetIsPlayer = false)
     {
         RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
 
-        GameObject statusText = Instantiate(damageTextPrefab, mainCanvas.transform);
-        statusText.GetComponent<TMP_Text>().text = text;
-        statusText.GetComponent<TMP_Text>().color = color;
-
-        if (!textOffsets.ContainsKey(characterIndex))
-        {
-            if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count)
-            {
-                textOffsets[characterIndex] = -300f;
-            }
-            else
-            {
-                textOffsets[characterIndex] = -350f;
-
-            }
-            
-        }
-
-        RectTransform textRect = statusText.GetComponent<RectTransform>();
+        GameObject damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
+        
+        damageText.GetComponent<Text>().text = text;
+        damageText.GetComponent<Text>().color = color;
+        
+        RectTransform textRect = damageText.GetComponent<RectTransform>();
         textRect.SetParent(mainCanvas.transform, false);
-        textRect.localPosition = targetRect.localPosition + new Vector3(0, textOffsets[characterIndex], 0);
-        statusText.transform.SetAsLastSibling();
+        if (!targetIsPlayer)
+        {
+            textRect.localPosition = targetRect.localPosition + new Vector3(0, 250, 0);
+        }
+        else
+        {
+            textRect.localPosition = targetRect.localPosition + new Vector3(0, 130, 0);
 
-        textOffsets[characterIndex] -= 100f;
+        }
+        
 
-        StartCoroutine(ResetTextOffset(characterIndex, statusText));
+        damageText.transform.SetAsLastSibling();
+
+        
+        Destroy(damageText, 1f);
     }
 
     private IEnumerator ResetTextOffset(int characterIndex, GameObject textObject)
@@ -407,6 +832,7 @@ public class BattleManager : MonoBehaviour
         foreach (var button in characterButtons)
         {
             button.transform.localScale = Vector3.one;
+            button.interactable = true;
         }
     }
     private void RemoveCharacterFromBattle(ICharacter deadCharacter)
@@ -414,29 +840,48 @@ public class BattleManager : MonoBehaviour
         // 根据 deadCharacter 类型判断是玩家还是敌人
         if (deadCharacter is CharacterAttributes)
         {
-            // 玩家角色死亡
             CharacterAttributes deadPlayer = deadCharacter as CharacterAttributes;
-            // 从玩家列表中移除
             CharacterManager.instance.PlayerCharacters.Remove(deadPlayer);
-            // 从所有角色按钮列表中移除并销毁对应的UI
             RemoveCharacterButton(deadPlayer.index, false);
         }
         else if (deadCharacter is MonsterAttributes)
         {
-            // 敌人角色死亡
             MonsterAttributes deadMonster = deadCharacter as MonsterAttributes;
             CharacterManager.instance.EnemyCharacters.Remove(deadMonster);
             RemoveCharacterButton(deadMonster.index, true);
         }
     
-        // 同时从 SpeedBarUI 中删除该角色（假设 SpeedBarUI 有类似 RemoveCharacter(int index) 方法）
         speedBarUI.RemoveCharacter(deadCharacter);
+    }
+    public void UpdateButtonHealthFill()
+    {
+        for (int i = 0; i < CharacterManager.instance.PlayerCharacters.Count; i++)
+        {
+            CharacterAttributes player = CharacterManager.instance.PlayerCharacters[i];
+            Button btn = CharacterManager.instance.characterButtons[i];
+            Image fillImage = btn.transform.Find("fill").GetComponent<Image>();
+            if (player.health > 0)
+            {
+                fillImage.fillAmount = player.currentHealth / player.health;
+            }
+        }
+
+        for (int i = 0; i < CharacterManager.instance.EnemyCharacters.Count; i++)
+        {
+            MonsterAttributes enemy = CharacterManager.instance.EnemyCharacters[i];
+            Button btn = CharacterManager.instance.EnemyButtons[i];
+            Image fillImage = btn.transform.Find("fill").GetComponent<Image>();
+            if (enemy.health > 0)
+            {
+                fillImage.fillAmount = enemy.currentHealth / enemy.health;
+            }
+        }
     }
 
     /// <summary>
     /// 根据索引移除角色按钮（销毁对应UI对象，并从列表中移除）。
     /// </summary>
-    private void RemoveCharacterButton(int index, bool isEnemy)
+    private void RemoveCharacterButton(int index, bool ButtonIsEnemy)
     {
         if (index >= 0 && index < CharacterManager.instance.characterButtons.Count)
         {
@@ -462,7 +907,7 @@ public class BattleManager : MonoBehaviour
            
         }
 
-        if (!isEnemy)
+        if (!ButtonIsEnemy)
         {
             foreach (var character in CharacterManager.instance.PlayerCharacters)
             {
