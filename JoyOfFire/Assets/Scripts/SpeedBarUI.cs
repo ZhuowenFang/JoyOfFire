@@ -18,7 +18,6 @@ public class SpeedBarUI : MonoBehaviour
     public GameObject characterIconPrefab;      // 图标预制件
 
     public List<SpeedCharacter> speedCharacters = new List<SpeedCharacter>();  // 管理角色列表
-    private CharacterManager characterManager;   // 引用角色管理器
     private float speedAreaHeight;               // 速度区域高度
 
     private const float MaxDistance = 5000f;    // 固定路程
@@ -32,7 +31,6 @@ public class SpeedBarUI : MonoBehaviour
     }
     void Start()
     {
-        characterManager = FindObjectOfType<CharacterManager>();
         speedAreaHeight = speedArea.rect.height;
         InitializeCharacters();
         SortIconsByTimePoint();
@@ -41,9 +39,9 @@ public class SpeedBarUI : MonoBehaviour
 
     private void InitializeCharacters()
     {
-        for (int i = 0; i < CharacterManager.instance.allCharacters.Count; i++)
+        for (int i = 0; i < BattleCharacterManager.instance.allCharacters.Count; i++)
         {
-            ICharacter character = CharacterManager.instance.allCharacters[i];
+            ICharacter character = BattleCharacterManager.instance.allCharacters[i];
 
             GameObject icon = Instantiate(characterIconPrefab, speedArea);
             RectTransform iconTransform = icon.GetComponent<RectTransform>();

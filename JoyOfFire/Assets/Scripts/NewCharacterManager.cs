@@ -8,32 +8,13 @@ public class NewCharacterManager : MonoBehaviour
 {
     [SerializeReference]
     public List<ICharacter> allCharacters = new List<ICharacter>();
-    public List<Button> characterIndexButtons; // 角色按钮
-    public GameObject characterDetailPanel; // 角色详情页面
-    public GameObject characterCreationPanel; // 角色创建页面
-    public Text characterNameText;
-    public Text characterStoryText;
-    public Text experienceText;
-    public Text levelText;
-    public Text strengthText;
-    public Text agilityText;
-    public Text intelligenceText;
-    public Text healthText;
-    public Text physicalAttackText;
-    public Text physicalDefenseText;
-    public Text soulAttackText;
-    public Text soulDefenseText;
-    public Text speedText;
-    public Text criticalRateText;
-    public Text hitRateText;
-    public Text tenacityRateText;
-    public Text Role;
-    public Text Gender;
-    public Image characterImage;
+    public List<Button> characterIndexButtons;
+    public GameObject characterDetailPanel;
+    public GameObject characterCreationPanel;
+    public GameObject waitPanel;
+    
     public static NewCharacterManager instance;
-    public Image StrengthBar;
-    public Image AgilityBar;
-    public Image IntelligenceBar;
+    
 
     private void Awake()
     {
@@ -55,12 +36,17 @@ public class NewCharacterManager : MonoBehaviour
         }
         if (allCharacters.Count > 0)
         {
-            ShowCharacterDetails(allCharacters[0] as CharacterAttributes);
+            characterCreationPanel.SetActive(false);
+            characterDetailPanel.SetActive(true);
+            waitPanel.SetActive(false);
+            CharacterDetail.instance.ShowCharacterDetails(allCharacters[0] as CharacterAttributes);
         }
         else
         {
             characterCreationPanel.SetActive(true);
             characterDetailPanel.SetActive(false);
+            waitPanel.SetActive(false);
+
         }
     }
 
@@ -68,43 +54,21 @@ public class NewCharacterManager : MonoBehaviour
     {
         if (index < allCharacters.Count && allCharacters[index] != null)
         {
-            ShowCharacterDetails(allCharacters[index] as CharacterAttributes);
+            characterCreationPanel.SetActive(false);
+            characterDetailPanel.SetActive(true);
+            waitPanel.SetActive(false);
+            CharacterDetail.instance.ShowCharacterDetails(allCharacters[index] as CharacterAttributes);
         }
         else
         {
             characterCreationPanel.SetActive(true);
             characterDetailPanel.SetActive(false);
+            waitPanel.SetActive(false);
+
         }
     }
 
-    private void ShowCharacterDetails(CharacterAttributes character)
-    {
-        characterCreationPanel.SetActive(false);
-        characterDetailPanel.SetActive(true);
     
-        characterNameText.text = character.basic_information.name;
-        characterStoryText.text = "背景故事：" + character.basic_information.story;
-        experienceText.text = "经历：" + character.experience;
-        levelText.text = character.level.ToString();
-        strengthText.text = character.strength.ToString();
-        agilityText.text = character.agility.ToString();
-        intelligenceText.text = character.intelligence.ToString();
-        healthText.text = character.health.ToString();
-        physicalAttackText.text = character.physicalAttack.ToString();
-        physicalDefenseText.text = character.physicalDefense.ToString();
-        soulAttackText.text = character.soulAttack.ToString();
-        soulDefenseText.text = character.soulDefense.ToString();
-        speedText.text = character.speed.ToString();
-        criticalRateText.text = character.criticalRate.ToString();
-        hitRateText.text = character.hitRate.ToString();
-        tenacityRateText.text = character.tenacityRate.ToString();
-        StrengthBar.fillAmount = character.strength / character.potentialStrength;
-        AgilityBar.fillAmount = character.agility / character.potentialAgility;
-        IntelligenceBar.fillAmount = character.intelligence / character.potentialIntelligence;
-        Gender.text = character.basic_information.gender;
-    
-        StartCoroutine(APIManager.instance.LoadImage(character.character_picture, characterImage));
-    }
 
     public void AddCharacter(ICharacter character)
     {
@@ -118,10 +82,13 @@ public class NewCharacterManager : MonoBehaviour
         {
             characterName = characterData.basic_information.name,
             intelligence = ExtractAttributeValue(characterData.current_ability, "智力"),
+            initialIntelligence = ExtractAttributeValue(characterData.current_ability, "智力"),
             potentialIntelligence = ExtractAttributeValue(characterData.potential_ability, "智力"),
             agility = ExtractAttributeValue(characterData.current_ability, "敏捷"),
+            initialAgility = ExtractAttributeValue(characterData.current_ability, "敏捷"),
             potentialAgility = ExtractAttributeValue(characterData.potential_ability, "敏捷"),
             strength = ExtractAttributeValue(characterData.current_ability, "力量"),
+            initialStrength = ExtractAttributeValue(characterData.current_ability, "力量"),
             potentialStrength = ExtractAttributeValue(characterData.potential_ability, "力量"),
             health = CalculateHealth(characterData),
             physicalAttack = CalculatePhysicalAttack(characterData),
@@ -132,8 +99,8 @@ public class NewCharacterManager : MonoBehaviour
             criticalRate = CalculateCriticalRate(characterData),
             hitRate = CalculateHitRate(characterData),
             tenacityRate = CalculateTenacityRate(characterData),
-            damageX1 = 1f,
-            damageX2 = 1f,
+            damageX1 = -20f,
+            damageX2 = 300f,
             currentHealth = CalculateHealth(characterData),
             shieldAmount = 0f,
             energy = 0,
@@ -199,7 +166,6 @@ public class NewCharacterManager : MonoBehaviour
             skillIcon = talent.icon1,
             skillVector = talentCount?.ConvertAll(float.Parse) ?? new List<float>(),
 
-            // 解析技能的各项属性
             physicalDamage = talentCount != null && talentCount.Count > 0 ? float.Parse(talentCount[0]) : 0f,
             soulDamage = talentCount != null && talentCount.Count > 1 ? float.Parse(talentCount[1]) : 0f,
             stunChance = talentCount != null && talentCount.Count > 2 ? float.Parse(talentCount[2]) : 0f,
@@ -281,6 +247,7 @@ public class NewCharacterManager : MonoBehaviour
             damageX1 = 1f,
             damageX2 = 1f,
             currentHealth = monsterData.hp,
+            base_gold_value = monsterData.base_gold_value,
             
         };
 

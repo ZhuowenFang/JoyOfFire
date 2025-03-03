@@ -77,7 +77,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     {
         if (itemCount < 2)
         {
-            itemNumber.text = "";
+            itemNumber.text = "1";
         }
         else
         {

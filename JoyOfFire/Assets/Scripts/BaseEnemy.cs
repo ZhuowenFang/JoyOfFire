@@ -50,7 +50,7 @@ public class BaseEnemy : MonoBehaviour
         }
         for (int i = 0; i < skill.physicalAttackCount; i++)
         {
-            float levelDifference = Mathf.Abs(attacker.level - defender.level);
+            float levelDifference = defender.level - attacker.level;
             float physicalDamageReduction = defender.physicalDefense / (defender.physicalDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
             float physicalDamage = attacker.physicalAttack * skill.physicalDamage * (1 - physicalDamageReduction);
             totalPhysicalDamage += physicalDamage;
@@ -58,7 +58,7 @@ public class BaseEnemy : MonoBehaviour
 
         for (int i = 0; i < skill.soulAttackCount; i++)
         {
-            float levelDifference = Mathf.Abs(attacker.level - defender.level);
+            float levelDifference = defender.level - attacker.level;
             float soulDamageReduction = defender.soulDefense / (defender.soulDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
             float soulDamage = attacker.soulAttack * skill.soulDamage * (1 - soulDamageReduction);
             totalSoulDamage += soulDamage;
@@ -219,7 +219,7 @@ public class BaseEnemy : MonoBehaviour
     {
         List<CharacterAttributes> alivePlayers = new List<CharacterAttributes>();
 
-        foreach (var player in CharacterManager.instance.PlayerCharacters)
+        foreach (var player in BattleCharacterManager.instance.PlayerCharacters)
         {
             if (player.currentHealth > 0)
             {

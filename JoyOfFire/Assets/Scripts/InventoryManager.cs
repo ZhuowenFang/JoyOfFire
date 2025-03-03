@@ -51,6 +51,17 @@ public class InventoryManager : MonoBehaviour
     //         }
     //     }
     // }
+    
+    public int GetItemCount(string itemName)
+    {
+        if (activeItems.ContainsKey(itemName))
+        {
+            var (existingItem, currentCount) = activeItems[itemName];
+            return currentCount;
+        }
+
+        return 0;
+    }
 
     public void DeselectAll()
     {
@@ -118,8 +129,9 @@ public class InventoryManager : MonoBehaviour
         // UpdateUI();
     }
     
-    public void initialNumbers()
+    public async void initialNumbers()
     {
+        await Task.Delay(500);
         foreach (ItemSlot itemSlot in itemSlots)
         {
             itemSlot.UpdateItemNumber();

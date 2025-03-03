@@ -71,7 +71,6 @@ public class APIManager : MonoBehaviour
                 List<MonsterAttributes> monsters = new List<MonsterAttributes>();
                 foreach (var data in monsterDataList)
                 {
-                    Debug.Log(data);
                     monsters.Add(NewCharacterManager.ConvertToMonsterAttributes(data));
                 }
 

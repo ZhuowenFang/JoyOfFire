@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class BattleManager : MonoBehaviour
 {
@@ -36,6 +38,13 @@ public class BattleManager : MonoBehaviour
     public bool canUseSkill = true;
     private bool enemyHasTaunt = false;
     public ICharacter randomTarget;
+    
+    public GameObject RewardPanel;
+    public GameObject HorizontalLayoutGroup;
+    public GameObject RewardPrefab;
+    public GameObject LosePanel;
+    
+    public Dictionary<String, int> treasures = new Dictionary<string, int>();
     private void Awake()
     {
         instance = this;
@@ -43,12 +52,12 @@ public class BattleManager : MonoBehaviour
 
     void Start()
     {
-        foreach (var button in CharacterManager.instance.characterButtons)
+        foreach (var button in BattleCharacterManager.instance.characterButtons)
         {
             characterButtons.Add(button);
         }
 
-        foreach (var button in CharacterManager.instance.EnemyButtons)
+        foreach (var button in BattleCharacterManager.instance.EnemyButtons)
         {
             enemyButtons.Add(button);
         }
@@ -88,7 +97,7 @@ public class BattleManager : MonoBehaviour
         
         int characterIndex = nextCharacter.index;
         await Task.Delay(2000);
-        if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count)
+        if (characterIndex >= BattleCharacterManager.instance.PlayerCharacters.Count)
         {
             actionPanel.gameObject.SetActive(false);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
@@ -149,6 +158,9 @@ public class BattleManager : MonoBehaviour
             GameObject skillButtonGO = Instantiate(skillButtonPrefab, skillButtonParent);
             Button skillButton = skillButtonGO.GetComponent<Button>();
             Text skillText = skillButtonGO.GetComponentInChildren<Text>();
+            Image skillImage = skillButtonGO.transform.Find("SkillIcon").GetComponent<Image>();
+            
+            StartCoroutine(APIManager.instance.LoadImage(skill.skillIcon, skillImage));
 
             skillText.text = $"{skill.skillName} (消耗: {skill.skillCost})";
             
@@ -256,7 +268,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log($"选择了敌人 {enemyIndex}！");
 
         ICharacter attacker = SpeedBarUI.instance.GetNextCharacter();
-        ICharacter defender = CharacterManager.instance.EnemyCharacters[enemyIndex];
+        ICharacter defender = BattleCharacterManager.instance.EnemyCharacters[enemyIndex];
 
         if (randomTarget != null)
         {
@@ -314,12 +326,19 @@ public class BattleManager : MonoBehaviour
     
     public void DealDamage(ICharacter attacker, ICharacter defender, float damageMultiplier, bool targetIsPlayer = false)
     {
-        float levelDifference = Mathf.Abs(attacker.level - defender.level);
-        float damageReductionPercentage = defender.physicalDefense / 
+        float levelDifference = defender.level - attacker.level;
+        Debug.Log($"defender.level: {defender.level}, attacker.level: {attacker.level}, levelDifference: {levelDifference}");
+
+        float damageReductionPercentage = defender.physicalDefense /
                                           (defender.physicalDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
+        Debug.Log($"defender.physicalDefense: {defender.physicalDefense}, levelDifference * attacker.damageX1: {levelDifference * attacker.damageX1}, attacker.damageX2: {attacker.damageX2}, damageReductionPercentage: {damageReductionPercentage}");
 
         float damage = attacker.physicalAttack * damageMultiplier * (1 - damageReductionPercentage);
+        Debug.Log($"attacker.physicalAttack: {attacker.physicalAttack}, damageMultiplier: {damageMultiplier}, (1 - damageReductionPercentage): {1 - damageReductionPercentage}, damage: {damage}");
 
+        
+        
+        
         float randomValue = Random.value;
         bool isCritical = randomValue <= attacker.criticalRate;
         if (isCritical)
@@ -355,12 +374,13 @@ public class BattleManager : MonoBehaviour
             IfReflectCharacter.currentHealth -= damageToAttackerHealth;
             Debug.Log($"{IfReflectCharacter.characterName} 受到了 {damageToAttackerHealth} 点反弹伤害！");
             ShowDamageText(IfReflectCharacter.index, damageToAttackerHealth, false, true);
-            UpdateButtonHealthFill(); // 根据需要更新攻击者的UI
+            UpdateButtonHealthFill();
         }
 
         if (defender.currentHealth <= 0)
         {
             Debug.Log($"{defender.characterName} 被击败！");
+            
             RemoveCharacterFromBattle(defender);
             CheckBattleOutcome();
         }
@@ -369,7 +389,7 @@ public class BattleManager : MonoBehaviour
     
     public void UseSkill(ICharacter attacker, ICharacter defender, SkillAttributes skill, bool targetIsPlayer = false)
     {
-        float levelDifference = Mathf.Abs(attacker.level - defender.level);
+        float levelDifference = defender.level - attacker.level;
 
         // 计算物理伤害
         float physicalDamageReduction = defender.physicalDefense /
@@ -426,7 +446,7 @@ public class BattleManager : MonoBehaviour
             defender.activeBuffs.Add(newBuff);
         }
         Button targetButton = null;
-        targetButton = CharacterManager.instance.characterButtons[defender.index];
+        targetButton = BattleCharacterManager.instance.characterButtons[defender.index];
         
         if (targetButton == null)
         {
@@ -638,7 +658,7 @@ public class BattleManager : MonoBehaviour
     public void RemoveBuffIcon(ICharacter character, BuffType buffType)
     {
         Button targetButton = null;
-        targetButton = CharacterManager.instance.characterButtons[character.index];
+        targetButton = BattleCharacterManager.instance.characterButtons[character.index];
 
         if (targetButton == null)
         {
@@ -665,7 +685,7 @@ public class BattleManager : MonoBehaviour
     }
     public void UpdateBuffIconStack(ICharacter character, BuffType buffType, float newStack)
     {
-        Button targetButton = CharacterManager.instance.characterButtons[character.index];
+        Button targetButton = BattleCharacterManager.instance.characterButtons[character.index];
         if (targetButton == null)
         {
             Debug.LogError("找不到对应的角色按钮");
@@ -752,7 +772,7 @@ public class BattleManager : MonoBehaviour
 
     private void ShowDamageText(int characterIndex, float damage, bool isCritical, bool targetIsPlayer = false)
     {
-        RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
+        RectTransform targetRect = BattleCharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
 
         GameObject damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
         if (isCritical)
@@ -787,7 +807,7 @@ public class BattleManager : MonoBehaviour
 
     public void ShowText(int characterIndex, string text,Color color, bool targetIsPlayer = false)
     {
-        RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
+        RectTransform targetRect = BattleCharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
 
         GameObject damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
         
@@ -837,17 +857,31 @@ public class BattleManager : MonoBehaviour
     }
     private void RemoveCharacterFromBattle(ICharacter deadCharacter)
     {
-        // 根据 deadCharacter 类型判断是玩家还是敌人
         if (deadCharacter is CharacterAttributes)
         {
             CharacterAttributes deadPlayer = deadCharacter as CharacterAttributes;
-            CharacterManager.instance.PlayerCharacters.Remove(deadPlayer);
+            BattleCharacterManager.instance.PlayerCharacters.Remove(deadPlayer);
             RemoveCharacterButton(deadPlayer.index, false);
         }
         else if (deadCharacter is MonsterAttributes)
         {
             MonsterAttributes deadMonster = deadCharacter as MonsterAttributes;
-            CharacterManager.instance.EnemyCharacters.Remove(deadMonster);
+            BattleCharacterManager.instance.EnemyCharacters.Remove(deadMonster);
+            int goldAmount = Mathf.FloorToInt(deadMonster.base_gold_value * Random.Range(1, 1.5f));
+            if (InventoryManager.instance.activeItems.ContainsKey("Gold_plate"))
+            {
+                goldAmount = Mathf.FloorToInt(goldAmount * 1.2f);
+            }
+            
+            if (treasures.ContainsKey("gold"))
+            {
+                treasures["gold"] += goldAmount;
+            }
+            else
+            {
+                treasures.Add("gold", goldAmount);
+            }
+            
             RemoveCharacterButton(deadMonster.index, true);
         }
     
@@ -855,10 +889,10 @@ public class BattleManager : MonoBehaviour
     }
     public void UpdateButtonHealthFill()
     {
-        for (int i = 0; i < CharacterManager.instance.PlayerCharacters.Count; i++)
+        for (int i = 0; i < BattleCharacterManager.instance.PlayerCharacters.Count; i++)
         {
-            CharacterAttributes player = CharacterManager.instance.PlayerCharacters[i];
-            Button btn = CharacterManager.instance.characterButtons[i];
+            CharacterAttributes player = BattleCharacterManager.instance.PlayerCharacters[i];
+            Button btn = BattleCharacterManager.instance.characterButtons[i];
             Image fillImage = btn.transform.Find("fill").GetComponent<Image>();
             if (player.health > 0)
             {
@@ -866,10 +900,10 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < CharacterManager.instance.EnemyCharacters.Count; i++)
+        for (int i = 0; i < BattleCharacterManager.instance.EnemyCharacters.Count; i++)
         {
-            MonsterAttributes enemy = CharacterManager.instance.EnemyCharacters[i];
-            Button btn = CharacterManager.instance.EnemyButtons[i];
+            MonsterAttributes enemy = BattleCharacterManager.instance.EnemyCharacters[i];
+            Button btn = BattleCharacterManager.instance.EnemyButtons[i];
             Image fillImage = btn.transform.Find("fill").GetComponent<Image>();
             if (enemy.health > 0)
             {
@@ -883,18 +917,18 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     private void RemoveCharacterButton(int index, bool ButtonIsEnemy)
     {
-        if (index >= 0 && index < CharacterManager.instance.characterButtons.Count)
+        if (index >= 0 && index < BattleCharacterManager.instance.characterButtons.Count)
         {
             
-            Button btn = CharacterManager.instance.characterButtons[index];
+            Button btn = BattleCharacterManager.instance.characterButtons[index];
             GameObject btnGO = btn.gameObject;
             Destroy(btnGO);
-            CharacterManager.instance.characterButtons.RemoveAt(index);
+            BattleCharacterManager.instance.characterButtons.RemoveAt(index);
             characterButtons.RemoveAt(index);
 
-            if (CharacterManager.instance.EnemyButtons.Contains(btn))
+            if (BattleCharacterManager.instance.EnemyButtons.Contains(btn))
             {
-                CharacterManager.instance.EnemyButtons.Remove(btn);
+                BattleCharacterManager.instance.EnemyButtons.Remove(btn);
                 
                 enemyButtons.Remove(btn);
                 for (int j = 0; j < enemyButtons.Count; j++)
@@ -909,7 +943,7 @@ public class BattleManager : MonoBehaviour
 
         if (!ButtonIsEnemy)
         {
-            foreach (var character in CharacterManager.instance.PlayerCharacters)
+            foreach (var character in BattleCharacterManager.instance.PlayerCharacters)
             {
                 if (character.index >= index)
                 {
@@ -919,7 +953,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            foreach (var character in CharacterManager.instance.EnemyCharacters)
+            foreach (var character in BattleCharacterManager.instance.EnemyCharacters)
             {
                 if (character.index >= index)
                 {
@@ -933,19 +967,17 @@ public class BattleManager : MonoBehaviour
 
     private void CheckBattleOutcome()
     {
-        // 如果玩家全部死亡，则战斗失败
-        if (CharacterManager.instance.PlayerCharacters.Count == 0)
+        if (BattleCharacterManager.instance.PlayerCharacters.Count == 0)
         {
             Debug.Log("所有玩家角色都已死亡，战斗失败！");
-            EndBattle(); // 结束战斗或回到主界面
+            EndBattle(false);
             return;
         }
     
-        // 如果敌人全部死亡，则战斗胜利
-        if (CharacterManager.instance.EnemyCharacters.Count == 0)
+        if (BattleCharacterManager.instance.EnemyCharacters.Count == 0)
         {
             Debug.Log("所有敌人角色都已死亡，战斗胜利！");
-            EndBattle(); // 或者进入奖励界面等
+            EndBattle(true);
             return;
         }
     }
@@ -954,12 +986,11 @@ public class BattleManager : MonoBehaviour
 
     public void EndTurn()
     {
-        Debug.Log("回合结束！");
         ResetAllCharacterSizes();
         speedBarUI.CompleteCurrentTurn();
         StartNextTurn();
     }
-    public void EndBattle()
+    public void EndBattle(bool win)
     {
 
         List<ICharacter> toRemove = new List<ICharacter>();
@@ -978,13 +1009,72 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        // 退出 foreach 后再移除
         foreach (ICharacter dead in toRemove)
         {
             NewCharacterManager.instance.allCharacters.Remove(dead);
         }
 
-        SceneManager.UnloadSceneAsync("Battle");
+        if (win)
+        {
+            RewardPanel.SetActive(true);
+                    
+
+            foreach (Transform child in HorizontalLayoutGroup.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            
+            if(EventManager.instance.CurrentRewards != null)
+            {
+                foreach (var reward in EventManager.instance.CurrentRewards)
+                {
+                    if (Random.value < reward.Value)
+                    {
+                        if (treasures.ContainsKey(reward.Key))
+                        {
+                            treasures[reward.Key] += 1;
+                        }
+                        else
+                        {
+                            treasures.Add(reward.Key, 1);
+                        }
+                    }
+                    
+                }
+            }
+            
+            foreach (var treasure in treasures)
+            {
+                GameObject newReward = Instantiate(RewardPrefab, HorizontalLayoutGroup.transform);
+
+                Text nameText = newReward.transform.Find("name").GetComponent<Text>();
+                InventoryManager.instance.ObtainItem(treasure.Key,treasure.Value);
+                nameText.text = InventoryManager.instance.activeItems[treasure.Key].item.data.chineseName;
+                Image rewardImage = newReward.transform.Find("Image").GetComponent<Image>();
+                rewardImage.sprite = InventoryManager.instance.activeItems[treasure.Key].item.data.icon;
+                Text amountText = newReward.transform.Find("amount").GetComponent<Text>();
+                amountText.text = treasure.Value.ToString();
+                        
+            }
+
+            treasures.Clear();
+            Button button = RewardPanel.GetComponent<Button>();
+            button.onClick.AddListener(() =>
+            {
+                RewardPanel.SetActive(false);
+                SceneManager.UnloadSceneAsync("Battle");
+            });
+        }
+        else
+        {
+            LosePanel.SetActive(true);
+            Button button = LosePanel.GetComponent<Button>();
+            button.onClick.AddListener(() =>
+            {
+                Application.Quit();
+            });
+        }
+
     }
 
 }

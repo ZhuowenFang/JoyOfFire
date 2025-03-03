@@ -205,9 +205,10 @@ public class CharacterConfigurator : MonoBehaviour
 [System.Serializable]
 public class CharacterAttributes : ICharacter
 {
-    // 现在角色可以有多个技能
     public List<SkillAttributes> skills = new List<SkillAttributes>();
-
+    public float initialIntelligence;
+    public float initialAgility;
+    public float initialStrength;
     public float intelligence;
     public float potentialIntelligence;
     public float agility;
@@ -222,6 +223,8 @@ public class CharacterAttributes : ICharacter
     public List<string> current_ability;
     public List<string> potential_ability;
     public string experience;
+    
+    public int attributePoints = 0;
     
 
     public CharacterAttributes Clone()
@@ -260,7 +263,11 @@ public class CharacterAttributes : ICharacter
             character_picture = this.character_picture,
             current_ability = this.current_ability,
             potential_ability = this.potential_ability,
-            experience = this.experience
+            experience = this.experience,
+            attributePoints = this.attributePoints,
+            initialAgility = this.initialAgility,
+            initialIntelligence = this.initialIntelligence,
+            initialStrength = this.initialStrength
         };
     }
 }
@@ -292,6 +299,7 @@ public class MonsterAttributes : ICharacter
     public string monsterId;
     public float sanValue;
     public List<MonsterSkillAttributes> skills = new List<MonsterSkillAttributes>();
+    public float base_gold_value;
 
     public MonsterAttributes Clone()
     {
@@ -319,6 +327,7 @@ public class MonsterAttributes : ICharacter
             id = this.id,
             monsterId = this.monsterId,
             sanValue = this.sanValue,
+            base_gold_value = this.base_gold_value,
             skills = CloneSkills(this.skills)
         };
     }
@@ -500,7 +509,8 @@ public enum BuffType
     Cuisine,    // 特色菜肴
     Knife,      // 餐刀
     Dream,      // 梦境
-    Execute
+    Execute,
+    Bind
 }
 
 

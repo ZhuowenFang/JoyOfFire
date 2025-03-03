@@ -31,6 +31,22 @@ public class EventManager : MonoBehaviour
     public GameObject RewardPrefab;
     public GameObject HorizontalLayoutGroup;
     public string levelOrder = "1";
+    public string NextStage;
+    public Dictionary<string,float> CurrentRewards = new Dictionary<string, float>();
+    
+    public static EventManager instance;
+    
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void InitializeLevelPool()
     {
         levelPool = new List<string>();
@@ -86,13 +102,23 @@ public class EventManager : MonoBehaviour
         if (string.IsNullOrEmpty(hex.eventNumber))
         {
             int randomIndex = UnityEngine.Random.Range(0, levelPool.Count);
-            level = levelPool[randomIndex];
+            if(NextStage != null)
+            {
+                level = NextStage;
+                levelOrder = NextStage.Split('-')[0];
+            }
+            else
+            {
+                level = levelPool[randomIndex];
+                levelOrder = level.Split('-')[0];
+            }
         }
         else
         {
             level = hex.eventStage + "-" + hex.eventNumber;
             levelOrder = hex.eventStage;
         }
+
         APIManager.instance.GetLevelData(
             level,
             onSuccess: (response) =>
@@ -123,9 +149,7 @@ public class EventManager : MonoBehaviour
 
     public void ParseLevelData()
     {
-        Debug.Log($"Level Name: {levelResponse.data.levelInfo.level_name}");
-        Debug.Log($"Level Description: {levelResponse.data.levelInfo.level_desc}");
-        Debug.Log($"Option A Text: {levelResponse.data.levelInfo.option_a_experience}");
+
         EventPanel.SetActive(true);
         EventTitle.text = level + " " + levelResponse.data.levelInfo.level_name;
         EventDescription.text = levelResponse.data.levelInfo.level_desc;
@@ -189,42 +213,6 @@ public class EventManager : MonoBehaviour
     {
         if (optionResults.TryGetValue(optionKey, out JObject optionResult) && optionResult != null)
         {
-            Debug.Log($"Handling choice for {optionKey}");
-            Debug.Log($"Tool Required: {optionResult["tool_required"]}");
-            Debug.Log($"Success Condition: {optionResult["success_condition"]}");
-            Debug.Log($"Mini Game: {optionResult["mini_game"]}");
-            Debug.Log($"Monsters: {optionResult["monsters"]}");
-            if (optionResult["monsters"] != null)
-            {
-                if (optionResult["monsters"] is JObject monsters)
-                {
-                    foreach (var monster in monsters)
-                    {
-                        Debug.Log($"Monster: {monster.Key}, Count: {monster.Value}");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("Monsters is not a valid JObject.");
-                }
-            }
-            Debug.Log($"Rewards: {optionResult["rewards"]}");
-            if (optionResult["rewards"] != null)
-            {
-                if (optionResult["rewards"] is JObject rewards)
-                {
-                    foreach (var reward in rewards)
-                    {
-                        Debug.Log($"Reward: {reward.Key}, Amount: {reward.Value}");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("Rewards is not a valid JObject.");
-                }
-            }
-            Debug.Log($"Copywriting: {optionResult["success_copywriting"]}");
-            Debug.Log($"Result: {optionResult["next_stage"]}");
             ChoiceDetail.gameObject.SetActive(true);
             ChoiceA.gameObject.SetActive(false);
             ChoiceB.gameObject.SetActive(false);
@@ -246,8 +234,21 @@ public class EventManager : MonoBehaviour
             {
                 EventPanel.SetActive(false);
                 ChoiceDetail.gameObject.SetActive(false);
+                if (optionResult["next_stage"] != null)
+                {
+                    NextStage = optionResult["next_stage"].ToString();
+                }
+                
                 if (optionResult["monsters"].Count() != 0 && optionResult["monsters"] is JObject monsters)
                 {
+                    
+                    if (optionResult["rewards"] != null && optionResult["rewards"] is JObject rewards)
+                    {
+                        foreach (var reward in rewards)
+                        {
+                            CurrentRewards[reward.Key] = reward.Value.Value<float>();
+                        }
+                    }
                     
                     int totalAPICalls = monsters.Count;
                     int finishedAPICalls = 0;
@@ -277,7 +278,6 @@ public class EventManager : MonoBehaviour
                             });
                         
                     }
-                    // SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
 
                 }
 
@@ -285,7 +285,6 @@ public class EventManager : MonoBehaviour
                 {
                     RewardPanel.SetActive(true);
                     
-
                     foreach (Transform child in HorizontalLayoutGroup.transform)
                     {
                         Destroy(child.gameObject);

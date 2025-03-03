@@ -172,7 +172,7 @@ public class CharacterCreation : MonoBehaviour
         //         var characterResponse = JsonConvert.DeserializeObject<CharacterAttributesResponse>(response);
         //         var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse.data);
         //         NewCharacterManager.instance.AddCharacter(character);
-        //         NewCharacterManager.instance.Role.text = selectedProfession;
+        //         CharacterDetail.instance.Role.text = selectedProfession;
         //         // var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
         //         //
         //         // var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
@@ -234,7 +234,7 @@ public class CharacterCreation : MonoBehaviour
         var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
         NewCharacterManager.instance.AddCharacter(character);
         
-        NewCharacterManager.instance.Role.text = selectedProfession;
+        CharacterDetail.instance.Role.text = selectedProfession;
         
     
 

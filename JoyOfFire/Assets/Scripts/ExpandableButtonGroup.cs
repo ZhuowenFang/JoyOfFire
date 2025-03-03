@@ -24,30 +24,29 @@ public class ExpandableButtonGroup : MonoBehaviour
         {
             var rectTransform = button.GetComponent<RectTransform>();
             var textComponent = button.GetComponentInChildren<Text>();
+            var skillDescription = button.transform.Find("SkillDescription").GetComponent<Text>();
 
             if (button == clickedButton)
             {
-                // 展开点击的按钮
-                StartCoroutine(AnimateButtonSize(rectTransform, expandedWidth, true, textComponent));
+                StartCoroutine(AnimateButtonSize(rectTransform, expandedWidth, true, textComponent,skillDescription));
                 expandedButton = rectTransform;
             }
             else
             {
-                // 收缩其他按钮
-                StartCoroutine(AnimateButtonSize(rectTransform, collapsedWidth, false, textComponent));
+                StartCoroutine(AnimateButtonSize(rectTransform, collapsedWidth, false, textComponent,skillDescription));
             }
         }
     }
 
-    System.Collections.IEnumerator AnimateButtonSize(RectTransform target, float targetWidth, bool showText, Text textComponent)
+    System.Collections.IEnumerator AnimateButtonSize(RectTransform target, float targetWidth, bool showText, Text textComponent, Text skillDescription)
     {
         float elapsedTime = 0f;
         float startWidth = target.sizeDelta.x;
 
-        // 隐藏文字（如果是收缩）
         if (!showText && textComponent != null)
         {
             textComponent.enabled = false;
+            skillDescription.enabled = false;
         }
 
         while (elapsedTime < animationDuration)
@@ -60,10 +59,10 @@ public class ExpandableButtonGroup : MonoBehaviour
 
         target.sizeDelta = new Vector2(targetWidth, target.sizeDelta.y);
 
-        // 显示文字（如果是展开）
         if (showText && textComponent != null)
         {
             textComponent.enabled = true;
+            skillDescription.enabled = true;
         }
     }
 }

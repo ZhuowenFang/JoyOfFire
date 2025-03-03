@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class CharacterManager : MonoBehaviour
+public class BattleCharacterManager : MonoBehaviour
 {
     public List<CharacterAttributes> PlayerCharacters = new List<CharacterAttributes>();
     public List<MonsterAttributes> EnemyCharacters = new List<MonsterAttributes>();
@@ -22,7 +22,7 @@ public class CharacterManager : MonoBehaviour
     public GameObject characterConfiguratorPanel;
     public List<Button> characterButtons;
     public List<Button> EnemyButtons;
-    public static CharacterManager instance;
+    public static BattleCharacterManager instance;
     public NewCharacterManager newCharacterManager;
     
     private void Awake()
