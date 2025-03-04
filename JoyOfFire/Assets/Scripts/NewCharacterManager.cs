@@ -14,7 +14,7 @@ public class NewCharacterManager : MonoBehaviour
     public GameObject waitPanel;
     
     public static NewCharacterManager instance;
-    
+    public bool creatingCharacter = false;
 
     private void Awake()
     {
@@ -45,7 +45,7 @@ public class NewCharacterManager : MonoBehaviour
         {
             characterCreationPanel.SetActive(true);
             characterDetailPanel.SetActive(false);
-            waitPanel.SetActive(false);
+            // waitPanel.SetActive(false);
 
         }
     }
@@ -63,7 +63,7 @@ public class NewCharacterManager : MonoBehaviour
         {
             characterCreationPanel.SetActive(true);
             characterDetailPanel.SetActive(false);
-            waitPanel.SetActive(false);
+            // waitPanel.SetActive(false);
 
         }
     }
@@ -112,7 +112,10 @@ public class NewCharacterManager : MonoBehaviour
             character_picture = characterData.character_picture,
             current_ability = characterData.current_ability,
             potential_ability = characterData.potential_ability,
-            experience = characterData.experience
+            experience = characterData.experience,
+            attributePoints = 0,
+            sanValue = 0f,
+            additionalHealth = 0f,
         };
 
         return characterAttributes;
@@ -244,8 +247,8 @@ public class NewCharacterManager : MonoBehaviour
             timePoint = 0f,
             energy = 0,
             maxEnergy = 10,
-            damageX1 = 1f,
-            damageX2 = 1f,
+            damageX1 = -20f,
+            damageX2 = 300f,
             currentHealth = monsterData.hp,
             base_gold_value = monsterData.base_gold_value,
             

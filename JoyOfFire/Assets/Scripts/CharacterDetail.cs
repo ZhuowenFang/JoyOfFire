@@ -200,7 +200,7 @@ public class CharacterDetail : MonoBehaviour
         character.criticalRate = criticalRateFromAgi;
         character.speed        = speedFromAgi + 100;
 
-        character.health = healthFromInt + healthFromAgi + healthFromStr;
+        character.health = healthFromInt + healthFromAgi + healthFromStr + character.additionalHealth;
 
         healthText.text = character.health.ToString("0");
         physicalAttackText.text = character.physicalAttack.ToString("0");

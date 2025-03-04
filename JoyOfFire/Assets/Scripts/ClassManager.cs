@@ -166,6 +166,8 @@ public class ClassManager : MonoBehaviour
         public string skill4_icon;
         public int? skill4_cost;
     }
+    
+
 
 
 }

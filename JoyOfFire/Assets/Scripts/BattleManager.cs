@@ -77,7 +77,8 @@ public class BattleManager : MonoBehaviour
             isUsingSkill = false;
             StartEnemySelection();
         });
-        
+        UpdateButtonHealthFill();
+        UpdateButtonSheildFill();
         endTurnButton.onClick.AddListener(EndTurn);
         StartNextTurn();
     }
@@ -364,6 +365,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log($"敌人现在的生命值：{defender.currentHealth}");
         ShowDamageText(defender.index, damageToHealth, isCritical, targetIsPlayer);
         UpdateButtonHealthFill();
+        UpdateButtonSheildFill();
 
         if (defender.activeBuffs.Exists(b => b.buffType == BuffType.Reflect))
         {
@@ -375,6 +377,7 @@ public class BattleManager : MonoBehaviour
             Debug.Log($"{IfReflectCharacter.characterName} 受到了 {damageToAttackerHealth} 点反弹伤害！");
             ShowDamageText(IfReflectCharacter.index, damageToAttackerHealth, false, true);
             UpdateButtonHealthFill();
+            UpdateButtonSheildFill();
         }
 
         if (defender.currentHealth <= 0)
@@ -766,6 +769,7 @@ public class BattleManager : MonoBehaviour
             AddBuff(attacker, defender, "格挡", BuffType.Block, 1, 1, false,1);
         }
         UpdateButtonHealthFill();
+        UpdateButtonSheildFill();
     }
 
 
@@ -909,6 +913,28 @@ public class BattleManager : MonoBehaviour
             {
                 fillImage.fillAmount = enemy.currentHealth / enemy.health;
             }
+        }
+    }
+    public void UpdateButtonSheildFill()
+    {
+        for (int i = 0; i < BattleCharacterManager.instance.PlayerCharacters.Count; i++)
+        {
+            CharacterAttributes player = BattleCharacterManager.instance.PlayerCharacters[i];
+            Button btn = BattleCharacterManager.instance.characterButtons[i];
+            Image fillImage = btn.transform.Find("ShieldFIll").GetComponent<Image>();
+
+                fillImage.fillAmount = player.shieldAmount / player.health;
+            
+        }
+
+        for (int i = 0; i < BattleCharacterManager.instance.EnemyCharacters.Count; i++)
+        {
+            MonsterAttributes enemy = BattleCharacterManager.instance.EnemyCharacters[i];
+            Button btn = BattleCharacterManager.instance.EnemyButtons[i];
+            Image fillImage = btn.transform.Find("ShieldFIll").GetComponent<Image>();
+ 
+                fillImage.fillAmount = enemy.shieldAmount / enemy.health;
+            
         }
     }
 

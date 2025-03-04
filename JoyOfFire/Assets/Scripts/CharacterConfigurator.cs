@@ -225,7 +225,8 @@ public class CharacterAttributes : ICharacter
     public string experience;
     
     public int attributePoints = 0;
-    
+    public float additionalHealth = 0f;
+    public float sanValue = 0f;
 
     public CharacterAttributes Clone()
     {
@@ -267,7 +268,9 @@ public class CharacterAttributes : ICharacter
             attributePoints = this.attributePoints,
             initialAgility = this.initialAgility,
             initialIntelligence = this.initialIntelligence,
-            initialStrength = this.initialStrength
+            initialStrength = this.initialStrength,
+            additionalHealth = this.additionalHealth,
+            sanValue = this.sanValue
         };
     }
 }

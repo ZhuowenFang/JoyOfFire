@@ -11,15 +11,24 @@ public class BaseEnemy : MonoBehaviour
     {
         Debug.Log($"【敌人行动】{enemyAttributes.characterName} (Index: {enemyAttributes.index}) 当前能量: {enemyAttributes.energy}");
 
+        List<MonsterSkillAttributes> availableSkills = new List<MonsterSkillAttributes>();
         foreach (var skill in enemyAttributes.skills)
         {
             if (enemyAttributes.energy >= skill.skillCost && BattleManager.instance.canUseSkill)
             {
-                UseSkill(enemyAttributes, GetRandomPlayer(), skill);
-                enemyAttributes.energy -= skill.skillCost;
-                EndTurn();
-                return;
+                availableSkills.Add(skill);
             }
+        }
+
+        if (availableSkills.Count > 0)
+        {
+            int randomIndex = Random.Range(0, availableSkills.Count);
+            MonsterSkillAttributes selectedSkill = availableSkills[randomIndex];
+
+            UseSkill(enemyAttributes, GetRandomPlayer(), selectedSkill);
+            enemyAttributes.energy -= selectedSkill.skillCost;
+            EndTurn();
+            return;
         }
 
         Attack();
@@ -30,6 +39,7 @@ public class BaseEnemy : MonoBehaviour
 
         EndTurn();
     }
+
     
     public virtual void ProcessBuffs(ICharacter character)
     {
