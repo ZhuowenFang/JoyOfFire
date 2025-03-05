@@ -65,7 +65,16 @@ public class BattleCharacterManager : MonoBehaviour
                 characterButtons.Add(playerObj.GetComponent<Button>());
                 PlayerCharacters.Add(character);
                 character.index = PlayerCharacters.Count - 1;
-                StartCoroutine(APIManager.instance.LoadImage(character.character_picture, playerObj.GetComponent<Image>()));
+                // StartCoroutine(APIManager.instance.LoadImage(character.character_picture, playerObj.GetComponent<Image>()));
+                StartCoroutine(ImageCache.GetTexture(character.character_picture, (Texture2D texture) =>
+                {
+                    if (texture != null)
+                    {
+                        playerObj.GetComponent<Image>().sprite = Sprite.Create(texture, 
+                            new Rect(0, 0, texture.width, texture.height), 
+                            new Vector2(0.5f, 0.5f));
+                    }
+                }));
                 Debug.Log(character.index);
             }
             else if (allCharacters[i] is MonsterAttributes enemy)

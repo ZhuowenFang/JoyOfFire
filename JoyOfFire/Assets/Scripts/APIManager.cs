@@ -88,6 +88,12 @@ public class APIManager : MonoBehaviour
         string url = "https://joy-fire-dev.czczcz.xyz/api/v1/character/create";
         PostRequest(url, jsonData, onSuccess, onError);
     }
+    
+    public void UpdateCharacter(string jsonData, Action<string> onSuccess, Action<string> onError)
+    {
+        string url = "https://joy-fire-dev.czczcz.xyz/api/v1/character/update";
+        PostRequest(url, jsonData, onSuccess, onError);
+    }
 
     public IEnumerator LoadImage(string url, Image image)
     {

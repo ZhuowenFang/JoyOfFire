@@ -161,8 +161,18 @@ public class BattleManager : MonoBehaviour
             Text skillText = skillButtonGO.GetComponentInChildren<Text>();
             Image skillImage = skillButtonGO.transform.Find("SkillIcon").GetComponent<Image>();
             
-            StartCoroutine(APIManager.instance.LoadImage(skill.skillIcon, skillImage));
-
+            if (!String.IsNullOrEmpty(skill.skillIcon))
+            {
+                StartCoroutine(ImageCache.GetTexture(skill.skillIcon, (Texture2D texture) =>
+                {
+                    if (texture != null)
+                    {
+                        skillImage.sprite = Sprite.Create(texture, 
+                            new Rect(0, 0, texture.width, texture.height), 
+                            new Vector2(0.5f, 0.5f));
+                    }
+                }));                
+            }
             skillText.text = $"{skill.skillName} (消耗: {skill.skillCost})";
             
             skillButton.interactable = character.energy >= skill.skillCost;
@@ -560,6 +570,9 @@ public class BattleManager : MonoBehaviour
                     buffsToRemove.Add(buff);
                     break;
                 case BuffType.Block:
+                    character.physicalDefense /= 1.2f;
+                    character.soulDefense /= 1.2f;
+                    character.tenacityRate -= 0.3f;
                     buffsToRemove.Add(buff);
                     break;
                 case BuffType.Bleed:
@@ -766,6 +779,10 @@ public class BattleManager : MonoBehaviour
         // **格挡**
         if (skill.blockChance > 0 && Random.value < skill.blockChance)
         {
+            attacker.physicalDefense *= 1.2f;
+            attacker.soulDefense *= 1.2f;
+            attacker.tenacityRate += 0.3f;
+            
             AddBuff(attacker, defender, "格挡", BuffType.Block, 1, 1, false,1);
         }
         UpdateButtonHealthFill();

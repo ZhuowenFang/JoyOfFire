@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class SpeedBarUI : MonoBehaviour
 {
@@ -45,6 +47,22 @@ public class SpeedBarUI : MonoBehaviour
 
             GameObject icon = Instantiate(characterIconPrefab, speedArea);
             RectTransform iconTransform = icon.GetComponent<RectTransform>();
+            if (character is CharacterAttributes ca)
+            {
+                StartCoroutine(ImageCache.GetTexture(ca.character_picture, (Texture2D texture) =>
+                {
+                    if (texture != null)
+                    {
+                        icon.GetComponent<Image>().sprite = Sprite.Create(texture, 
+                            new Rect(0, 0, texture.width, texture.height), 
+                            new Vector2(0.5f, 0.5f));
+                    }
+                }));
+            }
+            else if(character is MonsterAttributes enemy)
+            {
+                icon.GetComponent<Image>().sprite = Resources.Load<Sprite>($"EnemyPics/{enemy.monsterId}");
+            }
             TMP_Text numberText = icon.GetComponentInChildren<TMP_Text>();
 
             numberText.text = (i + 1).ToString();

@@ -1,7 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,17 +56,54 @@ public class CharacterDetail : MonoBehaviour
     public static CharacterDetail instance;
     
     public Button AssignAttributeButton;
+    
+    public Button UpdateButton;
+    
+    public int BreakThroughItemCount;
+    public GameObject UpdatePanel;
+    
+    public List<Button> UpdateOptions;
+    
+    public Button confirmUpdateButton;
+    
+    public GameObject UpdateResultPanel;
+    
+    private Button selectedUpdateOption = null;
+    private Color defaultColor = Color.white;
+    private Color selectedColor = Color.green;
+    
+    private int SelectedIndex = 0;
+
+    
     private void Awake()
     {
         instance = this;
     }
     void Start()
     {
-        // UpdateText(0);
 
         slider.onValueChanged.AddListener(UpdateText);
         confirmButton.onClick.AddListener(LevelUp);
-        
+        UpdateButton.onClick.AddListener(() =>
+        {
+            UpdatePanel.SetActive(true);
+        });
+        confirmUpdateButton.onClick.AddListener(BreakThrough);
+        confirmUpdateButton.interactable = false;
+        foreach (Button option in UpdateOptions)
+        {
+            option.onClick.AddListener(() =>
+            {
+                if (selectedUpdateOption != null)
+                {
+                    selectedUpdateOption.image.color = defaultColor;
+                }
+                selectedUpdateOption = option;
+                selectedUpdateOption.image.color = selectedColor;
+                confirmUpdateButton.interactable = true;
+                SelectedIndex = UpdateOptions.IndexOf(option);
+            });
+        }        
         
     }
 
@@ -71,7 +112,57 @@ public class CharacterDetail : MonoBehaviour
         if (currentCharacter!= null)
         {
             AssignAttributeButton.interactable = currentCharacter.attributePoints > 0;
+            UpdateButton.interactable = BreakThroughItemCount > 0 && currentCharacter.level >= 5;
         }
+    }
+
+    public void BreakThrough()
+    {
+        String UpdateType = "";
+        switch (SelectedIndex)
+        {
+            case 0:
+                UpdateType = "A";
+                break;
+            case 1:
+                UpdateType = "B";
+                break;
+            case 2:
+                UpdateType = "C";
+                break;
+            case 3:
+                UpdateType = "D";
+                break;
+        }
+        
+        ClassManager.CharacterUpdateData characterUpdateData = new ClassManager.CharacterUpdateData
+        {
+            user_id = currentCharacter.user_id,
+            character_id = currentCharacter.character_id,
+            Update = UpdateType
+        };
+        
+        APIManager.instance.UpdateCharacter(
+            JsonUtility.ToJson(characterUpdateData),
+            onSuccess: (response) =>
+            {
+                Debug.Log($"Character Updated: {response}");
+                UpdateCharacterSkills(response);
+            },
+            onError: (error) =>
+            {
+                Debug.LogError($"Error deleting character: {error}");
+            }
+        );
+        
+        UpdateResultPanel.SetActive(true);
+        UpdatePanel.SetActive(false);
+        foreach (Button option in UpdateOptions)
+        {
+            option.image.color = defaultColor;
+            confirmUpdateButton.interactable = false;
+        }
+        selectedUpdateOption = null;
     }
     
     void UpdateText(float value)
@@ -119,10 +210,40 @@ public class CharacterDetail : MonoBehaviour
         LevelItemAmountText.text = levelItemCount.ToString();
         slider.maxValue = levelItemCount;
         levelItemIconAmountText.text = LevelItemAmountText.text;
+        BreakThroughItemCount = InventoryManager.instance.GetItemCount("Break_through");
     }
     
+    public void UpdateBreakThroughOptionButtonStatus()
+    {
+        int skillCount = currentCharacter.skills.Count;
+        int buttonCountForSkills = UpdateOptions.Count - 1;
+
+        for (int i = 0; i < buttonCountForSkills; i++)
+        {
+            if (i < skillCount)
+            {
+                UpdateOptions[i].interactable = !string.IsNullOrEmpty(currentCharacter.skills[i].skillName);
+            }
+            else
+            {
+                UpdateOptions[i].interactable = false;
+            }
+        }
+
+        bool anySkillEmpty = currentCharacter.skills.Count < 3;
+        UpdateOptions[UpdateOptions.Count - 1].interactable = anySkillEmpty;
+    }
+
     public void ShowCharacterDetails(CharacterAttributes character)
     {
+        if (character.characterName == "狂风医生")
+        {
+            UpdateButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            UpdateButton.gameObject.SetActive(true);
+        }
         levelItemCount = InventoryManager.instance.GetItemCount("Level_boost");
         LevelItemAmountText.text = levelItemCount.ToString();
         slider.maxValue = levelItemCount;
@@ -151,17 +272,39 @@ public class CharacterDetail : MonoBehaviour
         Gender.text = character.basic_information.gender;
         AttributePointText.text = character.attributePoints.ToString();
  
-    
-        StartCoroutine(APIManager.instance.LoadImage(character.character_picture, characterImage));
+        UpdateBreakThroughOptionButtonStatus();
+        // StartCoroutine(APIManager.instance.LoadImage(character.character_picture, characterImage));
+        StartCoroutine(ImageCache.GetTexture(character.character_picture, (Texture2D texture) =>
+        {
+            if (texture != null)
+            {
+                characterImage.sprite = Sprite.Create(texture, 
+                    new Rect(0, 0, texture.width, texture.height), 
+                    new Vector2(0.5f, 0.5f));
+            }
+        }));
         // Role.text = character.basic_information.profession;
         
         for (int i = 0; i < character.skills.Count; i++)
         {
-            if (!String.IsNullOrEmpty(character.skills[i].skillIcon))
+            int index = i; // 捕获当前循环变量的副本
+            if (!string.IsNullOrEmpty(character.skills[index].skillName))
             {
-                StartCoroutine(APIManager.instance.LoadImage(character.skills[i].skillIcon, skillIcons[i]));
-                skillNameTexts[i].text = character.skills[i].skillName;
-                skillDescriptionTexts[i].text = character.skills[i].skillDescription;
+                skillNameTexts[index].text = character.skills[index].skillName;
+                skillDescriptionTexts[index].text = character.skills[index].skillDescription;
+                if (!string.IsNullOrEmpty(character.skills[index].skillIcon))
+                {
+                    StartCoroutine(ImageCache.GetTexture(character.skills[index].skillIcon, (Texture2D texture) =>
+                    {
+                        if (texture != null)
+                        {
+                            Debug.LogError(index);
+                            skillIcons[index].sprite = Sprite.Create(texture,
+                                new Rect(0, 0, texture.width, texture.height),
+                                new Vector2(0.5f, 0.5f));
+                        }
+                    }));
+                }
             }
         }
     }
@@ -169,6 +312,14 @@ public class CharacterDetail : MonoBehaviour
 
      public void UpdateCharacterDetails(CharacterAttributes character)
     {
+        if (character.characterName == "狂风医生")
+        {
+            UpdateButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            UpdateButton.gameObject.SetActive(true);
+        }
         currentCharacter = character;
         characterNameText.text = character.basic_information.name;
         characterStoryText.text = "背景故事：" + character.basic_information.story;
@@ -221,6 +372,52 @@ public class CharacterDetail : MonoBehaviour
         LevelItemAmountText.text = levelItemCount.ToString();
         slider.maxValue = levelItemCount;
         levelItemIconAmountText.text = LevelItemAmountText.text;
+        for (int i = 0; i < character.skills.Count; i++)
+        {
+            if (!String.IsNullOrEmpty(character.skills[i].skillName))
+            {
+                skillNameTexts[i].text = character.skills[i].skillName;
+                skillDescriptionTexts[i].text = character.skills[i].skillDescription;
+                if (!String.IsNullOrEmpty(character.skills[i].skillIcon))
+                {
+                    // StartCoroutine(APIManager.instance.LoadImage(character.skills[i].skillIcon, skillIcons[i]));
+                    StartCoroutine(ImageCache.GetTexture(character.skills[i].skillIcon, (Texture2D texture) =>
+                    {
+                        if (texture != null)
+                        {
+                            skillIcons[i].sprite = Sprite.Create(texture, 
+                                new Rect(0, 0, texture.width, texture.height), 
+                                new Vector2(0.5f, 0.5f));
+                        }
+                    }));
+                }
+
+            }
+        }
+        UpdateBreakThroughOptionButtonStatus();
+    }
+
+    public void UpdateCharacterSkills(string response)
+    {
+        var characterResponse = JsonConvert.DeserializeObject<CharacterCreation.CharacterAttributesResponse>(response);
+        var updatedCharacterData = characterResponse.data;
+        string updatedCharacterId = updatedCharacterData.character_id;
+    
+        CharacterAttributes existingCharacter = NewCharacterManager.instance.allCharacters
+            .OfType<CharacterAttributes>()
+            .FirstOrDefault(c => c.character_id == updatedCharacterId);
+        if (existingCharacter == null)
+        {
+            Debug.LogWarning($"未找到 character_id 为 {updatedCharacterId} 的角色，技能更新失败。");
+            return;
+        }
+    
+        List<SkillAttributes> updatedSkills = NewCharacterManager.ConvertToSkillAttributes(updatedCharacterData);
+    
+        existingCharacter.skills = updatedSkills;
+    
+        UpdateCharacterDetails(existingCharacter);
+    
     }
 
     

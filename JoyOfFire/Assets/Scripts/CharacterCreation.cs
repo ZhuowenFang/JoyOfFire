@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TMPro;
 
 public class CharacterCreation : MonoBehaviour
 {
@@ -24,8 +26,18 @@ public class CharacterCreation : MonoBehaviour
     private string selectedGender; // 选中的性别
     private HashSet<string> forbiddenWords; // 用于存储违禁词
     public GameObject WaitingPanel;
+    
+    public GameObject IlegalWordPanel;
+    
+    public GameObject characterFeaturePanel;
 
     public Button backButton;
+    
+    public static CharacterCreation instance;
+    private void Awake()
+    {
+        instance = this;
+    }
     
     
     void Start()
@@ -49,8 +61,51 @@ public class CharacterCreation : MonoBehaviour
         nextButton.onClick.AddListener(OnNextButtonClicked);
 
         createButton.onClick.AddListener(OnCreateButtonClicked);
+        // createInitialCharacter();
     }
 
+
+    public void createInitialCharacter()
+    {
+        string mockResponse = @"{
+            ""basic_information"": {
+                ""appearance"": ""身穿白大褂，手持听诊器，周围狂风呼啸"",
+                ""fighting_ability"": ""狂风之力，可辅助可攻击"",
+                ""gender"": ""男"",
+                ""name"": ""狂风医生"",
+                ""story"": ""拥有狂风之力的医生，在克苏鲁世界救死扶伤""
+            },
+            ""character_picture"": ""https://s.coze.cn/t/CnQK0oHlBLj415s2/"",
+            ""current_ability"": [""- 智力：3"", ""- 力量：6"", ""- 敏捷：1""],
+            ""potential_ability"": [""- 智力：25"", ""- 力量：23"", ""- 敏捷：15""],
+            ""talent1"": {
+                ""abilitydescription"": ""以风之力进行诊疗，造成 148.14% 的物理伤害，同时给自己增加 51.04 的护盾。"",
+                ""cost"": ""2"",
+                ""description"": [{
+                    ""talent_description"": ""以风之力治疗与攻击"",
+                    ""talent_name"": ""风暴诊疗""
+                }],
+                ""icon"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
+            },
+            ""talent_count1"": [""1.4814"", ""0.0000"", ""1"", ""1"", ""1"", ""51.0398"", ""0.0000"", ""0.0000""],
+            ""talent2"": null,
+            ""talent_count2"": null,
+            ""talent3"": null,
+            ""talent_count3"": null,
+            ""experience"": null,
+        }";
+        
+        var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
+        
+        var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
+        character.user_id = "1";
+        
+        character.id = "1";
+        character.character_id = "10";
+        NewCharacterManager.instance.AddCharacter(character);
+        
+        CharacterDetail.instance.Role.text = "时光";        
+    }
     private void OnProfessionSelected(Button button)
     {
         // 查找子对象 RoleName 并获取 Text 组件
@@ -132,9 +187,9 @@ public class CharacterCreation : MonoBehaviour
         characterInfoPage.SetActive(true);
     }
 
-    private void OnCreateButtonClicked()
+    private async void OnCreateButtonClicked()
     {
-        backButton.interactable = true;
+        
         string profession = professionInput.text;
         string clothes = clothesInput.text;
         string combat = combatInput.text;
@@ -150,8 +205,14 @@ public class CharacterCreation : MonoBehaviour
         {
             
             Debug.LogError("输入内容包含违禁词，请重新输入！");
+            IlegalWordPanel.SetActive(true);
+            ClearInputs();
             return;
         }
+        characterFeaturePanel.SetActive(false);
+        WaitingPanel.SetActive(true);
+        WaitingPanel.transform.Find("Text (Legacy)").GetComponent<TMP_Text>().text = "创建中...";
+        // backButton.interactable = true;
         ClassManager.CharacterCreationData characterCreationData = new ClassManager.CharacterCreationData
         {
             userId = "1",
@@ -162,26 +223,60 @@ public class CharacterCreation : MonoBehaviour
             other = other
         };
         
+        APIManager.instance.GetLevelData(
+            "1-1",
+            onSuccess: (response) =>
+            {
+                
+            },
+            onError: (error) =>
+            {
+                Debug.LogError($"Error getting level data: {error}");
+            }
+        );
+        
         string jsonData = JsonUtility.ToJson(characterCreationData);
         NewCharacterManager.instance.creatingCharacter = true;
         Debug.Log($"角色数据: {jsonData}");
         APIManager.instance.CreateCharacter(
             jsonData,
-            onSuccess: (response) =>
+            onSuccess: async (response) =>
             {
-                WaitingPanel.SetActive(false);
                 Debug.Log($"Character Created: {response}");
                 var characterResponse = JsonConvert.DeserializeObject<CharacterAttributesResponse>(response);
+                if (characterResponse.code != "00000")
+                {
+                    EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f,"角色创建失败"));
+
+                    Debug.LogError($"Error creating character: {characterResponse.message}");
+                    NewCharacterManager.instance.creatingCharacter = false;
+                    WaitingPanel.transform.Find("Text (Legacy)").GetComponent<TMP_Text>().text = "创建失败,请稍后再试";
+                    await Task.Delay(3000);
+                    NewCharacterManager.instance.InitializeButtons();
+                    WaitingPanel.SetActive(false);
+                    return;
+                }
+                EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f,"角色已创建完成"));
+
+                WaitingPanel.SetActive(false);
+        
                 var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse.data);
                 NewCharacterManager.instance.AddCharacter(character);
                 CharacterDetail.instance.Role.text = selectedProfession;
                 NewCharacterManager.instance.creatingCharacter = false;
-
+                NewCharacterManager.instance.InitializeButtons();
+        
             },
-            onError: (error) =>
-            {
+            onError: async (error) =>
+            {                
+                EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f,"角色创建失败"));
+
                 Debug.LogError($"Error creating character: {error}");
                 NewCharacterManager.instance.creatingCharacter = false;
+                WaitingPanel.transform.Find("Text (Legacy)").GetComponent<TMP_Text>().text = "创建失败,请稍后再试";
+                await Task.Delay(3000);
+                NewCharacterManager.instance.InitializeButtons();
+                WaitingPanel.SetActive(false);
             }
         );
         // string mockResponse = @"{
@@ -202,40 +297,29 @@ public class CharacterCreation : MonoBehaviour
         //             ""talent_description"": ""以风之力治疗与攻击"",
         //             ""talent_name"": ""风暴诊疗""
         //         }],
-        //         ""icon1"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
+        //         ""icon"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
         //     },
         //     ""talent_count1"": [""1.4814"", ""0.0000"", ""1"", ""1"", ""1"", ""51.0398"", ""0.0000"", ""0.0000""],
-        //     ""talent2"": {
-        //         ""abilitydescription"": """",
-        //         ""cost"": """",
-        //         ""description"": [{
-        //             ""talent_description"": """",
-        //             ""talent_name"": """"
-        //         }],
-        //         ""icon2"": """"
-        //     },
-        //     ""talent_count2"": [],
-        //     ""talent3"": {
-        //         ""abilitydescription"": """",
-        //         ""cost"": """",
-        //         ""description"": [{
-        //             ""talent_description"": """",
-        //             ""talent_name"": """"
-        //         }],
-        //         ""icon3"": """"
-        //     },
-        //     ""talent_count3"": [],
-        //     ""experience"": ""0""
+        //     ""talent2"": null,
+        //     ""talent_count2"": null,
+        //     ""talent3"": null,
+        //     ""talent_count3"": null,
+        //     ""experience"": null,
         // }";
         //
         // var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
         //
         // var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
+        // character.user_id = "1";
+        //
+        // character.id = "1";
+        // character.character_id = "10";
         // NewCharacterManager.instance.AddCharacter(character);
         //
         // CharacterDetail.instance.Role.text = selectedProfession;
+        //
         
-    
+        
 
         
         ClearInputs();

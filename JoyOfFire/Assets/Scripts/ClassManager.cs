@@ -68,6 +68,7 @@ public class ClassManager : MonoBehaviour
     {
         public string id;
         public string user_id;
+        public string character_id;
         public BasicInformation basic_information;
         public string character_picture;
         public List<string> current_ability;
@@ -97,9 +98,8 @@ public class ClassManager : MonoBehaviour
         public string abilitydescription;
         public string cost;
         public List<TalentDescription> description;
-        public string icon1;
-        public string icon2;
-        public string icon3;
+        public string icon;
+
     }
 
     [System.Serializable]
@@ -117,6 +117,13 @@ public class ClassManager : MonoBehaviour
         public string clothes; // 衣服
         public string combat; // 战斗
         public string other; // 其他
+    }
+    [System.Serializable]
+    public class CharacterUpdateData
+    {
+        public string user_id;
+        public string character_id;
+        public string Update;
     }
     [System.Serializable]
     public class MonsterData

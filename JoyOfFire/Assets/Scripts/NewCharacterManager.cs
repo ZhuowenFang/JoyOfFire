@@ -12,6 +12,7 @@ public class NewCharacterManager : MonoBehaviour
     public GameObject characterDetailPanel;
     public GameObject characterCreationPanel;
     public GameObject waitPanel;
+    public GameObject characterFeaturePanel;
     
     public static NewCharacterManager instance;
     public bool creatingCharacter = false;
@@ -23,10 +24,53 @@ public class NewCharacterManager : MonoBehaviour
 
     private void Start()
     {
+        createInitialCharacter();
         InitializeButtons();
+        
     }
 
-    private void InitializeButtons()
+    public void createInitialCharacter()
+    {
+        string mockResponse = @"{
+            ""basic_information"": {
+                ""appearance"": ""身穿白大褂，手持听诊器，周围狂风呼啸"",
+                ""fighting_ability"": ""狂风之力，可辅助可攻击"",
+                ""gender"": ""男"",
+                ""name"": ""狂风医生"",
+                ""story"": ""拥有狂风之力的医生，在克苏鲁世界救死扶伤""
+            },
+            ""character_picture"": ""https://s.coze.cn/t/CnQK0oHlBLj415s2/"",
+            ""current_ability"": [""- 智力：3"", ""- 力量：6"", ""- 敏捷：1""],
+            ""potential_ability"": [""- 智力：25"", ""- 力量：23"", ""- 敏捷：15""],
+            ""talent1"": {
+                ""abilitydescription"": ""以风之力进行诊疗，造成 148.14% 的物理伤害，同时给自己增加 51.04 的护盾。"",
+                ""cost"": ""2"",
+                ""description"": [{
+                    ""talent_description"": ""以风之力治疗与攻击"",
+                    ""talent_name"": ""风暴诊疗""
+                }],
+                ""icon"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
+            },
+            ""talent_count1"": [""1.4814"", ""0.0000"", ""1"", ""1"", ""1"", ""51.0398"", ""0.0000"", ""0.0000""],
+            ""talent2"": null,
+            ""talent_count2"": null,
+            ""talent3"": null,
+            ""talent_count3"": null,
+            ""experience"": null,
+        }";
+        
+        var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
+        
+        var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
+        character.user_id = "1";
+        
+        character.id = "1";
+        character.character_id = "10";
+        NewCharacterManager.instance.AddCharacter(character);
+        
+        CharacterDetail.instance.Role.text = "时光";        
+    }
+    public void InitializeButtons()
     {
         foreach (var button in characterIndexButtons)
         {
@@ -37,6 +81,7 @@ public class NewCharacterManager : MonoBehaviour
         if (allCharacters.Count > 0)
         {
             characterCreationPanel.SetActive(false);
+            characterFeaturePanel.SetActive(false);
             characterDetailPanel.SetActive(true);
             waitPanel.SetActive(false);
             CharacterDetail.instance.ShowCharacterDetails(allCharacters[0] as CharacterAttributes);
@@ -44,6 +89,7 @@ public class NewCharacterManager : MonoBehaviour
         else
         {
             characterCreationPanel.SetActive(true);
+            characterFeaturePanel.SetActive(false);
             characterDetailPanel.SetActive(false);
             // waitPanel.SetActive(false);
 
@@ -56,6 +102,8 @@ public class NewCharacterManager : MonoBehaviour
         {
             characterCreationPanel.SetActive(false);
             characterDetailPanel.SetActive(true);
+            characterFeaturePanel.SetActive(false);
+
             waitPanel.SetActive(false);
             CharacterDetail.instance.ShowCharacterDetails(allCharacters[index] as CharacterAttributes);
         }
@@ -63,6 +111,8 @@ public class NewCharacterManager : MonoBehaviour
         {
             characterCreationPanel.SetActive(true);
             characterDetailPanel.SetActive(false);
+            characterFeaturePanel.SetActive(false);
+
             // waitPanel.SetActive(false);
 
         }
@@ -80,6 +130,9 @@ public class NewCharacterManager : MonoBehaviour
     {
         var characterAttributes = new CharacterAttributes
         {
+            user_id = characterData.user_id,
+            id = characterData.id,
+            character_id = characterData.character_id,
             characterName = characterData.basic_information.name,
             intelligence = ExtractAttributeValue(characterData.current_ability, "智力"),
             initialIntelligence = ExtractAttributeValue(characterData.current_ability, "智力"),
@@ -139,7 +192,7 @@ public class NewCharacterManager : MonoBehaviour
     }
 
 
-    private static List<SkillAttributes> ConvertToSkillAttributes(ClassManager.CharacterData characterData)
+    public static List<SkillAttributes> ConvertToSkillAttributes(ClassManager.CharacterData characterData)
     {
         var skills = new List<SkillAttributes>();
 
@@ -164,9 +217,9 @@ public class NewCharacterManager : MonoBehaviour
         return new SkillAttributes
         {
             skillName = talent.description != null && talent.description.Count > 0 ? talent.description[0].talent_name : "未知技能",
-            skillDescription = talent.description != null && talent.description.Count > 0 ? talent.description[0].talent_description : "无描述",
+            skillDescription = talent.description != null && talent.description.Count > 0 ? talent.abilitydescription : "无描述",
             skillCost = int.TryParse(talent.cost, out var cost) ? cost : 0,
-            skillIcon = talent.icon1,
+            skillIcon = talent.icon,
             skillVector = talentCount?.ConvertAll(float.Parse) ?? new List<float>(),
 
             physicalDamage = talentCount != null && talentCount.Count > 0 ? float.Parse(talentCount[0]) : 0f,

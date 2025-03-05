@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -29,6 +30,7 @@ public class EventManager : MonoBehaviour
     private List<string> levelPool;
     public ClassManager.LevelResponse levelResponse;
     public GameObject CharacterPanel;
+    public GameObject CharacterSelectionLayout;
     public Button ConfirmButton;
     private string APIresponse;
     public Dictionary<string, JObject> optionResults = new Dictionary<string, JObject>();
@@ -46,7 +48,10 @@ public class EventManager : MonoBehaviour
     private HashSet<string> triggeredLevels = new HashSet<string>();
     public GameObject HintLayout;
     public GameObject BlessHint;
-
+    public GameObject ToolButton;
+    public GameObject BlessButton;
+    public GameObject CharacterSelectionPrefab;
+    
     public static Dictionary<string, LevelPrerequisite> levelPrerequisites = new Dictionary<string, LevelPrerequisite>()
     {
         { "1-1", new LevelPrerequisite { mustNotTriggered = new List<string> { "1-4" } } },
@@ -155,6 +160,8 @@ public class EventManager : MonoBehaviour
 
             if (distance <= hex.radius)
             {
+                Time.timeScale = 0;
+                StartCoroutine(FadeOutAndDeactivate(3f, "你触发了事件"));
                 TriggerHexEvent(hex);
                 break;
             }
@@ -206,12 +213,36 @@ public class EventManager : MonoBehaviour
             level,
             onSuccess: (response) =>
             {
-                Time.timeScale = 0;
                 Debug.Log(level);
                 Debug.Log($"成功响应：{response}");
                 levelResponse = JsonUtility.FromJson<ClassManager.LevelResponse>(response);
                 CharacterPanel.SetActive(true);
+                foreach (Transform child in CharacterSelectionLayout.transform)
+                {
+                    Destroy(child.gameObject);
+                }
+                foreach (CharacterAttributes character in NewCharacterManager.instance.allCharacters)
+                {
+                    GameObject newCharacter = Instantiate(CharacterSelectionPrefab, CharacterSelectionLayout.transform);
+                    newCharacter.transform.localScale = new Vector3(2.3f, 2.3f, 2.3f);
+                    // StartCoroutine(APIManager.instance.LoadImage(character.character_picture, newCharacter.GetComponent<Image>()));
+                    StartCoroutine(ImageCache.GetTexture(character.character_picture, (Texture2D texture) =>
+                    {
+                        if (texture != null)
+                        {
+                            newCharacter.GetComponent<Image>().sprite = Sprite.Create(texture, 
+                                new Rect(0, 0, texture.width, texture.height), 
+                                new Vector2(0.5f, 0.5f));
+                        }
+                    }));
+                    newCharacter.transform.Find("Name").GetComponent<Text>().text = character.characterName;
+                    newCharacter.transform.Find("Level").GetComponent<Text>().text = "等级：" + character.level.ToString();
+                    ButtonGroup.instance.buttons.Add(newCharacter.GetComponent<Button>());
+                    ButtonGroup.instance.InitializeButtons();
+                }
                 CharacterButton.SetActive(false);
+                ToolButton.SetActive(false);
+                BlessButton.SetActive(false);
                 CharacterSelectionEventTitle.text = level + " " + levelResponse.data.levelInfo.level_name;
                 triggeredLevels.Add(level);
                 ConfirmButton.onClick.AddListener(() =>
@@ -332,6 +363,27 @@ public class EventManager : MonoBehaviour
                 {
                     NextStage = optionResult["next_stage"].ToString();
                 }
+                string experienceToAdd = "";
+                if (optionKey == "option_a_res")
+                {
+                    experienceToAdd = levelResponse.data.levelInfo.option_a_experience;
+                }
+                else if (optionKey == "option_b_res")
+                {
+                    experienceToAdd = levelResponse.data.levelInfo.option_b_experience;
+                }
+                else if (optionKey == "option_c_res")
+                {
+                    experienceToAdd = levelResponse.data.levelInfo.option_c_experience;
+                }
+                if (!string.IsNullOrEmpty(experienceToAdd))
+                {
+                    foreach (CharacterAttributes character in NewCharacterManager.instance.allCharacters)
+                    {
+                        String experience = experienceToAdd.Replace("{{character}}", character.characterName);
+                        character.experience += experience;
+                    }
+                }
                 
                 if (optionResult["monsters"].Count() != 0 && optionResult["monsters"] is JObject monsters)
                 {
@@ -393,6 +445,7 @@ public class EventManager : MonoBehaviour
                         nameText.text = InventoryManager.instance.activeItems[treasure.Key].item.data.chineseName;
                         Image rewardImage = newReward.transform.Find("Image").GetComponent<Image>();
                         rewardImage.sprite = InventoryManager.instance.activeItems[treasure.Key].item.data.icon;
+                        newReward.transform.Find("amount").GetComponent<Text>().text = treasure.Value.Value<int>().ToString();
                         
                     }
                 }
@@ -478,7 +531,7 @@ public class EventManager : MonoBehaviour
                                     break;
                                     
                             }
-                            StartCoroutine(FadeOutAndDeactivate(BlessHint, 5f,blessText));
+                            StartCoroutine(FadeOutAndDeactivate(5f,blessText));
 
                         }
  
@@ -487,6 +540,8 @@ public class EventManager : MonoBehaviour
                 
                 
                 CharacterButton.SetActive(true);
+                ToolButton.SetActive(true);
+                BlessButton.SetActive(true);
 
                 Time.timeScale = 1;
             });
@@ -498,17 +553,15 @@ public class EventManager : MonoBehaviour
         }
     }
     
-    public IEnumerator FadeOutAndDeactivate(GameObject obj, float duration, string text)
+    public IEnumerator FadeOutAndDeactivate(float duration, string text)
     {
-        // 在布局组内实例化 prefab，并保存返回的实例引用
-        GameObject instance = Instantiate(obj, HintLayout.transform);
 
-        // 获取实例中的 Image 组件，并设置初始 alpha
+        GameObject instance = Instantiate(BlessHint, HintLayout.transform);
+
         Image img = instance.GetComponent<Image>();
         if (img != null)
             img.color = new Color(1f, 1f, 1f, 1f);
 
-        // 获取实例中所有子物体上的 Text 组件，并设置初始 alpha 和文本内容
         Text[] texts = instance.GetComponentsInChildren<Text>();
         foreach (Text t in texts)
         {
@@ -534,7 +587,6 @@ public class EventManager : MonoBehaviour
             yield return null;
         }
 
-        // 淡出完成后销毁实例
         Destroy(instance);
     }
 

@@ -218,6 +218,7 @@ public class CharacterAttributes : ICharacter
 
     public string id;
     public string user_id;
+    public string character_id;
     public ClassManager.BasicInformation basic_information;
     public string character_picture;
     public List<string> current_ability;
@@ -260,6 +261,7 @@ public class CharacterAttributes : ICharacter
             level = this.level,
             id = this.id,
             user_id = this.user_id,
+            character_id = this.character_id,
             basic_information = this.basic_information,
             character_picture = this.character_picture,
             current_ability = this.current_ability,
