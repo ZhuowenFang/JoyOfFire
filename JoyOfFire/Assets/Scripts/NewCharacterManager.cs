@@ -16,6 +16,15 @@ public class NewCharacterManager : MonoBehaviour
     
     public static NewCharacterManager instance;
     public bool creatingCharacter = false;
+    
+    public GameObject RewardPanel;
+    
+    public Button ReplaceButton;
+    public Button ReplaceCancelButton;
+    public GameObject ReplacePanel;
+    public GameObject CharacterRepalcementLayout;
+    public GameObject replaceCharacterPrefab;
+    public Button replaceConfirmButton;
 
     private void Awake()
     {
@@ -26,7 +35,73 @@ public class NewCharacterManager : MonoBehaviour
     {
         createInitialCharacter();
         InitializeButtons();
+        ReplaceButton.onClick.AddListener(replaceAndCreateCharacter);
+                
+    }
+    
+    
+    void Update()
+    {
+        ReplaceButton.interactable = allCharacters.Count == 3;
+    }
+    public void replaceAndCreateCharacter()
+    {
+        ReplaceButton.gameObject.SetActive(false);
+        ReplacePanel.SetActive(true);
+        foreach (Transform child in CharacterRepalcementLayout.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (CharacterAttributes character in allCharacters)
+        {
+            GameObject newCharacter = Instantiate(replaceCharacterPrefab, CharacterRepalcementLayout.transform);
+            newCharacter.transform.localScale = new Vector3(3f, 3f, 3f);
+            // StartCoroutine(APIManager.instance.LoadImage(character.character_picture, newCharacter.GetComponent<Image>()));
+            StartCoroutine(ImageCache.GetTexture(character.character_picture, (Texture2D texture) =>
+            {
+                if (texture != null)
+                {
+                    newCharacter.GetComponent<Image>().sprite = Sprite.Create(texture, 
+                        new Rect(0, 0, texture.width, texture.height), 
+                        new Vector2(0.5f, 0.5f));
+                }
+            }));
+            newCharacter.transform.Find("Name").GetComponent<Text>().text = character.characterName;
+            newCharacter.transform.Find("Level").GetComponent<Text>().text = "等级：" + character.level.ToString();
+            ReplaceButtonGroup.instance.buttons.Add(newCharacter.GetComponent<Button>());
+            ReplaceButtonGroup.instance.InitializeButtons();
+            
+        }
+
+        replaceConfirmButton.onClick.AddListener(() =>
+        {
+            int index = ReplaceButtonGroup.instance.buttons.IndexOf(ReplaceButtonGroup.instance.selectedButton);
+            characterCreationPanel.SetActive(true);
+            characterFeaturePanel.SetActive(false);
+            characterDetailPanel.SetActive(false);
+            ReplacePanel.SetActive(false);
+            CharacterAttributes removedCharacter = allCharacters[index] as CharacterAttributes;
+            DeleteCharacter(removedCharacter);
+        });
         
+        ReplaceCancelButton.onClick.AddListener(() =>
+        {
+            ReplaceButton.gameObject.SetActive(true);
+            ReplacePanel.SetActive(false);
+            
+        });
+
+
+    }
+    
+    public void DeleteCharacter(ICharacter character)
+    {
+        
+        allCharacters.Remove(character);
+        InitializeButtons();
+        characterCreationPanel.SetActive(true);
+        characterFeaturePanel.SetActive(false);
+        characterDetailPanel.SetActive(false);
     }
 
     public void createInitialCharacter()
@@ -61,12 +136,12 @@ public class NewCharacterManager : MonoBehaviour
         
         var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
         
-        var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
+        var character = ConvertToCharacterAttributes(characterResponse);
         character.user_id = "1";
         
         character.id = "1";
         character.character_id = "10";
-        NewCharacterManager.instance.AddCharacter(character);
+        AddCharacter(character);
         
         CharacterDetail.instance.Role.text = "时光";        
     }
@@ -169,6 +244,7 @@ public class NewCharacterManager : MonoBehaviour
             attributePoints = 0,
             sanValue = 0f,
             additionalHealth = 0f,
+            star = 1,
         };
 
         return characterAttributes;

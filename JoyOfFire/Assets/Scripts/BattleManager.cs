@@ -361,12 +361,16 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log($"普通攻击造成了 {damage} 点伤害！");
         }
-
+        if (damage < 0)
+        {
+            damage = 0;
+        }
         ApplyDamage(attacker,defender, damage, isCritical, targetIsPlayer);
     }
 
     public void ApplyDamage(ICharacter IfReflectCharacter, ICharacter defender, float damage, bool isCritical, bool targetIsPlayer = false)
     {
+        
         float remainingShield = Mathf.Max(defender.shieldAmount - damage, 0);
         float damageToHealth = Mathf.Max(damage - defender.shieldAmount, 0);
         defender.shieldAmount = remainingShield;
@@ -746,6 +750,11 @@ public class BattleManager : MonoBehaviour
 
     private void ApplySkillEffects(ICharacter attacker, ICharacter defender, SkillAttributes skill)
     {
+        
+        if (defender.currentHealth <= 0)
+        {
+            return;
+        }
         // **眩晕**
         if (skill.stunChance > 0 && Random.value < skill.stunChance)
         {
@@ -941,6 +950,7 @@ public class BattleManager : MonoBehaviour
             Image fillImage = btn.transform.Find("ShieldFIll").GetComponent<Image>();
 
                 fillImage.fillAmount = player.shieldAmount / player.health;
+                Debug.LogError(player.shieldAmount);
             
         }
 
@@ -972,7 +982,19 @@ public class BattleManager : MonoBehaviour
             if (BattleCharacterManager.instance.EnemyButtons.Contains(btn))
             {
                 BattleCharacterManager.instance.EnemyButtons.Remove(btn);
-                
+                Transform buffGroup = btn.transform.Find("BuffGroup");
+                if (buffGroup == null)
+                {
+                    Debug.LogError("未在角色按钮下找到 BuffGroup");
+                    return;
+                }
+
+                BuffIcon[] icons = buffGroup.GetComponentsInChildren<BuffIcon>();
+                foreach (var icon in icons)
+                {
+                    Destroy(icon.gameObject);
+
+                }
                 enemyButtons.Remove(btn);
                 for (int j = 0; j < enemyButtons.Count; j++)
                 {
@@ -1042,8 +1064,8 @@ public class BattleManager : MonoBehaviour
         {
             if (character is CharacterAttributes player)
             {
-                player.currentHealth = player.health;
-                player.energy = 0;
+                // player.currentHealth = player.health;
+                // player.energy = 0;
                 player.activeBuffs?.Clear();
             }
             else

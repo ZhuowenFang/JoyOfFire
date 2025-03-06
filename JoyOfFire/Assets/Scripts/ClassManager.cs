@@ -31,8 +31,8 @@ public class ClassManager : MonoBehaviour
     public class LevelData
     {
         public string id;
-        public int levelOrder;
-        public int levelNum;
+        public int level_order;
+        public int level_num;
         public LevelInfo levelInfo;
     }
 

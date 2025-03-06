@@ -3378,32 +3378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe54f838aaf4425884169d5c887f188, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameInput: {fileID: 1208299883}
-  costInput: {fileID: 35652620}
-  physicalDamageInput: {fileID: 1798449465}
-  soulDamageInput: {fileID: 1750008120}
-  stunChanceInput: {fileID: 1358299206}
-  silenceChanceInput: {fileID: 598037987}
-  criticalBoostInput: {fileID: 582724473}
-  shieldAmountInput: {fileID: 1317080651}
-  blockChanceInput: {fileID: 1311750624}
-  healAmountInput: {fileID: 37604176}
-  intelligenceInput: {fileID: 1697179031}
-  agilityInput: {fileID: 1122098966}
-  strengthInput: {fileID: 251198652}
-  healthInput: {fileID: 2079236724}
-  physicalAttackInput: {fileID: 455517562}
-  physicalDefenseInput: {fileID: 1525735181}
-  soulAttackInput: {fileID: 2076005524}
-  soulDefenseInput: {fileID: 1040749561}
-  speedInput: {fileID: 845282237}
-  criticalRateInput: {fileID: 694123638}
-  hitRateInput: {fileID: 1350764728}
-  tenacityRateInput: {fileID: 596063528}
-  damageX1Input: {fileID: 1986260047}
-  damageX2Input: {fileID: 258564815}
-  levelInput: {fileID: 922206013}
-  characterConfiguratorPanel: {fileID: 264526986}
 --- !u!114 &264526990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11710,7 +11684,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1121153556}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -18183,7 +18157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 38, y: 390}
+  m_AnchoredPosition: {x: 0, y: 385.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1587398974

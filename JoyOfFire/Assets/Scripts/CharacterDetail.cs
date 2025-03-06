@@ -112,7 +112,21 @@ public class CharacterDetail : MonoBehaviour
         if (currentCharacter!= null)
         {
             AssignAttributeButton.interactable = currentCharacter.attributePoints > 0;
-            UpdateButton.interactable = BreakThroughItemCount > 0 && currentCharacter.level >= 5;
+            switch (currentCharacter.star)
+            {
+                case 1:
+                    UpdateButton.interactable = BreakThroughItemCount > 0 && currentCharacter.level >= 5;
+                    break;
+                case 2:
+                    UpdateButton.interactable = BreakThroughItemCount > 0 && currentCharacter.level >= 10;
+                    break;
+                case 3:
+                    UpdateButton.interactable = BreakThroughItemCount > 0 && currentCharacter.level >= 20;
+                    break;
+                case 4:
+                    UpdateButton.interactable = false;
+                    break;
+            }
         }
     }
 
@@ -146,12 +160,28 @@ public class CharacterDetail : MonoBehaviour
             JsonUtility.ToJson(characterUpdateData),
             onSuccess: (response) =>
             {
+                EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f, "角色突破成功"));
+                currentCharacter.star += 1;
+                switch (currentCharacter.star)
+                {
+                    case 2:
+                        currentCharacter.attributePoints += 6;
+                        break;
+                    case 3:
+                        currentCharacter.attributePoints += 12;
+                        break;
+                    case 4:
+                        currentCharacter.attributePoints += 18;
+                        break;
+                }
+                InventoryManager.instance.RemoveItem("Break_through", 1);
                 Debug.Log($"Character Updated: {response}");
                 UpdateCharacterSkills(response);
+                
             },
             onError: (error) =>
             {
-                Debug.LogError($"Error deleting character: {error}");
+                Debug.LogError($"Error Update character: {error}");
             }
         );
         
@@ -352,6 +382,7 @@ public class CharacterDetail : MonoBehaviour
         character.speed        = speedFromAgi + 100;
 
         character.health = healthFromInt + healthFromAgi + healthFromStr + character.additionalHealth;
+        character.currentHealth = character.health;
 
         healthText.text = character.health.ToString("0");
         physicalAttackText.text = character.physicalAttack.ToString("0");

@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,8 @@ public class EventManager : MonoBehaviour
         public List<string> mustNotTriggered;
         public List<string> mustTriggered;
     }
+    public bool hasTriggered = false;
+
     public GameObject player;
     public List<HexagonEvent> hexagons = new List<HexagonEvent>();
     public GameObject CharacterButton;
@@ -51,6 +54,11 @@ public class EventManager : MonoBehaviour
     public GameObject ToolButton;
     public GameObject BlessButton;
     public GameObject CharacterSelectionPrefab;
+
+    private Coroutine typingCoroutine;
+    private bool skipTyping = false;
+    public float characterDelay = 0.05f;
+
     
     public static Dictionary<string, LevelPrerequisite> levelPrerequisites = new Dictionary<string, LevelPrerequisite>()
     {
@@ -59,7 +67,7 @@ public class EventManager : MonoBehaviour
         { "1-5", new LevelPrerequisite { mustNotTriggered = new List<string> { "1-6" } } },
 
         { "1-6", new LevelPrerequisite { mustTriggered = new List<string> { "1-3" } } },
-        { "1-7", new LevelPrerequisite { mustTriggered = new List<string> { "1-6" } } },
+        // { "1-7", new LevelPrerequisite { mustTriggered = new List<string> { "1-6" } } },
         { "1-8", new LevelPrerequisite { mustTriggered = new List<string> { "1-7" } } },
         { "1-9", new LevelPrerequisite { mustTriggered = new List<string> { "1-8" } } },
         { "1-10", new LevelPrerequisite { mustTriggered = new List<string> { "1-9" } } },
@@ -136,13 +144,28 @@ public class EventManager : MonoBehaviour
         }
     }
 
-    void Start()
+    async void Start()
     {
         foreach (var hex in FindObjectsOfType<HexagonEvent>())
         {
             hexagons.Add(hex);
         }
         InitializeLevelPool();
+        // await Task.Delay(1000);
+        createInitialItem();
+    }
+    
+    public void ReloadEvents()
+    {
+        foreach (var hex in hexagons.ToList())
+        {
+            hexagons.Remove(hex);
+            // Destroy(hex.gameObject);
+        }
+        foreach (var hex in FindObjectsOfType<HexagonEvent>())
+        {
+            hexagons.Add(hex);
+        }
     }
 
     void Update()
@@ -154,24 +177,32 @@ public class EventManager : MonoBehaviour
     {
         Vector3 playerPosition = player.transform.position;
 
-        foreach (var hex in hexagons)
+        foreach (var hex in hexagons.ToList())
         {
             float distance = Vector3.Distance(playerPosition, hex.center);
 
             if (distance <= hex.radius)
             {
-                Time.timeScale = 0;
-                StartCoroutine(FadeOutAndDeactivate(3f, "你触发了事件"));
-                TriggerHexEvent(hex);
-                break;
+                if (!hex.playerInside)
+                {
+                    hex.playerInside = true;
+                    Time.timeScale = 0;
+                    TriggerHexEvent(hex);
+                }
+            }
+            else
+            {
+                hex.playerInside = false;
             }
         }
     }
+
 
     void TriggerHexEvent(HexagonEvent hex)
     {
         if (string.IsNullOrEmpty(hex.eventNumber))
         {
+            // Debug.LogError(hex.eventNumber);
             int randomIndex = UnityEngine.Random.Range(0, levelPool.Count);
             if(NextStage != "")
             {
@@ -204,10 +235,13 @@ public class EventManager : MonoBehaviour
                 if (!CheckPrerequisites(GetPrerequisite(level)))
                 {
                     Debug.Log($"固定关卡 {level} 前置条件不满足，事件不触发。");
+                    
+                    Time.timeScale = 1;
                     return;
                 }
             }
         }
+        StartCoroutine(FadeOutAndDeactivate(3f, "你触发了事件"));
 
         APIManager.instance.GetLevelData(
             level,
@@ -262,12 +296,48 @@ public class EventManager : MonoBehaviour
         Destroy(hex.gameObject);
     }
 
+
+
+    private IEnumerator TypeText(string fullText)
+    {
+        EventDescription.text = "";
+        int i = 0;
+        while (i < fullText.Length)
+        {
+            if (skipTyping)
+            {
+                // 用户点击后直接显示全部文本
+                EventDescription.text = fullText;
+                yield break;
+            }
+            EventDescription.text += fullText[i];
+            i++;
+            yield return new WaitForSecondsRealtime(characterDelay);
+        }
+        // 最后确保显示完整文本
+        EventDescription.text = fullText;
+    }
+
+    public void OnDescriptionClicked()
+    {
+        Debug.Log("Clicked");
+        skipTyping = true;
+    }
+
     public void ParseLevelData()
     {
 
         EventPanel.SetActive(true);
         EventTitle.text = level + " " + levelResponse.data.levelInfo.level_name;
-        EventDescription.text = levelResponse.data.levelInfo.level_desc;
+        // EventDescription.text = levelResponse.data.levelInfo.level_desc;
+        
+
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+        }
+        skipTyping = false;
+        typingCoroutine = StartCoroutine(TypeText(levelResponse.data.levelInfo.level_desc));
 
         ParseOptionResult("option_a_res", levelResponse.data.levelInfo.option_a_res);
         ParseOptionResult("option_b_res", levelResponse.data.levelInfo.option_b_res);
@@ -307,7 +377,7 @@ public class EventManager : MonoBehaviour
 
     private void SetupChoice(Button choiceButton, string optionKey, string optionText)
     {
-        if (string.IsNullOrEmpty(optionText) || optionText == "nan" || !optionResults.ContainsKey(optionKey))
+        if (string.IsNullOrEmpty(optionText) || optionText == "nan" || !optionResults.ContainsKey(optionKey) || optionText == "\n")
         {
             choiceButton.gameObject.SetActive(false);
             return;
@@ -356,7 +426,6 @@ public class EventManager : MonoBehaviour
 
             ChoiceDetail.onClick.AddListener( () =>
             {
-                EventPanel.SetActive(false);
                 ChoiceDetail.gameObject.SetActive(false);
                 
                 if (optionResult["next_stage"] != null)
@@ -367,6 +436,17 @@ public class EventManager : MonoBehaviour
                 if (optionKey == "option_a_res")
                 {
                     experienceToAdd = levelResponse.data.levelInfo.option_a_experience;
+                    Debug.LogError(levelResponse.data.level_order);
+                    Debug.LogError(levelResponse.data.level_num);
+
+                    if (levelResponse.data.level_order == 1 && levelResponse.data.level_num == 7)
+                    {
+                        MapTransitionManager.instance.TransitionMap(1);
+                    } else if (levelResponse.data.level_order == 1 && levelResponse.data.level_num == 9)
+                    {
+                        MapTransitionManager.instance.TransitionMap(2);
+                    }
+                    
                 }
                 else if (optionKey == "option_b_res")
                 {
@@ -416,6 +496,7 @@ public class EventManager : MonoBehaviour
                                 if (finishedAPICalls >= totalAPICalls)
                                 {
                                     SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
+                                    EventPanel.SetActive(false);
                                 }
                             },
                             (error) =>
@@ -426,6 +507,11 @@ public class EventManager : MonoBehaviour
                     }
 
                 }
+                else
+                {
+                    EventPanel.SetActive(false);
+                }
+                
 
                 if (optionResult["treasure"].Count() != 0 && optionResult["treasure"] is JObject treasures)
                 {
@@ -552,7 +638,33 @@ public class EventManager : MonoBehaviour
             Debug.LogWarning($"No valid data for {optionKey}");
         }
     }
+
+    public void createInitialItem()
+    {
+        RewardPanel.SetActive(true);
+                    
+        foreach (Transform child in HorizontalLayoutGroup.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        
     
+        GameObject Level_boost = Instantiate(RewardPrefab, HorizontalLayoutGroup.transform);
+        GameObject Break_through = Instantiate(RewardPrefab, HorizontalLayoutGroup.transform);
+        Text Level_boostText = Level_boost.transform.Find("name").GetComponent<Text>();
+        InventoryManager.instance.ObtainItem("Level_boost",30);
+        Level_boostText.text = InventoryManager.instance.activeItems["Level_boost"].item.data.chineseName;
+        Image Level_boostImage = Level_boost.transform.Find("Image").GetComponent<Image>();
+        Level_boostImage.sprite = InventoryManager.instance.activeItems["Level_boost"].item.data.icon;
+        Level_boost.transform.Find("amount").GetComponent<Text>().text = 30.ToString();
+        Text nameText = Break_through.transform.Find("name").GetComponent<Text>();
+        InventoryManager.instance.ObtainItem("Break_through",6);
+        nameText.text = InventoryManager.instance.activeItems["Break_through"].item.data.chineseName;
+        Image rewardImage = Break_through.transform.Find("Image").GetComponent<Image>();
+        rewardImage.sprite = InventoryManager.instance.activeItems["Break_through"].item.data.icon;
+        Break_through.transform.Find("amount").GetComponent<Text>().text = 6.ToString();    
+
+    }
     public IEnumerator FadeOutAndDeactivate(float duration, string text)
     {
 
