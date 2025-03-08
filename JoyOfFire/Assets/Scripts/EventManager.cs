@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cinemachine;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
@@ -30,7 +31,8 @@ public class EventManager : MonoBehaviour
     public Button ChoiceC;
     public Button ChoiceDetail;
     private string level;
-    private List<string> levelPool;
+    public List<List<string>> LevelPoolList = new List<List<string>>();
+    // private List<string> levelPool;
     public ClassManager.LevelResponse levelResponse;
     public GameObject CharacterPanel;
     public GameObject CharacterSelectionLayout;
@@ -126,7 +128,7 @@ public class EventManager : MonoBehaviour
     }
     void InitializeLevelPool()
     {
-        levelPool = new List<string>();
+        List<string> levelPool = new List<string>();
 
         for (int i = 1; i <= 4; i++)
         {
@@ -142,6 +144,46 @@ public class EventManager : MonoBehaviour
         {
             levelPool.Add($"1-{i}");
         }
+        LevelPoolList.Add(levelPool);
+        List<string> levelPool1 = new List<string>();
+        for (int i = 1; i <= 5; i++)
+        {
+            levelPool1.Add($"2-{i}");
+        }
+        levelPool1.Add($"2-12");
+
+        LevelPoolList.Add(levelPool1);
+        List<string> levelPool2 = new List<string>();
+
+        for (int i = 1; i <= 5; i++)
+        {
+            levelPool2.Add($"3-{i}");
+        }
+        levelPool2.Add($"3-7");
+        LevelPoolList.Add(levelPool2);
+        List<string> levelPool3 = new List<string>();
+        for (int i = 10; i <= 11; i++)
+        {
+            levelPool3.Add($"3-{i}");
+        }
+        LevelPoolList.Add(levelPool3);
+        List<string> levelPool4 = new List<string>();
+
+        for (int i = 13; i <= 14; i++)
+        {
+            levelPool4.Add($"3-{i}");
+        }
+        LevelPoolList.Add(levelPool4);
+        List<string> levelPool5 = new List<string>();
+        for (int i = 16; i <= 19; i++)
+        {
+            levelPool5.Add($"3-{i}");
+        }
+        LevelPoolList.Add(levelPool5);
+        
+        Debug.LogError(LevelPoolList.Count);
+        
+        
     }
 
     async void Start()
@@ -200,10 +242,26 @@ public class EventManager : MonoBehaviour
 
     void TriggerHexEvent(HexagonEvent hex)
     {
+        if (hex.isTransition)
+        {
+            Debug.LogError(hex.transitionMapIndex);
+            Debug.LogError(hex.respawnPointIndex);
+            MapTransitionManager.instance.TransitionMapWithFade(hex.transitionMapIndex, hex.respawnPointIndex);
+            Time.timeScale = 1;
+            return;
+        }
+        // else
+        // {
+        //     Time.timeScale = 1;
+        //     return;
+        // }
         if (string.IsNullOrEmpty(hex.eventNumber))
         {
             // Debug.LogError(hex.eventNumber);
-            int randomIndex = UnityEngine.Random.Range(0, levelPool.Count);
+            int randomIndex = UnityEngine.Random.Range(0, LevelPoolList[hex.randomPoolIndex].Count);
+            Debug.LogError(randomIndex);
+            Debug.Log(LevelPoolList[hex.randomPoolIndex].Count);
+            
             if(NextStage != "")
             {
                 level = NextStage;
@@ -213,7 +271,8 @@ public class EventManager : MonoBehaviour
             }
             else
             {
-                level = levelPool[randomIndex];
+                level = LevelPoolList[hex.randomPoolIndex][randomIndex];
+                LevelPoolList[hex.randomPoolIndex].RemoveAt(randomIndex);
                 levelOrder = level.Split('-')[0];
             }
             if (GetPrerequisite(level) != null)
@@ -282,6 +341,7 @@ public class EventManager : MonoBehaviour
                 ConfirmButton.onClick.AddListener(() =>
                 {
                     ParseLevelData();
+                    ButtonGroup.instance.buttons.Clear();
                     
                     CharacterPanel.SetActive(false);
                 });
@@ -432,6 +492,19 @@ public class EventManager : MonoBehaviour
                 {
                     NextStage = optionResult["next_stage"].ToString();
                 }
+                if(NextStage.Split('-')[0] != levelOrder)
+                {
+                    switch (NextStage.Split('-')[0])
+                    {
+                        case "2":
+                            MapTransitionManager.instance.TransitionMapWithFade(3,3);
+                            break;
+                        case "3":
+                            MapTransitionManager.instance.TransitionMapWithFade(4,4);
+                            break;
+        
+                    }
+                }
                 string experienceToAdd = "";
                 if (optionKey == "option_a_res")
                 {
@@ -441,10 +514,10 @@ public class EventManager : MonoBehaviour
 
                     if (levelResponse.data.level_order == 1 && levelResponse.data.level_num == 7)
                     {
-                        MapTransitionManager.instance.TransitionMap(1);
+                        MapTransitionManager.instance.TransitionMapWithFade(1,1);
                     } else if (levelResponse.data.level_order == 1 && levelResponse.data.level_num == 9)
                     {
-                        MapTransitionManager.instance.TransitionMap(2);
+                        MapTransitionManager.instance.TransitionMapWithFade(2,2);
                     }
                     
                 }

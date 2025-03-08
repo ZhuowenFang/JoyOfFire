@@ -25,6 +25,9 @@ public class ButtonGroup : MonoBehaviour
     
     public void InitializeButtons()
     {
+        selectedButton = null;
+        ConfirmButton.gameObject.SetActive(false);
+        
         foreach (Button button in buttons)
         {
             if (!transparence)
