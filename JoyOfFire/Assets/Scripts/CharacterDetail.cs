@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using TMPro;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -45,6 +46,8 @@ public class CharacterDetail : MonoBehaviour
     public Slider slider;
     public TMP_Text valueText;
     public Button confirmButton;
+    public GameObject starLayout;
+    public GameObject starPrefab;
     
     public GameObject UPResultPanel;
 
@@ -230,6 +233,8 @@ public class CharacterDetail : MonoBehaviour
         InventoryManager.instance.RemoveItem("Level_boost", (int)slider.value);
         UpdateCharacterDetails(currentCharacter);
         slider.value = 0;
+        UpdateLevelBoostItemCount();
+
 
         
     }
@@ -237,9 +242,10 @@ public class CharacterDetail : MonoBehaviour
     public void UpdateLevelBoostItemCount()
     {
         levelItemCount = InventoryManager.instance.GetItemCount("Level_boost");
-        LevelItemAmountText.text = levelItemCount.ToString();
-        slider.maxValue = levelItemCount;
-        levelItemIconAmountText.text = LevelItemAmountText.text;
+        Debug.LogError(currentCharacter.level);
+        LevelItemAmountText.text = math.min(levelItemCount, 25 - currentCharacter.level).ToString();
+        slider.maxValue = math.min(levelItemCount, 25 - currentCharacter.level);
+        levelItemIconAmountText.text = levelItemCount.ToString();
         BreakThroughItemCount = InventoryManager.instance.GetItemCount("Break_through");
     }
     
@@ -273,6 +279,15 @@ public class CharacterDetail : MonoBehaviour
         else
         {
             UpdateButton.gameObject.SetActive(true);
+        }
+
+        foreach (Transform star in starLayout.transform)
+        {
+            Destroy(star.gameObject);
+        }
+        for (int i = 0; i < character.star; i++)
+        {
+            Instantiate(starPrefab, starLayout.transform);
         }
         levelItemCount = InventoryManager.instance.GetItemCount("Level_boost");
         LevelItemAmountText.text = levelItemCount.ToString();
@@ -349,6 +364,14 @@ public class CharacterDetail : MonoBehaviour
         else
         {
             UpdateButton.gameObject.SetActive(true);
+        }
+        foreach (Transform star in starLayout.transform)
+        {
+            Destroy(star.gameObject);
+        }
+        for (int i = 0; i < character.star; i++)
+        {
+            Instantiate(starPrefab, starLayout.transform);
         }
         currentCharacter = character;
         characterNameText.text = character.basic_information.name;
