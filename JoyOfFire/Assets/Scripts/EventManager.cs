@@ -534,7 +534,31 @@ public class EventManager : MonoBehaviour
                     foreach (CharacterAttributes character in NewCharacterManager.instance.allCharacters)
                     {
                         String experience = experienceToAdd.Replace("{{character}}", character.characterName);
-                        character.experience += experience;
+                        if (character.experience == null)
+                        {
+                            character.experience = new List<string>();
+                        }
+                        character.experience.Add(experience);
+                        ClassManager.CharacterUpdateAttributes data = new ClassManager.CharacterUpdateAttributes
+                        {
+                            user_id = character.user_id,
+                            character_id = character.character_id,
+                            experience = character.experience
+                        };
+                        string jsonData = JsonUtility.ToJson(data);
+                        APIManager.instance.StoreCharacter(
+                            jsonData,
+                            onSuccess: (response) =>
+                            {
+                                Debug.Log($"成功响应：{response}");
+                                // character.UpdateAttributes();
+                            },
+                            onError: (error) =>
+                            {
+                                Debug.LogError($"请求失败：{error}");
+                            }
+                        );
+
                     }
                 }
                 

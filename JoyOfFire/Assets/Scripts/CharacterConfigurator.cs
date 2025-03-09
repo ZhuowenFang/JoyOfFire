@@ -35,12 +35,12 @@ public class CharacterAttributes : ICharacter
     public string character_picture;
     public List<string> current_ability;
     public List<string> potential_ability;
-    public string experience;
+    public List<string> experience;
     
     public int attributePoints = 0;
     public float additionalHealth = 0f;
     public float sanValue = 0f;
-    
+    public string role;
     public int star = 0;
 
     public CharacterAttributes Clone()
@@ -87,7 +87,8 @@ public class CharacterAttributes : ICharacter
             initialStrength = this.initialStrength,
             additionalHealth = this.additionalHealth,
             sanValue = this.sanValue,
-            star = this.star
+            star = this.star,
+            role = this.role,
         };
     }
 }
@@ -294,6 +295,7 @@ public class BuffEffect
     public float stack;   // 数值（伤害、加成等）
     public bool isDebuff;
     public int maxStack;
+    public string description; // Buff 描述
 
     public BuffEffect(ICharacter Attacker, string name, BuffType type, int turns, float stackVal, bool debuff, int maxStackVal)
     {
@@ -304,6 +306,73 @@ public class BuffEffect
         stack = stackVal;
         isDebuff = debuff;
         maxStack = maxStackVal;
+        switch (type)
+        {
+            case BuffType.Bind:
+                description = "速度减半";
+                break;
+            case BuffType.Bleed:
+                description = "被施加者行动时流失生命值，流失值为被施加者最大生命的1%";
+                break;
+            case BuffType.Burn:
+                description = "回合结束时受到物理伤害，伤害值为施加者攻击的1%";
+                break;
+            case BuffType.DamageBoost:
+                description = "提升所造成的伤害（伤害强化层数*10%）";
+                break;
+            case BuffType.Dispel:
+                break;
+            case BuffType.Drunk:
+                description = "被施加了醉酒的角色在释放指向性的攻击和伤害类技能时，有(醉酒层数）*20%的概率转而随机指定场上任意一位友方和敌方单位。";
+                break;
+            case BuffType.Execute:
+                description = "被施加了宰杀目标的角色会受到具有“美梦成真”状态的角色的额外伤害，额外伤害值为20%（加算）";
+                break;
+            case BuffType.Gaze:
+                description = "被施加者每回合结束时受到等同于凝视层数的精神伤害。";
+                break;
+            case BuffType.HealOverTime:
+                break;
+            case BuffType.Poison:
+                description = "被施加者行动时流失生命值，流失值为中毒层数";
+                break;
+            case BuffType.Silence:
+                description = "被沉默的角色不能释放技能，持续到下一回合";
+                break;
+            case BuffType.Shield:
+                description = "受攻击时，优先结算护盾，护盾为0后结算生命值";
+                break;
+            case BuffType.SkipTurn:
+                description = "被跳过回合的角色本回合无法使用任何普攻或技能";
+                break;
+            case BuffType.Stun:
+                description = "被眩晕的角色不能释放技能，持续到下一回合";
+                break;
+            case BuffType.Taunt:
+                description = "敌人必须优先指定带有嘲讽的单位";
+                break;
+            case BuffType.Reflect:
+                description = "被攻击时会反弹50%的伤害";
+                break;
+            case BuffType.Stealth:
+                description = "无法被指定为攻击目标，但攻击和技能将会打破这个状态";
+                break;
+            case BuffType.Block:
+                description = "提升物理防御和灵魂防御，以及韧性率";
+                break;
+            case BuffType.Cuisine:
+                description = "开发中";
+                break;
+            case BuffType.Knife:
+                description = "开发中";
+                break;
+            case BuffType.Dream:
+                description = "开发中";
+                break;
+            
+                
+                
+        }
     }
 }
 

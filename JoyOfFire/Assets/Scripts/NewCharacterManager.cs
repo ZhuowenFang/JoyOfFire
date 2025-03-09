@@ -15,7 +15,7 @@ public class NewCharacterManager : MonoBehaviour
     public GameObject characterFeaturePanel;
     
     public static NewCharacterManager instance;
-    public bool creatingCharacter = false;
+    public List<bool> isCharacterCreating = new List<bool>();
     
     public GameObject RewardPanel;
     
@@ -35,7 +35,11 @@ public class NewCharacterManager : MonoBehaviour
     {
         createInitialCharacter();
         InitializeButtons();
+        
         ReplaceButton.onClick.AddListener(replaceAndCreateCharacter);
+        isCharacterCreating.Add(false);
+        isCharacterCreating.Add(false);
+        isCharacterCreating.Add(false);
                 
     }
     
@@ -126,7 +130,7 @@ public class NewCharacterManager : MonoBehaviour
                 }],
                 ""icon"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
             },
-            ""talent_count1"": [""1.4814"", ""0.0000"", ""0.0000"", ""0.0000"", ""0.0000"", ""51.0398"", ""0.0000"", ""0.0000""],
+            ""talent_count1"": [""1.4814"", ""0.0000"", ""1"", ""1"", ""1"", ""51.0398"", ""1"", ""1""],
             ""talent2"": null,
             ""talent_count2"": null,
             ""talent3"": null,
@@ -138,7 +142,7 @@ public class NewCharacterManager : MonoBehaviour
         
         var character = ConvertToCharacterAttributes(characterResponse);
         character.user_id = "1";
-        
+        character.role = "时光";
         character.id = "1";
         character.character_id = "10";
         AddCharacter(character);
@@ -173,6 +177,7 @@ public class NewCharacterManager : MonoBehaviour
 
     private void OnCharacterButtonClicked(int index)
     {
+        CharacterCreation.instance.currentIndex = index;
         if (index < allCharacters.Count && allCharacters[index] != null)
         {
             characterCreationPanel.SetActive(false);
@@ -184,11 +189,18 @@ public class NewCharacterManager : MonoBehaviour
         }
         else
         {
+            
             characterCreationPanel.SetActive(true);
             characterDetailPanel.SetActive(false);
             characterFeaturePanel.SetActive(false);
-
-            // waitPanel.SetActive(false);
+            if(isCharacterCreating[index])
+            {
+                waitPanel.SetActive(true);
+            }
+            else
+            {
+                waitPanel.SetActive(false);
+            }
 
         }
     }
@@ -240,6 +252,7 @@ public class NewCharacterManager : MonoBehaviour
             character_picture = characterData.character_picture,
             current_ability = characterData.current_ability,
             potential_ability = characterData.potential_ability,
+
             experience = characterData.experience,
             attributePoints = 0,
             sanValue = 0f,

@@ -44,6 +44,7 @@ public class BattleManager : MonoBehaviour
     public GameObject RewardPrefab;
     public GameObject LosePanel;
     
+    
     public Dictionary<String, int> treasures = new Dictionary<string, int>();
     private void Awake()
     {
@@ -64,6 +65,8 @@ public class BattleManager : MonoBehaviour
         foreach (var button in characterButtons)
         {
             button.onClick.RemoveAllListeners();
+            
+
         }
     
         for (int i = 0; i < enemyButtons.Count; i++)
@@ -80,40 +83,42 @@ public class BattleManager : MonoBehaviour
         UpdateButtonHealthFill();
         UpdateButtonSheildFill();
         endTurnButton.onClick.AddListener(EndTurn);
-        StartNextTurn();
+        StartCoroutine(StartNextTurnCoroutine());
     }
 
-    public async void StartNextTurn()
+    public IEnumerator StartNextTurnCoroutine()
     {
         canUseSkill = true;
         actionPanel.gameObject.SetActive(false);
         ResetAllCharacterSizes();
-        
+    
         ICharacter nextCharacter = speedBarUI.GetNextCharacter();
         if (nextCharacter == null)
         {
             Debug.Log("没有角色进行回合！");
-            return;
+            yield break;
         }
-        
+    
         int characterIndex = nextCharacter.index;
-        await Task.Delay(2000);
+        // 使用 WaitForSeconds 延迟（受 Time.timeScale 影响）
+        yield return new WaitForSeconds(2f);
+    
         if (characterIndex >= BattleCharacterManager.instance.PlayerCharacters.Count)
         {
             actionPanel.gameObject.SetActive(false);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
-            await Task.Delay(2000);
+            yield return new WaitForSeconds(2f);
             ProcessBuffs(nextCharacter);
-
+        
             BaseEnemy enemyScript = characterButtons[characterIndex].GetComponent<BaseEnemy>();
             if (enemyScript != null)
             {
                 if (skippingTurn)
                 {
-                    await Task.Delay(1000);
+                    yield return new WaitForSeconds(1f);
                     skippingTurn = false;
                     EndTurn();
-                    return;
+                    yield break;
                 }
                 enemyScript.TakeTurn();
             }
@@ -121,28 +126,27 @@ public class BattleManager : MonoBehaviour
             {
                 Debug.LogWarning($"Enemy {characterIndex} 没有 BaseEnemy 组件！");
                 EndTurn();
-            }            
-
+            }
         }
         else
         {
             ProcessBuffs(nextCharacter);
-
+    
             if (skippingTurn)
             {
-                await Task.Delay(1000);
+                yield return new WaitForSeconds(1f);
                 skippingTurn = false;
                 EndTurn();
-                return;
+                yield break;
             }
             actionPanel.gameObject.SetActive(true);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
             energyText.text = $"{nextCharacter.energy} / {nextCharacter.maxEnergy}";
-
+    
             GenerateSkillButtons(nextCharacter as CharacterAttributes);
-            
         }
     }
+
 
     private void GenerateSkillButtons(CharacterAttributes character)
     {
@@ -772,6 +776,7 @@ public class BattleManager : MonoBehaviour
         if (skill.shieldAmount > 0)
         {
             attacker.shieldAmount += skill.shieldAmount;
+            AddBuff(attacker, attacker, "护盾", BuffType.Shield, 99, skill.shieldAmount, false,99);
         }
 
         // **治疗**
@@ -792,7 +797,7 @@ public class BattleManager : MonoBehaviour
             attacker.soulDefense *= 1.2f;
             attacker.tenacityRate += 0.3f;
             
-            AddBuff(attacker, defender, "格挡", BuffType.Block, 1, 1, false,1);
+            AddBuff(attacker, attacker, "格挡", BuffType.Block, 1, 1, false,1);
         }
         UpdateButtonHealthFill();
         UpdateButtonSheildFill();
@@ -831,8 +836,15 @@ public class BattleManager : MonoBehaviour
         damageText.transform.SetAsLastSibling();
 
         
-        Destroy(damageText, 1f);
+        StartCoroutine(DestroyAfterRealtime(damageText, 1f));
     }
+    
+    private IEnumerator DestroyAfterRealtime(GameObject obj, float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        Destroy(obj);
+    }
+
     
 
     public void ShowText(int characterIndex, string text,Color color, bool targetIsPlayer = false)
@@ -860,7 +872,7 @@ public class BattleManager : MonoBehaviour
         damageText.transform.SetAsLastSibling();
 
         
-        Destroy(damageText, 1f);
+        StartCoroutine(DestroyAfterRealtime(damageText, 1f));
     }
 
     private IEnumerator ResetTextOffset(int characterIndex, GameObject textObject)
@@ -916,6 +928,10 @@ public class BattleManager : MonoBehaviour
         }
     
         speedBarUI.RemoveCharacter(deadCharacter);
+        DetailManager.instance.isEnemy = false;
+        DetailManager.instance.UpdateCharacterButtons();
+        DetailManager.instance.isEnemy = true;
+        DetailManager.instance.UpdateCharacterButtons();
     }
     public void UpdateButtonHealthFill()
     {
@@ -1053,7 +1069,7 @@ public class BattleManager : MonoBehaviour
     {
         ResetAllCharacterSizes();
         speedBarUI.CompleteCurrentTurn();
-        StartNextTurn();
+        StartCoroutine(StartNextTurnCoroutine());
     }
     public void EndBattle(bool win)
     {

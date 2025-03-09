@@ -51,7 +51,7 @@ public class ExpandableButtonGroup : MonoBehaviour
 
         while (elapsedTime < animationDuration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime; 
             float newWidth = Mathf.Lerp(startWidth, targetWidth, elapsedTime / animationDuration);
             target.sizeDelta = new Vector2(newWidth, target.sizeDelta.y);
             yield return null;
@@ -65,4 +65,5 @@ public class ExpandableButtonGroup : MonoBehaviour
             skillDescription.enabled = true;
         }
     }
+
 }

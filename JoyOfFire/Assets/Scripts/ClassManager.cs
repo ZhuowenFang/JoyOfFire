@@ -79,7 +79,7 @@ public class ClassManager : MonoBehaviour
         public List<string> talent_count2;
         public Talent talent3;
         public List<string> talent_count3;
-        public string experience;
+        public List<string> experience;
     }
 
     [System.Serializable]
@@ -117,6 +117,13 @@ public class ClassManager : MonoBehaviour
         public string clothes; // 衣服
         public string combat; // 战斗
         public string other; // 其他
+    }
+    
+    public class CharacterUpdateAttributes
+    {
+        public string user_id;
+        public string character_id;
+        public List<string> experience;
     }
     [System.Serializable]
     public class CharacterUpdateData

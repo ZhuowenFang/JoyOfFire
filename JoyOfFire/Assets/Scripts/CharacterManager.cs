@@ -63,6 +63,14 @@ public class BattleCharacterManager : MonoBehaviour
                 GameObject playerObj = Instantiate(PlayerCharacterPrefab, PlayerCharacterHorizontalLayout.transform);
 
                 characterButtons.Add(playerObj.GetComponent<Button>());
+                DoubleClickListener dblClick = playerObj.AddComponent<DoubleClickListener>();
+                dblClick.onDoubleClick += () =>
+                {
+                    Debug.Log($"双击角色 {character.characterName} 的 index: {character.index}");
+                    DetailManager.instance.isEnemy = false;
+                    DetailManager.instance.UpdateCharacterButtons();
+                    DetailManager.instance.ShowDetail(character, false);
+                };
                 PlayerCharacters.Add(character);
                 character.index = PlayerCharacters.Count - 1;
                 // StartCoroutine(APIManager.instance.LoadImage(character.character_picture, playerObj.GetComponent<Image>()));
@@ -82,6 +90,14 @@ public class BattleCharacterManager : MonoBehaviour
                 GameObject enemyObj = Instantiate(EnemyCharacterPrefab, EnemyCharacterHorizontalLayout.transform);
                 enemyObj.GetComponent<Image>().sprite = Resources.Load<Sprite>($"EnemyPics/{enemy.monsterId}");
                 characterButtons.Add(enemyObj.GetComponent<Button>());
+                DoubleClickListener dblClick = enemyObj.AddComponent<DoubleClickListener>();
+                dblClick.onDoubleClick += () =>
+                {
+                    Debug.Log($"双击角色 {enemy.characterName} 的 index: {enemy.index}");
+                    DetailManager.instance.isEnemy = true;
+                    DetailManager.instance.UpdateCharacterButtons();
+                    DetailManager.instance.ShowDetail(enemy, true);
+                };
                 EnemyButtons.Add(enemyObj.GetComponent<Button>());
 
                 enemy.index = i;
