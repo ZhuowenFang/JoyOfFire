@@ -60,8 +60,16 @@ public class EventManager : MonoBehaviour
     private Coroutine typingCoroutine;
     private bool skipTyping = false;
     public float characterDelay = 0.05f;
-
     
+    public GameObject progressLayout;
+    public GameObject progressTextPrefab;
+    public int max1 = 13;
+    public int max2 = 4;
+    public int max3 = 21;
+    private int current1 = 0;
+    private int current2 = 0;
+    private int current3 = 0;
+    private bool insideCave = false;
     public static Dictionary<string, LevelPrerequisite> levelPrerequisites = new Dictionary<string, LevelPrerequisite>()
     {
         { "1-1", new LevelPrerequisite { mustNotTriggered = new List<string> { "1-4" } } },
@@ -84,6 +92,37 @@ public class EventManager : MonoBehaviour
         if (levelPrerequisites.ContainsKey(level))
             return levelPrerequisites[level];
         return null;
+    }
+
+    public void updateProgress()
+    {
+        foreach (Transform child in progressLayout.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        if (levelOrder == "1" && !insideCave)
+        {
+            GameObject newProgress = Instantiate(progressTextPrefab, progressLayout.transform);
+            newProgress.GetComponent<Text>().text = $"梦境岛东部：" + current1 + "/" + max1;
+        }
+        else if (levelOrder == "1" && insideCave)
+        {
+            GameObject newProgress = Instantiate(progressTextPrefab, progressLayout.transform);
+            newProgress.GetComponent<Text>().text = $"梦境岛东部：" + current1 + "/" + max1;
+            GameObject newProgress1 = Instantiate(progressTextPrefab, progressLayout.transform);
+            newProgress1.GetComponent<Text>().text = $"阴暗洞穴：" + current2 + "/" + max2;
+        }
+        else if (levelOrder == "2" || levelOrder == "3")
+        {
+            GameObject newProgress = Instantiate(progressTextPrefab, progressLayout.transform);
+            newProgress.GetComponent<Text>().text = $"梦境岛东部：" + current1 + "/" + max1;
+            GameObject newProgress1 = Instantiate(progressTextPrefab, progressLayout.transform);
+            newProgress1.GetComponent<Text>().text = $"阴暗洞穴：" + current2 + "/" + max2;
+            GameObject newProgress2 = Instantiate(progressTextPrefab, progressLayout.transform);
+            newProgress2.GetComponent<Text>().text = $"“美梦成真”餐厅内部：" + current3 + "/" + max3;
+        }
+        
+        
     }
     public bool CheckPrerequisites(LevelPrerequisite prereq)
     {
@@ -195,6 +234,7 @@ public class EventManager : MonoBehaviour
         InitializeLevelPool();
         // await Task.Delay(1000);
         createInitialItem();
+        updateProgress();
     }
     
     public void ReloadEvents()
@@ -308,6 +348,10 @@ public class EventManager : MonoBehaviour
             {
                 Debug.Log(level);
                 Debug.Log($"成功响应：{response}");
+                
+                
+                
+                
                 levelResponse = JsonUtility.FromJson<ClassManager.LevelResponse>(response);
                 CharacterPanel.SetActive(true);
                 foreach (Transform child in CharacterSelectionLayout.transform)
@@ -488,6 +532,24 @@ public class EventManager : MonoBehaviour
             {
                 ChoiceDetail.gameObject.SetActive(false);
                 
+                if(levelOrder == "1" && !insideCave)
+                {
+                    current1++;
+                }
+                else if (levelOrder == "1" && insideCave)
+                {
+                    current2++;
+                }
+                else if (levelOrder == "3" || levelOrder == "2")
+                {
+                    current3++;
+                }
+                if(level == "1-7" && optionKey == "option_a_res")
+                {
+                    insideCave = true;
+                }
+                updateProgress();
+                
                 if (optionResult["next_stage"] != null)
                 {
                     NextStage = optionResult["next_stage"].ToString();
@@ -498,6 +560,9 @@ public class EventManager : MonoBehaviour
                     {
                         case "2":
                             MapTransitionManager.instance.TransitionMapWithFade(3,3);
+                            insideCave = false;
+                            levelOrder = "2";
+                            updateProgress();
                             break;
                         case "3":
                             MapTransitionManager.instance.TransitionMapWithFade(4,4);

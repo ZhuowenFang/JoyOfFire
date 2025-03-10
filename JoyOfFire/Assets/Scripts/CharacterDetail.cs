@@ -77,6 +77,9 @@ public class CharacterDetail : MonoBehaviour
     
     private int SelectedIndex = 0;
     private bool updating = false;
+    
+    public GameObject UpdatePanelPreviousStarArea;
+    public GameObject UpdatePanelCurrentStarArea;
 
     
     private void Awake()
@@ -110,6 +113,27 @@ public class CharacterDetail : MonoBehaviour
         }        
         
     }
+    
+    public void updateUpdatePanelStarArea()
+    {
+        foreach (Transform star in UpdatePanelPreviousStarArea.transform)
+        {
+            Destroy(star.gameObject);
+        }
+        for (int i = 0; i < currentCharacter.star - 1; i++)
+        {
+            Instantiate(starPrefab, UpdatePanelPreviousStarArea.transform);
+        }
+        
+        foreach (Transform star in UpdatePanelCurrentStarArea.transform)
+        {
+            Destroy(star.gameObject);
+        }
+        for (int i = 0; i < currentCharacter.star; i++)
+        {
+            Instantiate(starPrefab, UpdatePanelCurrentStarArea.transform);
+        }
+    }
 
     void Update()
     {
@@ -119,8 +143,12 @@ public class CharacterDetail : MonoBehaviour
             AssignAttributeButton.interactable = currentCharacter.attributePoints > 0;
             if(updating)
             {
+                UpdateButton.interactable = false;
+                UpdateButton.gameObject.GetComponentInChildren<Text>().text = "突破中";
                 return;
             }
+            UpdateButton.gameObject.GetComponentInChildren<Text>().text = "突破";
+
             switch (currentCharacter.star)
             {
                 case 1:
@@ -165,12 +193,25 @@ public class CharacterDetail : MonoBehaviour
             Update = UpdateType
         };
         updating = true;
+        currentCharacter.star += 1;
+
+        updateStarArea();
         APIManager.instance.UpdateCharacter(
             JsonUtility.ToJson(characterUpdateData),
             onSuccess: (response) =>
             {
+                var characterResponse = JsonConvert.DeserializeObject<CharacterCreation.CharacterUpdateResponse>(response);
+                if (characterResponse.code != "00000")
+                {
+                    updating = false;
+                    EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f, "角色突破失败"));
+                    currentCharacter.star -= 1;
+                    updateStarArea();
+                    Debug.LogError($"Error Update character: {response}");
+                    return;
+                }
+                
                 EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f, "角色突破成功"));
-                currentCharacter.star += 1;
                 switch (currentCharacter.star)
                 {
                     case 2:
@@ -191,11 +232,17 @@ public class CharacterDetail : MonoBehaviour
             },
             onError: (error) =>
             {
+                updating = false;
+                EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f, "角色突破失败"));
+                currentCharacter.star -= 1;
+                updateStarArea();
                 Debug.LogError($"Error Update character: {error}");
             }
         );
         
         UpdateResultPanel.SetActive(true);
+        updateUpdatePanelStarArea();
+
         UpdatePanel.SetActive(false);
         foreach (Button option in UpdateOptions)
         {
@@ -204,6 +251,18 @@ public class CharacterDetail : MonoBehaviour
         }
         selectedUpdateOption = null;
     }
+    public void updateStarArea()
+    {
+        foreach (Transform star in starLayout.transform)
+        {
+            Destroy(star.gameObject);
+        }
+        for (int i = 0; i < currentCharacter.star; i++)
+        {
+            Instantiate(starPrefab, starLayout.transform);
+        }
+    }
+    
     
     void UpdateText(float value)
     {
@@ -277,6 +336,16 @@ public class CharacterDetail : MonoBehaviour
         UpdateOptions[UpdateOptions.Count - 1].interactable = anySkillEmpty;
     }
 
+
+    public void initialDetail()
+    {
+        if (NewCharacterManager.instance.allCharacters.Count == 0)
+        {
+            Debug.LogError("No characters found");
+            return;
+        }
+        ShowCharacterDetails(NewCharacterManager.instance.allCharacters[0] as CharacterAttributes);
+    }
     public void ShowCharacterDetails(CharacterAttributes character)
     {
         if (character.characterName == "狂风医生")
@@ -303,21 +372,30 @@ public class CharacterDetail : MonoBehaviour
         currentCharacter = character;
         characterNameText.text = character.basic_information.name;
         characterStoryText.text = "背景故事：" + character.basic_information.story;
-        experienceText.text = "经历：" + character.experience;
+        if (character.experience == null)
+        {
+            character.experience = new List<string>();
+        }
+        string experience = "";
+        foreach(string exp in character.experience)
+        {
+            experience += exp + " ";
+        }
+        experienceText.text = "经历：" + experience;
         levelText.text = character.level.ToString();
         levelBar.fillAmount = character.level / 25f;
         strengthText.text = character.strength.ToString("0.0");;
         agilityText.text = character.agility.ToString("0.0");;
         intelligenceText.text = character.intelligence.ToString("0.0");;
-        healthText.text = character.health.ToString();
-        physicalAttackText.text = character.physicalAttack.ToString();
-        physicalDefenseText.text = character.physicalDefense.ToString();
-        soulAttackText.text = character.soulAttack.ToString();
-        soulDefenseText.text = character.soulDefense.ToString();
-        speedText.text = character.speed.ToString();
-        criticalRateText.text = character.criticalRate * 100 + "%";
-        hitRateText.text = character.hitRate * 100 + "%";
-        tenacityRateText.text = character.tenacityRate * 100 + "%";
+        healthText.text = character.health.ToString("0.0");
+        physicalAttackText.text = character.physicalAttack.ToString("0.0");
+        physicalDefenseText.text = character.physicalDefense.ToString("0.0");
+        soulAttackText.text = character.soulAttack.ToString("0.0");
+        soulDefenseText.text = character.soulDefense.ToString("0.0");
+        speedText.text = character.speed.ToString("0");
+        criticalRateText.text = (character.criticalRate * 100).ToString("F0") + "%";
+        hitRateText.text = (character.hitRate * 100).ToString("F0") + "%";
+        tenacityRateText.text = (character.tenacityRate * 100).ToString("F0") + "%";
         StrengthBar.fillAmount = character.strength / character.potentialStrength;
         AgilityBar.fillAmount = character.agility / character.potentialAgility;
         IntelligenceBar.fillAmount = character.intelligence / character.potentialIntelligence;
@@ -336,6 +414,13 @@ public class CharacterDetail : MonoBehaviour
             }
         }));
         // Role.text = character.basic_information.profession;
+        
+        for(int i = 0; i < skillIcons.Count; i++)
+        {
+            skillIcons[i].sprite = Resources.Load<Sprite>("defaultSkillIcon");
+            skillNameTexts[i].text = "未获得";
+            skillDescriptionTexts[i].text = "";
+        }
         
         for (int i = 0; i < character.skills.Count; i++)
         {
@@ -383,7 +468,12 @@ public class CharacterDetail : MonoBehaviour
         currentCharacter = character;
         characterNameText.text = character.basic_information.name;
         characterStoryText.text = "背景故事：" + character.basic_information.story;
-        experienceText.text = "经历：" + character.experience;
+        string experience = "";
+        foreach(string exp in character.experience)
+        {
+            experience += exp + " ";
+        }
+        experienceText.text = "经历：" + experience;
         levelText.text = character.level.ToString();
         levelBar.fillAmount = character.level / 25f;
 
@@ -414,11 +504,11 @@ public class CharacterDetail : MonoBehaviour
         character.health = healthFromInt + healthFromAgi + healthFromStr + character.additionalHealth;
         character.currentHealth = character.health;
 
-        healthText.text = character.health.ToString("0");
-        physicalAttackText.text = character.physicalAttack.ToString("0");
-        physicalDefenseText.text = character.physicalDefense.ToString("0");
-        soulAttackText.text = character.soulAttack.ToString("0");
-        soulDefenseText.text = character.soulDefense.ToString("0");
+        healthText.text = character.health.ToString("0.0");
+        physicalAttackText.text = character.physicalAttack.ToString("0.0");
+        physicalDefenseText.text = character.physicalDefense.ToString("0.0");
+        soulAttackText.text = character.soulAttack.ToString("0.0");
+        soulDefenseText.text = character.soulDefense.ToString("0.0");
         speedText.text = character.speed.ToString("0");
         criticalRateText.text = (character.criticalRate * 100).ToString("F0") + "%";
         hitRateText.text = (character.hitRate * 100).ToString("F0") + "%";
@@ -433,6 +523,12 @@ public class CharacterDetail : MonoBehaviour
         LevelItemAmountText.text = levelItemCount.ToString();
         slider.maxValue = levelItemCount;
         levelItemIconAmountText.text = LevelItemAmountText.text;
+        for(int i = 0; i < skillIcons.Count; i++)
+        {
+            skillIcons[i].sprite = Resources.Load<Sprite>("defaultSkillIcon");
+            skillNameTexts[i].text = "未获得";
+            skillDescriptionTexts[i].text = "";
+        }
         for (int i = 0; i < character.skills.Count; i++)
         {
             if (!String.IsNullOrEmpty(character.skills[i].skillName))

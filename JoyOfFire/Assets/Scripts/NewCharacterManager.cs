@@ -130,7 +130,7 @@ public class NewCharacterManager : MonoBehaviour
                 }],
                 ""icon"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
             },
-            ""talent_count1"": [""1.4814"", ""0.0000"", ""1"", ""1"", ""1"", ""51.0398"", ""1"", ""1""],
+            ""talent_count1"": [""1.4814"", ""0.0000"", ""0"", ""0"", ""0"", ""51.0398"", ""1"", ""1""],
             ""talent2"": null,
             ""talent_count2"": null,
             ""talent3"": null,
@@ -384,7 +384,7 @@ public class NewCharacterManager : MonoBehaviour
             speed = monsterData.speed + 100f,
             criticalRate = monsterData.critical_strike_rate / 100,
             hitRate = monsterData.hit_rate / 100,
-            tenacityRate = monsterData.tenacity_rate,
+            tenacityRate = monsterData.tenacity_rate / 100,
             skills = new List<MonsterSkillAttributes>(),
             timePoint = 0f,
             energy = 0,

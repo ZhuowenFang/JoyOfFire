@@ -1116,6 +1116,11 @@ public class BattleManager : MonoBehaviour
             {
                 // player.currentHealth = player.health;
                 // player.energy = 0;
+                if (player.currentHealth <= 0)
+                {
+                    player.currentHealth = 1;
+                }
+                
                 player.activeBuffs?.Clear();
             }
             else

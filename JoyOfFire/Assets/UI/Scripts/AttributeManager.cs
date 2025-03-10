@@ -51,30 +51,65 @@ public class AttributeManager : MonoBehaviour
         
     }
 
-    public void Initial()
-    {
-        currentCharacter = CharacterDetail.instance.currentCharacter;
-        currentStrengthText.text = currentCharacter.strength.ToString("0.0");
-        currentAgilityText.text = currentCharacter.agility.ToString("0.0");
-        currentIntelligenceText.text = currentCharacter.intelligence.ToString("0.0");
-        
-        
-        totalPoints = currentCharacter.attributePoints;
-        
-        lastStrengthValue = strengthSlider.value;
-        lastAgilityValue = agilitySlider.value;
-        lastIntelligenceValue = intelligenceSlider.value;
-        strengthChangeValuePerPoint = (currentCharacter.potentialStrength - currentCharacter.initialStrength) / 20;
-        agilityChangeValuePerPoint = (currentCharacter.potentialAgility - currentCharacter.initialAgility) / 20;
-        intelligenceChangeValuePerPoint = (currentCharacter.potentialIntelligence - currentCharacter.initialIntelligence) / 20;
-        
-        strengthSlider.maxValue = (currentCharacter.potentialStrength - currentCharacter.strength) / strengthChangeValuePerPoint;
-        agilitySlider.maxValue = (currentCharacter.potentialAgility - currentCharacter.agility) / agilityChangeValuePerPoint;
-        intelligenceSlider.maxValue = (currentCharacter.potentialIntelligence - currentCharacter.intelligence) / intelligenceChangeValuePerPoint;
-        UpdateUI();
+   public void Initial()
+{
+    currentCharacter = CharacterDetail.instance.currentCharacter;
+    currentStrengthText.text = currentCharacter.strength.ToString("0.0");
+    currentAgilityText.text = currentCharacter.agility.ToString("0.0");
+    currentIntelligenceText.text = currentCharacter.intelligence.ToString("0.0");
 
-        
+    totalPoints = currentCharacter.attributePoints;
+
+    lastStrengthValue = strengthSlider.value;
+    lastAgilityValue = agilitySlider.value;
+    lastIntelligenceValue = intelligenceSlider.value;
+
+    float strengthDiff = currentCharacter.potentialStrength - currentCharacter.initialStrength;
+    float agilityDiff = currentCharacter.potentialAgility - currentCharacter.initialAgility;
+    float intelligenceDiff = currentCharacter.potentialIntelligence - currentCharacter.initialIntelligence;
+
+    if (Mathf.Approximately(strengthDiff, 0))
+    {
+        strengthChangeValuePerPoint = 0;
+        strengthSlider.maxValue = 0;
+        strengthSlider.interactable = false;
     }
+    else
+    {
+        strengthChangeValuePerPoint = strengthDiff / 20f;
+        strengthSlider.maxValue = (currentCharacter.potentialStrength - currentCharacter.strength) / strengthChangeValuePerPoint;
+        strengthSlider.interactable = true;
+    }
+
+    if (Mathf.Approximately(agilityDiff, 0))
+    {
+        agilityChangeValuePerPoint = 0;
+        agilitySlider.maxValue = 0;
+        agilitySlider.interactable = false;
+    }
+    else
+    {
+        agilityChangeValuePerPoint = agilityDiff / 20f;
+        agilitySlider.maxValue = (currentCharacter.potentialAgility - currentCharacter.agility) / agilityChangeValuePerPoint;
+        agilitySlider.interactable = true;
+    }
+
+    if (Mathf.Approximately(intelligenceDiff, 0))
+    {
+        intelligenceChangeValuePerPoint = 0;
+        intelligenceSlider.maxValue = 0;
+        intelligenceSlider.interactable = false;
+    }
+    else
+    {
+        intelligenceChangeValuePerPoint = intelligenceDiff / 20f;
+        intelligenceSlider.maxValue = (currentCharacter.potentialIntelligence - currentCharacter.intelligence) / intelligenceChangeValuePerPoint;
+        intelligenceSlider.interactable = true;
+    }
+
+    UpdateUI();
+}
+
     public void ReAssignSliders()
     {
         strengthSlider.value = 0;

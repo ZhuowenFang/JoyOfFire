@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class CharacterCreation : MonoBehaviour
 {
@@ -30,17 +31,23 @@ public class CharacterCreation : MonoBehaviour
     public GameObject IlegalWordPanel;
     
     public GameObject characterFeaturePanel;
+    public WordLibraries wordLibraries;
 
     public Button backButton;
     public int currentIndex = 0;
-    
+
     public static CharacterCreation instance;
+    private InputField currentInputField;
+    
+    public Transform suggestionsContainer;
+    public GameObject suggestionButtonPrefab;
+
     private void Awake()
     {
         instance = this;
     }
-    
-    
+
+
     void Start()
     {
         LoadForbiddenWords(); // 加载违禁词
@@ -63,9 +70,106 @@ public class CharacterCreation : MonoBehaviour
 
         createButton.onClick.AddListener(OnCreateButtonClicked);
         // createInitialCharacter();
+        EventTrigger trigger = professionInput.gameObject.GetComponent<EventTrigger>();
+        if (trigger == null)
+        {
+            trigger = professionInput.gameObject.AddComponent<EventTrigger>();
+        }
+
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Select;
+        Debug.LogError(wordLibraries.careerWords);
+        entry.callback.AddListener((data) => { ShowSuggestions(professionInput, wordLibraries.careerWords); });
+        trigger.triggers.Add(entry);
+        
+        EventTrigger trigger2 = clothesInput.gameObject.GetComponent<EventTrigger>();
+        if (trigger2 == null)
+        {
+            trigger2 = clothesInput.gameObject.AddComponent<EventTrigger>();
+        }
+        EventTrigger.Entry entry2 = new EventTrigger.Entry();
+        entry2.eventID = EventTriggerType.Select;
+        entry2.callback.AddListener((data) => { ShowSuggestions(clothesInput, wordLibraries.clothingWords); });
+        trigger2.triggers.Add(entry2);
+        EventTrigger trigger3 = combatInput.gameObject.GetComponent<EventTrigger>();
+        if (trigger3 == null)
+        {
+            trigger3 = combatInput.gameObject.AddComponent<EventTrigger>();
+        }
+        EventTrigger.Entry entry3 = new EventTrigger.Entry();
+        entry3.eventID = EventTriggerType.Select;
+        entry3.callback.AddListener((data) => { ShowSuggestions(combatInput, wordLibraries.battleStyleWords); });
+        trigger3.triggers.Add(entry3);
+        EventTrigger trigger4 = otherInput.gameObject.GetComponent<EventTrigger>();
+        if (trigger4 == null)
+        {
+            trigger4 = otherInput.gameObject.AddComponent<EventTrigger>();
+        }
+        EventTrigger.Entry entry4 = new EventTrigger.Entry();
+        entry4.eventID = EventTriggerType.Select;
+        entry4.callback.AddListener((data) => { ClearSuggestions(); currentInputField = otherInput; });
+        trigger4.triggers.Add(entry4);
+        
+    }
+    
+    public void refreshSuggestions()
+    {
+        if (currentInputField != null)
+        {
+            ClearSuggestions();
+            if (currentInputField == professionInput)
+            {
+                ShowSuggestions(professionInput, wordLibraries.careerWords);
+            }
+            else if (currentInputField == clothesInput)
+            {
+                ShowSuggestions(clothesInput, wordLibraries.clothingWords);
+            }
+            else if (currentInputField == combatInput)
+            {
+                ShowSuggestions(combatInput, wordLibraries.battleStyleWords);
+            }
+        }
     }
 
 
+
+    void ShowSuggestions(InputField inputField, List<string> wordLibrary)
+    {
+        currentInputField = inputField;
+        ClearSuggestions();
+
+        int suggestionsCount = 4;
+        for (int i = 0; i < suggestionsCount; i++)
+        {
+            if (wordLibrary.Count == 0)
+                break;
+            int randomIndex = Random.Range(0, wordLibrary.Count);
+            string suggestion = wordLibrary[randomIndex];
+
+            GameObject buttonObj = Instantiate(suggestionButtonPrefab, suggestionsContainer);
+            Button btn = buttonObj.GetComponent<Button>();
+            Text btnText = buttonObj.GetComponentInChildren<Text>();
+            if (btnText != null)
+            {
+                btnText.text = suggestion;
+            }
+
+            btn.onClick.AddListener(() =>
+            {
+                currentInputField.text = suggestion;
+                ClearSuggestions();
+            });
+        }
+    }
+    
+    void ClearSuggestions()
+    {
+        foreach (Transform child in suggestionsContainer)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 
     private void OnProfessionSelected(Button button)
     {
@@ -219,7 +323,6 @@ public class CharacterCreation : MonoBehaviour
                 }
                 EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f,"角色已创建完成"));
         
-                WaitingPanel.SetActive(false);
         
                 var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse.data);
                 NewCharacterManager.instance.AddCharacter(character);
@@ -227,6 +330,8 @@ public class CharacterCreation : MonoBehaviour
                 CharacterDetail.instance.Role.text = selectedProfession;
                 NewCharacterManager.instance.isCharacterCreating[currentIndex] = false;
                 NewCharacterManager.instance.InitializeButtons();
+                WaitingPanel.SetActive(false);
+
         
             },
             onError: async (error) =>
@@ -310,5 +415,11 @@ public class CharacterCreation : MonoBehaviour
         public string code;
         public string message;
         public ClassManager.CharacterData data;
+    }
+    public class CharacterUpdateResponse
+    {
+        public string code;
+        public string message;
+        public string data;
     }
 }
