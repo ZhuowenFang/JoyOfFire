@@ -116,6 +116,7 @@ public class BaseEnemy : MonoBehaviour
         {
             attacker.shieldAmount += skill.shieldValue;
             BattleManager.instance.ShowText(attacker.index, $"护盾 +{skill.shieldValue}", Color.green);
+            
             Debug.Log($"{attacker.characterName} 获得 {skill.shieldValue} 点护盾！");
         }
 
@@ -204,6 +205,8 @@ public class BaseEnemy : MonoBehaviour
         
         
         BattleManager.instance.UpdateButtonHealthFill();
+        BattleManager.instance.UpdateButtonSheildFill();
+
         
         
     }

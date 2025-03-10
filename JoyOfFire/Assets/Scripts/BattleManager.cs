@@ -322,6 +322,8 @@ public class BattleManager : MonoBehaviour
             {
                 UseSkill(attacker, defender, selectedSkill);
                 attacker.energy -= selectedSkill.skillCost;
+                Debug.LogError(attacker.characterName+ "energy: " + attacker.energy);
+
             }
             else
             {
@@ -329,6 +331,8 @@ public class BattleManager : MonoBehaviour
                 if (attacker.energy < attacker.maxEnergy)
                 {
                     attacker.energy += 1;
+                    Debug.LogError(attacker.characterName+ "energy: " + attacker.energy);
+
                 }
             }
 
@@ -377,6 +381,7 @@ public class BattleManager : MonoBehaviour
         
         float remainingShield = Mathf.Max(defender.shieldAmount - damage, 0);
         float damageToHealth = Mathf.Max(damage - defender.shieldAmount, 0);
+        damageToHealth += Random.Range(2, 6);
         defender.shieldAmount = remainingShield;
         defender.currentHealth -= damageToHealth;
         Debug.Log($"{defender.characterName} 受到了 {damageToHealth} 点伤害！");
@@ -390,6 +395,8 @@ public class BattleManager : MonoBehaviour
             float reflectedDamage = damageToHealth * 0.5f;
             float attackerRemainingShield = Mathf.Max(IfReflectCharacter.shieldAmount - reflectedDamage, 0);
             float damageToAttackerHealth = Mathf.Max(reflectedDamage - IfReflectCharacter.shieldAmount, 0);
+            damageToAttackerHealth += Random.Range(2, 6);
+
             IfReflectCharacter.shieldAmount = attackerRemainingShield;
             IfReflectCharacter.currentHealth -= damageToAttackerHealth;
             Debug.Log($"{IfReflectCharacter.characterName} 受到了 {damageToAttackerHealth} 点反弹伤害！");
@@ -498,14 +505,23 @@ public class BattleManager : MonoBehaviour
             Text stackText = matchingIcon.transform.Find("Stack").GetComponent<Text>();
             if (stackText != null)
             {
-                if (int.Parse(stackText.text) + stackVal >= maxStacksVal)
+                float currentStack;
+                if (!float.TryParse(stackText.text, out currentStack))
                 {
-                    stackText.text = maxStacksVal.ToString();
+                    currentStack = 0f;
                 }
-                else
+
+                float newStackFloat = currentStack + stackVal;
+                int newStack = Mathf.FloorToInt(newStackFloat);
+
+                if (newStack >= maxStacksVal)
                 {
-                    stackText.text = (int.Parse(stackText.text) + stackVal).ToString();
+                    newStack = maxStacksVal;
                 }
+
+                stackText.text = newStack.ToString();
+
+
                 Debug.Log($"增加了图标 {name} 的层数，当前层数：{stackText.text}");
 
             }
@@ -776,7 +792,7 @@ public class BattleManager : MonoBehaviour
         if (skill.shieldAmount > 0)
         {
             attacker.shieldAmount += skill.shieldAmount;
-            AddBuff(attacker, attacker, "护盾", BuffType.Shield, 99, skill.shieldAmount, false,99);
+            // AddBuff(attacker, attacker, "护盾", BuffType.Shield, 99, skill.shieldAmount, false,99);
         }
 
         // **治疗**

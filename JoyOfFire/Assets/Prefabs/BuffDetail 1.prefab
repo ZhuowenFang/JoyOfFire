@@ -221,7 +221,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -232,7 +232,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u559D\u591A\u4E86\u591A\u4E86\u591A\u4E86\u591A\u4E86\u591A\u4E86\u591A\u4E86\u591A\u4E86\u591A\u4E86"
+  m_Text: "\u88AB\u65BD\u52A0\u7279\u8272\u83DC\u80B4\u7684\u89D2\u8272\u6BCF\u6B21\u88AB\u65BD\u52A0debuff\u65F6\uFF0C\u5C31\u4F1A\u83B7\u5F971\u5C42\u201C\u8C03\u6599\u201D\uFF0C\u56DE\u5408\u7ED3\u675F\u65F6\u6839\u636E\u88AB\u65BD\u52A0\u8005\u62E5\u6709\u7684\u201C\u8C03\u6599\u201D\u5C42\u6570\uFF0C\u53D7\u5230\u7B49\u540C\u4E8E\u201C\u8C03\u6599\u5C42\u6570\u201D*1%\u7684\u6700\u5927\u751F\u547D\u503C\u7684\u7269\u7406\u4F24\u5BB3\u3002"
 --- !u!1 &5266983923295782423
 GameObject:
   m_ObjectHideFlags: 0
