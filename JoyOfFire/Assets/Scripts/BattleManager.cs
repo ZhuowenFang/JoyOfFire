@@ -55,11 +55,15 @@ public class BattleManager : MonoBehaviour
     {
         foreach (var button in BattleCharacterManager.instance.characterButtons)
         {
+            button.transform.Find("Image").gameObject.SetActive(true);
+            button.transform.Find("fill").gameObject.SetActive(true);
             characterButtons.Add(button);
         }
 
         foreach (var button in BattleCharacterManager.instance.EnemyButtons)
         {
+            button.transform.Find("Image").gameObject.SetActive(true);
+            button.transform.Find("fill").gameObject.SetActive(true);
             enemyButtons.Add(button);
         }
         foreach (var button in characterButtons)
@@ -1038,26 +1042,40 @@ public class BattleManager : MonoBehaviour
            
         }
 
-        if (!ButtonIsEnemy)
+        // if (!ButtonIsEnemy)
+        // {
+        //     foreach (var character in BattleCharacterManager.instance.PlayerCharacters)
+        //     {
+        //         if (character.index >= index)
+        //         {
+        //             character.index--;
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     foreach (var character in BattleCharacterManager.instance.EnemyCharacters)
+        //     {
+        //         if (character.index >= index)
+        //         {
+        //             character.index--;
+        //         }
+        //     }
+        //     
+        // }
+        foreach (var character in BattleCharacterManager.instance.PlayerCharacters)
         {
-            foreach (var character in BattleCharacterManager.instance.PlayerCharacters)
+            if (character.index >= index)
             {
-                if (character.index >= index)
-                {
-                    character.index--;
-                }
+                character.index--;
             }
         }
-        else
+        foreach (var character in BattleCharacterManager.instance.EnemyCharacters)
         {
-            foreach (var character in BattleCharacterManager.instance.EnemyCharacters)
+            if (character.index >= index)
             {
-                if (character.index >= index)
-                {
-                    character.index--;
-                }
+                character.index--;
             }
-            
         }
     }
 

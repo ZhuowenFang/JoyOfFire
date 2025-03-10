@@ -61,6 +61,8 @@ public class BattleCharacterManager : MonoBehaviour
             if (allCharacters[i] is CharacterAttributes character)
             {
                 GameObject playerObj = Instantiate(PlayerCharacterPrefab, PlayerCharacterHorizontalLayout.transform);
+                playerObj.transform.Find("Image").gameObject.SetActive(false);
+                playerObj.transform.Find("fill").gameObject.SetActive(false);
 
                 characterButtons.Add(playerObj.GetComponent<Button>());
                 DoubleClickListener dblClick = playerObj.AddComponent<DoubleClickListener>();
@@ -88,6 +90,8 @@ public class BattleCharacterManager : MonoBehaviour
             else if (allCharacters[i] is MonsterAttributes enemy)
             {
                 GameObject enemyObj = Instantiate(EnemyCharacterPrefab, EnemyCharacterHorizontalLayout.transform);
+                enemyObj.transform.Find("Image").gameObject.SetActive(false);
+                enemyObj.transform.Find("fill").gameObject.SetActive(false);
                 enemyObj.GetComponent<Image>().sprite = Resources.Load<Sprite>($"EnemyPics/{enemy.monsterId}");
                 characterButtons.Add(enemyObj.GetComponent<Button>());
                 DoubleClickListener dblClick = enemyObj.AddComponent<DoubleClickListener>();

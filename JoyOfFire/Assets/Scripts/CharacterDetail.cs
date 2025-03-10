@@ -76,6 +76,7 @@ public class CharacterDetail : MonoBehaviour
     private Color selectedColor = Color.green;
     
     private int SelectedIndex = 0;
+    private bool updating = false;
 
     
     private void Awake()
@@ -114,7 +115,12 @@ public class CharacterDetail : MonoBehaviour
     {
         if (currentCharacter!= null)
         {
+            
             AssignAttributeButton.interactable = currentCharacter.attributePoints > 0;
+            if(updating)
+            {
+                return;
+            }
             switch (currentCharacter.star)
             {
                 case 1:
@@ -158,7 +164,7 @@ public class CharacterDetail : MonoBehaviour
             character_id = currentCharacter.character_id,
             Update = UpdateType
         };
-        
+        updating = true;
         APIManager.instance.UpdateCharacter(
             JsonUtility.ToJson(characterUpdateData),
             onSuccess: (response) =>
@@ -177,6 +183,7 @@ public class CharacterDetail : MonoBehaviour
                         currentCharacter.attributePoints += 18;
                         break;
                 }
+                updating = false;
                 InventoryManager.instance.RemoveItem("Break_through", 1);
                 Debug.Log($"Character Updated: {response}");
                 UpdateCharacterSkills(response);
