@@ -330,6 +330,8 @@ public class CharacterCreation : MonoBehaviour
                 CharacterDetail.instance.Role.text = selectedProfession;
                 NewCharacterManager.instance.isCharacterCreating[currentIndex] = false;
                 NewCharacterManager.instance.InitializeButtons();
+                CloudSaveManager.Instance.UpdateCreateCount();
+                await Task.Delay(500);
                 WaitingPanel.SetActive(false);
 
         

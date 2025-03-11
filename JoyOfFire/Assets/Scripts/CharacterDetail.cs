@@ -200,6 +200,7 @@ public class CharacterDetail : MonoBehaviour
             JsonUtility.ToJson(characterUpdateData),
             onSuccess: (response) =>
             {
+                Debug.Log(JsonUtility.ToJson(characterUpdateData));
                 var characterResponse = JsonConvert.DeserializeObject<CharacterCreation.CharacterUpdateResponse>(response);
                 if (characterResponse.code != "00000")
                 {
