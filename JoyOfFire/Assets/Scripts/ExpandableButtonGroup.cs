@@ -25,20 +25,23 @@ public class ExpandableButtonGroup : MonoBehaviour
             var rectTransform = button.GetComponent<RectTransform>();
             var textComponent = button.GetComponentInChildren<Text>();
             var skillDescription = button.transform.Find("SkillDescription").GetComponent<Text>();
+            var skillCostText = button.transform.Find("CostText").GetComponent<Text>();
+            var skillCost = button.transform.Find("CostAmount").GetComponent<Text>();
 
             if (button == clickedButton)
             {
-                StartCoroutine(AnimateButtonSize(rectTransform, expandedWidth, true, textComponent,skillDescription));
+                StartCoroutine(AnimateButtonSize(rectTransform, expandedWidth, true, textComponent,skillDescription,skillCostText,skillCost));
                 expandedButton = rectTransform;
             }
             else
             {
-                StartCoroutine(AnimateButtonSize(rectTransform, collapsedWidth, false, textComponent,skillDescription));
+                StartCoroutine(AnimateButtonSize(rectTransform, collapsedWidth, false, textComponent,skillDescription,skillCostText,skillCost));
             }
         }
     }
 
-    System.Collections.IEnumerator AnimateButtonSize(RectTransform target, float targetWidth, bool showText, Text textComponent, Text skillDescription)
+    System.Collections.IEnumerator AnimateButtonSize(RectTransform target, float targetWidth, bool showText, Text textComponent, Text skillDescription, Text skillCostText, Text skillCost)
+  
     {
         float elapsedTime = 0f;
         float startWidth = target.sizeDelta.x;
@@ -47,6 +50,8 @@ public class ExpandableButtonGroup : MonoBehaviour
         {
             textComponent.enabled = false;
             skillDescription.enabled = false;
+            skillCostText.enabled = false;
+            skillCost.enabled = false;
         }
 
         while (elapsedTime < animationDuration)
@@ -63,6 +68,8 @@ public class ExpandableButtonGroup : MonoBehaviour
         {
             textComponent.enabled = true;
             skillDescription.enabled = true;
+            skillCostText.enabled = true;
+            skillCost.enabled = true;
         }
     }
 

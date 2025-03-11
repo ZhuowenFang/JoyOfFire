@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -24,6 +25,8 @@ public class BattleCharacterManager : MonoBehaviour
     public List<Button> EnemyButtons;
     public static BattleCharacterManager instance;
     public NewCharacterManager newCharacterManager;
+    public GameObject speedBackGround;
+    public GameObject BattleManagerGameObject;
     
     private void Awake()
     {
@@ -55,11 +58,13 @@ public class BattleCharacterManager : MonoBehaviour
         EnemyCharacters.Clear();
 
         Debug.Log($"All Characters Count: {allCharacters.Count}");
+        
 
         for (int i = 0; i < allCharacters.Count; i++)
         {   
             if (allCharacters[i] is CharacterAttributes character)
             {
+                character.energy = allCharacters[0].energy;
                 GameObject playerObj = Instantiate(PlayerCharacterPrefab, PlayerCharacterHorizontalLayout.transform);
                 playerObj.transform.Find("Image").gameObject.SetActive(false);
                 playerObj.transform.Find("fill").gameObject.SetActive(false);
@@ -122,7 +127,7 @@ public class BattleCharacterManager : MonoBehaviour
         }
     }
 
-    private void InitializeButtons()
+    private async void InitializeButtons()
     {
         foreach (var button in characterButtons)
         {
@@ -138,6 +143,10 @@ public class BattleCharacterManager : MonoBehaviour
             // });
             Debug.Log($"绑定角色按钮 {button.name} 的点击事件，索引 {index}");
         }
+        await Task.Delay(500);
+        speedBackGround.SetActive(true);
+        BattleManagerGameObject.SetActive(true);
+
     }
 
     // public void OpenConfigurator(int characterIndex)

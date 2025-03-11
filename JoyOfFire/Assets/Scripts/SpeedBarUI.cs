@@ -162,6 +162,7 @@ public class SpeedBarUI : MonoBehaviour
         {
             roundNumber++;
             Debug.Log($"进入第 {roundNumber} 回合！");
+            BattleManager.instance.UpdateTotalEnergy();
         }
     }
 

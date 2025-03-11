@@ -130,7 +130,7 @@ public class NewCharacterManager : MonoBehaviour
                 }],
                 ""icon"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
             },
-            ""talent_count1"": [""1.4814"", ""0.0000"", ""0"", ""0"", ""0"", ""51.0398"", ""1"", ""1""],
+            ""talent_count1"": [""1.4814"", ""0.0000"", ""0"", ""0"", ""0"", ""51.0398"", ""0"", ""0""],
             ""talent2"": null,
             ""talent_count2"": null,
             ""talent3"": null,

@@ -43,7 +43,8 @@ public class BattleManager : MonoBehaviour
     public GameObject HorizontalLayoutGroup;
     public GameObject RewardPrefab;
     public GameObject LosePanel;
-    
+    public int roundNumber = 1;
+    public int totalEnergy = 0;
     
     public Dictionary<String, int> treasures = new Dictionary<string, int>();
     private void Awake()
@@ -305,14 +306,21 @@ public class BattleManager : MonoBehaviour
             if (isUsingSkill)
             {
                 UseSkill(attacker, defender, selectedSkill,targetIsPlayer);
-                attacker.energy -= selectedSkill.skillCost;
+                foreach (CharacterAttributes character in BattleCharacterManager.instance.PlayerCharacters)
+                {
+                    character.energy -= selectedSkill.skillCost;
+                }
+                
             }
             else
             {
                 DealDamage(attacker, defender, 1f,targetIsPlayer);
                 if (attacker.energy < attacker.maxEnergy)
                 {
-                    attacker.energy += 1;
+                    foreach (CharacterAttributes character in BattleCharacterManager.instance.PlayerCharacters)
+                    {
+                        character.energy += 1;
+                    }
                 }
             }
 
@@ -325,8 +333,10 @@ public class BattleManager : MonoBehaviour
             if (isUsingSkill)
             {
                 UseSkill(attacker, defender, selectedSkill);
-                attacker.energy -= selectedSkill.skillCost;
-                Debug.LogError(attacker.characterName+ "energy: " + attacker.energy);
+                foreach (CharacterAttributes character in BattleCharacterManager.instance.PlayerCharacters)
+                {
+                    character.energy -= selectedSkill.skillCost;
+                }
 
             }
             else
@@ -334,8 +344,10 @@ public class BattleManager : MonoBehaviour
                 DealDamage(attacker, defender, 1f);
                 if (attacker.energy < attacker.maxEnergy)
                 {
-                    attacker.energy += 1;
-                    Debug.LogError(attacker.characterName+ "energy: " + attacker.energy);
+                    foreach (CharacterAttributes character in BattleCharacterManager.instance.PlayerCharacters)
+                    {
+                        character.energy += 1;
+                    }
 
                 }
             }
@@ -1097,7 +1109,20 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-
+    public void UpdateTotalEnergy()
+    {
+        try{
+            totalEnergy += BattleCharacterManager.instance.PlayerCharacters[0].energy;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+    }
+    public void calculateAverageEnergy()
+    {
+        EventManager.instance.calculateAverageEnergy(totalEnergy,roundNumber);
+    }
 
     public void EndTurn()
     {
@@ -1107,7 +1132,8 @@ public class BattleManager : MonoBehaviour
     }
     public void EndBattle(bool win)
     {
-
+        LevelEventTimer.instance.OnEventEnd();
+        calculateAverageEnergy();
         List<ICharacter> toRemove = new List<ICharacter>();
 
         foreach (ICharacter character in NewCharacterManager.instance.allCharacters)
@@ -1137,6 +1163,11 @@ public class BattleManager : MonoBehaviour
         if (win)
         {
             RewardPanel.SetActive(true);
+            
+            if(LevelEventTimer.instance.level == "3-21")
+            {
+                CloudSaveManager.Instance.IncrementSuccess(true);
+            }
                     
 
             foreach (Transform child in HorizontalLayoutGroup.transform)

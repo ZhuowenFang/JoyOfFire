@@ -40,6 +40,7 @@ public class CharacterDetail : MonoBehaviour
     public List<Image> skillIcons;
     public List<Text> skillNameTexts;
     public List<Text> skillDescriptionTexts;
+    public List<Text> skillCostTexts;
     public int levelItemCount;
     public TMP_Text LevelItemAmountText;
     public TMP_Text levelItemIconAmountText;
@@ -421,6 +422,7 @@ public class CharacterDetail : MonoBehaviour
             skillIcons[i].sprite = Resources.Load<Sprite>("defaultSkillIcon");
             skillNameTexts[i].text = "未获得";
             skillDescriptionTexts[i].text = "";
+            skillCostTexts[i].text = "";
         }
         
         for (int i = 0; i < character.skills.Count; i++)
@@ -430,6 +432,7 @@ public class CharacterDetail : MonoBehaviour
             {
                 skillNameTexts[index].text = character.skills[index].skillName;
                 skillDescriptionTexts[index].text = character.skills[index].skillDescription;
+                skillCostTexts[index].text = character.skills[index].skillCost.ToString();
                 if (!string.IsNullOrEmpty(character.skills[index].skillIcon))
                 {
                     StartCoroutine(ImageCache.GetTexture(character.skills[index].skillIcon, (Texture2D texture) =>

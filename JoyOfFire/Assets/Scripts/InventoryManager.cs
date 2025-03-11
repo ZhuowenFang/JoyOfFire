@@ -5,11 +5,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.AI;
 
 public class InventoryManager : MonoBehaviour
 {
     public GameObject inventoryPanel;
     private bool inventoryEnabled;
+    public Button toolButton;
+    public Button backButton;
 
     public ItemSlot[] itemSlots;
     public Image itemDesciptionImage;
@@ -30,6 +33,28 @@ public class InventoryManager : MonoBehaviour
         }
         itemDatabase.Initialize();
     }
+    
+    void Start()
+    {
+        toolButton.onClick.AddListener(OpenInventory);
+        backButton.onClick.AddListener(CloseInventory);
+    }
+    
+    public void OpenInventory()
+    {
+        inventoryPanel.SetActive(true);
+        Time.timeScale = 0;
+        initialNumbers();
+    }
+    
+    public void CloseInventory()
+    {
+        inventoryPanel.SetActive(false);
+        NavMeshAgent agent = GameObject.Find("Player").GetComponent<NavMeshAgent>();
+        agent.ResetPath();
+        Time.timeScale = 1;
+    }
+    
 
     // public void AddItem(string itemName, Sprite itemImage, string itemDescription)
     // {

@@ -30,7 +30,7 @@ public class DetailManager : MonoBehaviour
     public List<Text> skillNameTexts;
     public List<Text> skillDescriptionTexts;
     public List<Image> skillIcons;
-
+    public List<Text> skillCostTexts;
     public GameObject buffLayoutGroup;
     public GameObject buffPrefab;
     public static DetailManager instance;
@@ -40,6 +40,7 @@ public class DetailManager : MonoBehaviour
     public bool isEnemy = false;
     public Button switchButton;
     public Button backButton;
+    
     
     private void Awake()
     {
@@ -166,12 +167,14 @@ public class DetailManager : MonoBehaviour
                 skillNameTexts[i].text = "未获得";
                 skillDescriptionTexts[i].text = "";
                 skillIcons[i].gameObject.SetActive(false);
+                skillCostTexts[i].text = "";
             }
             for (int i = 0; i < cs.skills.Count; i++)
             {
                 skillNameTexts[i].text = cs.skills[i].skillName;
                 skillDescriptionTexts[i].text = cs.skills[i].skillDescription;
                 skillIcons[i].gameObject.SetActive(true);
+                skillCostTexts[i].text = cs.skills[i].skillCost.ToString();
                 StartCoroutine(ImageCache.GetTexture(cs.skills[i].skillIcon, (Texture2D texture) =>
                 {
                     if (texture != null)
@@ -225,12 +228,14 @@ public class DetailManager : MonoBehaviour
                 skillNameTexts[i].text = "未获得";
                 skillDescriptionTexts[i].text = "";
                 skillIcons[i].gameObject.SetActive(false);
+                skillCostTexts[i].text = "";
             }
             for (int i = 0; i < ms.skills.Count; i++)
             {
                 skillNameTexts[i].text = ms.skills[i].skillName;
                 skillDescriptionTexts[i].text = ms.skills[i].skillDescription;
                 skillIcons[i].gameObject.SetActive(false);
+                skillCostTexts[i].text = ms.skills[i].skillCost.ToString();
                 
             }
             foreach(Transform child in buffLayoutGroup.transform)

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Cinemachine;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -269,6 +270,7 @@ public class EventManager : MonoBehaviour
                 {
                     hex.playerInside = true;
                     Time.timeScale = 0;
+                    
                     TriggerHexEvent(hex);
                 }
             }
@@ -335,6 +337,7 @@ public class EventManager : MonoBehaviour
                 {
                     Debug.Log($"固定关卡 {level} 前置条件不满足，事件不触发。");
                     
+                    
                     Time.timeScale = 1;
                     return;
                 }
@@ -349,6 +352,7 @@ public class EventManager : MonoBehaviour
                 Debug.Log(level);
                 Debug.Log($"成功响应：{response}");
                 
+                LevelEventTimer.instance.OnLevelDataSuccess(level,false);
                 
                 
                 
@@ -531,6 +535,7 @@ public class EventManager : MonoBehaviour
             ChoiceDetail.onClick.AddListener( () =>
             {
                 ChoiceDetail.gameObject.SetActive(false);
+                LevelEventTimer.instance.OnEventEnd();
                 
                 if(levelOrder == "1" && !insideCave)
                 {
@@ -657,6 +662,7 @@ public class EventManager : MonoBehaviour
                                 finishedAPICalls++;
                                 if (finishedAPICalls >= totalAPICalls)
                                 {
+                                    LevelEventTimer.instance.OnLevelDataSuccess(level,true);
                                     SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
                                     EventPanel.SetActive(false);
                                 }
@@ -790,7 +796,8 @@ public class EventManager : MonoBehaviour
                 CharacterButton.SetActive(true);
                 ToolButton.SetActive(true);
                 BlessButton.SetActive(true);
-
+                NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
+                agent.ResetPath();
                 Time.timeScale = 1;
             });
             
@@ -814,11 +821,11 @@ public class EventManager : MonoBehaviour
         GameObject Level_boost = Instantiate(RewardPrefab, HorizontalLayoutGroup.transform);
         GameObject Break_through = Instantiate(RewardPrefab, HorizontalLayoutGroup.transform);
         Text Level_boostText = Level_boost.transform.Find("name").GetComponent<Text>();
-        InventoryManager.instance.ObtainItem("Level_boost",30);
+        InventoryManager.instance.ObtainItem("Level_boost",15);
         Level_boostText.text = InventoryManager.instance.activeItems["Level_boost"].item.data.chineseName;
         Image Level_boostImage = Level_boost.transform.Find("Image").GetComponent<Image>();
         Level_boostImage.sprite = InventoryManager.instance.activeItems["Level_boost"].item.data.icon;
-        Level_boost.transform.Find("amount").GetComponent<Text>().text = 30.ToString();
+        Level_boost.transform.Find("amount").GetComponent<Text>().text = 15.ToString();
         Text nameText = Break_through.transform.Find("name").GetComponent<Text>();
         InventoryManager.instance.ObtainItem("Break_through",6);
         nameText.text = InventoryManager.instance.activeItems["Break_through"].item.data.chineseName;
@@ -863,6 +870,11 @@ public class EventManager : MonoBehaviour
 
         Destroy(instance);
     }
-
+    public void calculateAverageEnergy(int energy, int round)
+    {
+        float averageEnergy = (float)energy / round;
+        string key = level + "_Cost_average";
+        CloudSaveManager.Instance.UpdateLevelField(key, averageEnergy);
+    }
 
 }

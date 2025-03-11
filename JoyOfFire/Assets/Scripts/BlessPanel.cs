@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class BlessPanel : MonoBehaviour
@@ -106,5 +107,7 @@ public class BlessPanel : MonoBehaviour
     {
         blessPanel.SetActive(false);
         Time.timeScale = 1f;
+        NavMeshAgent agent = GameObject.Find("Player").GetComponent<NavMeshAgent>();
+        agent.ResetPath();
     }
 }
