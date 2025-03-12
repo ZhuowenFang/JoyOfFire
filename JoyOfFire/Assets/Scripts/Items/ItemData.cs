@@ -13,5 +13,6 @@ public class ItemData : ScriptableObject
     public ItemEffectType effectType;
     public Sprite icon;
     public bool useCustomScript = false;  // 新增：是否使用自定义脚本
-    public string itemScriptName;         // 仅当 useCustomScript 为 true 时使用
+    public string itemScriptName;
+    public string itemEffect;
 }

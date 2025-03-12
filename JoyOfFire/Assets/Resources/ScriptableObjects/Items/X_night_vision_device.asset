@@ -15,8 +15,10 @@ MonoBehaviour:
   itemName: X_night_vision_device
   chineseName: "X\u4E8B\u52A1\u6240\u8BD5\u5236\u591C\u89C6\u4EEA"
   description: "X\u4E8B\u52A1\u6240\u7814\u53D1\u79D1\u4E13\u95E8\u5236\u4F5C\u7684\u88C5\u5907\uFF0C\u7528\u4E8E\u8FDB\u884C\u591C\u95F4\u8C03\u67E5\uFF0C\u516B\u9636\u8C03\u67E5\u5458\u65B9\u53EF\u7533\u9886"
+  IsConsumable: 0
   type: 1
   effectType: 0
   icon: {fileID: 21300000, guid: 0f10df9b498ebaf4cb2e2da00f0403ef, type: 3}
   useCustomScript: 0
   itemScriptName: 
+  itemEffect: "\u63A2\u7D22\u6D1E\u7A74\u65F6\u83B7\u5F97+50%\u7684\u89C6\u91CE"

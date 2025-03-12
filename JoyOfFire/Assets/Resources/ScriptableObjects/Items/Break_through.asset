@@ -21,3 +21,4 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 8053ea5b69924d6438f93e0e055f0522, type: 3}
   useCustomScript: 0
   itemScriptName: 
+  itemEffect: "\u4F7F\u8C03\u67E5\u5458\u7A81\u78341\u6B21\u3002"
