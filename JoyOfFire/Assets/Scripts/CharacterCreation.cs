@@ -276,11 +276,11 @@ public class CharacterCreation : MonoBehaviour
         }
         characterFeaturePanel.SetActive(false);
         WaitingPanel.SetActive(true);
-        WaitingPanel.transform.Find("Text (Legacy)").GetComponent<TMP_Text>().text = "创建中...";
+        WaitingPanel.transform.Find("Text (Legacy)").GetComponent<TMP_Text>().text = "创建中，去逛逛吧...";
         // backButton.interactable = true;
         ClassManager.CharacterCreationData characterCreationData = new ClassManager.CharacterCreationData
         {
-            userId = "1",
+            userId = LoginManager.instance.userId,
             sex = selectedGender,
             profession = profession,
             clothes = clothes,
@@ -333,7 +333,7 @@ public class CharacterCreation : MonoBehaviour
                 CloudSaveManager.Instance.UpdateCreateCount();
                 await Task.Delay(500);
                 WaitingPanel.SetActive(false);
-
+        
         
             },
             onError: async (error) =>
@@ -387,7 +387,8 @@ public class CharacterCreation : MonoBehaviour
         //
         // CharacterDetail.instance.Role.text = selectedProfession;
         // character.role = selectedProfession;
-        //
+        // NewCharacterManager.instance.InitializeButtons();
+        
         
         
 
@@ -418,10 +419,10 @@ public class CharacterCreation : MonoBehaviour
         public string message;
         public ClassManager.CharacterData data;
     }
-    public class CharacterUpdateResponse
-    {
-        public string code;
-        public string message;
-        public string data;
-    }
+    // public class CharacterUpdateResponse
+    // {
+    //     public string code;
+    //     public string message;
+    //     public string data;
+    // }
 }

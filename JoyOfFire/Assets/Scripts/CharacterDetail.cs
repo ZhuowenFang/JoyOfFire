@@ -197,14 +197,29 @@ public class CharacterDetail : MonoBehaviour
         currentCharacter.star += 1;
 
         updateStarArea();
+        Debug.Log(JsonUtility.ToJson(characterUpdateData));
+
         APIManager.instance.UpdateCharacter(
             JsonUtility.ToJson(characterUpdateData),
             onSuccess: (response) =>
             {
-                Debug.Log(JsonUtility.ToJson(characterUpdateData));
-                var characterResponse = JsonConvert.DeserializeObject<CharacterCreation.CharacterUpdateResponse>(response);
-                if (characterResponse.code != "00000")
+                Debug.Log(response);
+                try
+                {                
+                    var characterResponse = JsonConvert.DeserializeObject<CharacterCreation.CharacterAttributesResponse>(response);
+                    if (characterResponse.code != "00000")
+                    {
+                        updating = false;
+                        EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f, "角色突破失败"));
+                        currentCharacter.star -= 1;
+                        updateStarArea();
+                        Debug.LogError($"Error Update character: {response}");
+                        return;
+                    }
+                }
+                catch (Exception e)
                 {
+                    Debug.LogError("Catch Exception: " + e.Message);
                     updating = false;
                     EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f, "角色突破失败"));
                     currentCharacter.star -= 1;
@@ -212,6 +227,7 @@ public class CharacterDetail : MonoBehaviour
                     Debug.LogError($"Error Update character: {response}");
                     return;
                 }
+                
                 
                 EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f, "角色突破成功"));
                 switch (currentCharacter.star)
@@ -532,27 +548,26 @@ public class CharacterDetail : MonoBehaviour
             skillIcons[i].sprite = Resources.Load<Sprite>("defaultSkillIcon");
             skillNameTexts[i].text = "未获得";
             skillDescriptionTexts[i].text = "";
+            skillCostTexts[i].text = "";
         }
         for (int i = 0; i < character.skills.Count; i++)
         {
-            if (!String.IsNullOrEmpty(character.skills[i].skillName))
+            int index = i; // 捕获当前索引
+            if (!string.IsNullOrEmpty(character.skills[index].skillName))
             {
-                skillNameTexts[i].text = character.skills[i].skillName;
-                skillDescriptionTexts[i].text = character.skills[i].skillDescription;
-                if (!String.IsNullOrEmpty(character.skills[i].skillIcon))
+                skillNameTexts[index].text = character.skills[index].skillName;
+                skillDescriptionTexts[index].text = character.skills[index].skillDescription;
+                skillCostTexts[index].text = character.skills[index].skillCost.ToString();
+                if (!string.IsNullOrEmpty(character.skills[index].skillIcon))
                 {
-                    // StartCoroutine(APIManager.instance.LoadImage(character.skills[i].skillIcon, skillIcons[i]));
-                    StartCoroutine(ImageCache.GetTexture(character.skills[i].skillIcon, (Texture2D texture) =>
+                    StartCoroutine(ImageCache.GetTexture(character.skills[index].skillIcon, (Texture2D texture) =>
                     {
                         if (texture != null)
                         {
-                            skillIcons[i].sprite = Sprite.Create(texture, 
-                                new Rect(0, 0, texture.width, texture.height), 
-                                new Vector2(0.5f, 0.5f));
+                            skillIcons[index].sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                         }
                     }));
                 }
-
             }
         }
         UpdateBreakThroughOptionButtonStatus();

@@ -80,19 +80,23 @@ public class NewCharacterManager : MonoBehaviour
         replaceConfirmButton.onClick.AddListener(() =>
         {
             int index = ReplaceButtonGroup.instance.buttons.IndexOf(ReplaceButtonGroup.instance.selectedButton);
+            ReplaceButton.gameObject.SetActive(true);
             characterCreationPanel.SetActive(true);
             characterFeaturePanel.SetActive(false);
             characterDetailPanel.SetActive(false);
             ReplacePanel.SetActive(false);
             CharacterAttributes removedCharacter = allCharacters[index] as CharacterAttributes;
             DeleteCharacter(removedCharacter);
+            ReplaceButtonGroup.instance.reset();
+            ReplaceButtonGroup.instance.buttons.Clear();
         });
         
         ReplaceCancelButton.onClick.AddListener(() =>
         {
             ReplaceButton.gameObject.SetActive(true);
             ReplacePanel.SetActive(false);
-            
+            ReplaceButtonGroup.instance.reset();
+            ReplaceButtonGroup.instance.buttons.Clear();
         });
 
 
@@ -106,6 +110,7 @@ public class NewCharacterManager : MonoBehaviour
         characterCreationPanel.SetActive(true);
         characterFeaturePanel.SetActive(false);
         characterDetailPanel.SetActive(false);
+        
     }
 
     public void createInitialCharacter()
@@ -141,13 +146,28 @@ public class NewCharacterManager : MonoBehaviour
         var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
         
         var character = ConvertToCharacterAttributes(characterResponse);
-        character.user_id = "1";
+        character.user_id = LoginManager.instance.userId;
         character.role = "时光";
         character.id = "1";
         character.character_id = "10";
         AddCharacter(character);
         
         CharacterDetail.instance.Role.text = "时光";        
+    }
+    
+    public void UpdateCharacterButtonInteractable()
+    {
+        for (int i = 0; i < characterIndexButtons.Count; i++)
+        {
+            if (i < allCharacters.Count + 1)
+            {
+                characterIndexButtons[i].interactable = true;
+            }
+            else
+            {
+                characterIndexButtons[i].interactable = false;
+            }
+        }
     }
     public void InitializeButtons()
     {
@@ -173,6 +193,7 @@ public class NewCharacterManager : MonoBehaviour
             // waitPanel.SetActive(false);
 
         }
+        UpdateCharacterButtonInteractable();
     }
 
     private void OnCharacterButtonClicked(int index)

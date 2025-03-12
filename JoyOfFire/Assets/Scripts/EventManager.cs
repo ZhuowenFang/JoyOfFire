@@ -104,19 +104,19 @@ public class EventManager : MonoBehaviour
         if (levelOrder == "1" && !insideCave)
         {
             GameObject newProgress = Instantiate(progressTextPrefab, progressLayout.transform);
-            newProgress.GetComponent<Text>().text = $"梦境岛东部：" + current1 + "/" + max1;
+            newProgress.GetComponent<Text>().text = $"梦镜岛东部：" + current1 + "/" + max1;
         }
         else if (levelOrder == "1" && insideCave)
         {
             GameObject newProgress = Instantiate(progressTextPrefab, progressLayout.transform);
-            newProgress.GetComponent<Text>().text = $"梦境岛东部：" + current1 + "/" + max1;
+            newProgress.GetComponent<Text>().text = $"梦镜岛东部：" + current1 + "/" + max1;
             GameObject newProgress1 = Instantiate(progressTextPrefab, progressLayout.transform);
             newProgress1.GetComponent<Text>().text = $"阴暗洞穴：" + current2 + "/" + max2;
         }
         else if (levelOrder == "2" || levelOrder == "3")
         {
             GameObject newProgress = Instantiate(progressTextPrefab, progressLayout.transform);
-            newProgress.GetComponent<Text>().text = $"梦境岛东部：" + current1 + "/" + max1;
+            newProgress.GetComponent<Text>().text = $"梦镜岛东部：" + current1 + "/" + max1;
             GameObject newProgress1 = Instantiate(progressTextPrefab, progressLayout.transform);
             newProgress1.GetComponent<Text>().text = $"阴暗洞穴：" + current2 + "/" + max2;
             GameObject newProgress2 = Instantiate(progressTextPrefab, progressLayout.transform);
@@ -559,22 +559,7 @@ public class EventManager : MonoBehaviour
                 {
                     NextStage = optionResult["next_stage"].ToString();
                 }
-                if(NextStage.Split('-')[0] != levelOrder)
-                {
-                    switch (NextStage.Split('-')[0])
-                    {
-                        case "2":
-                            MapTransitionManager.instance.TransitionMapWithFade(3,3);
-                            insideCave = false;
-                            levelOrder = "2";
-                            updateProgress();
-                            break;
-                        case "3":
-                            MapTransitionManager.instance.TransitionMapWithFade(4,4);
-                            break;
-        
-                    }
-                }
+                
                 string experienceToAdd = "";
                 if (optionKey == "option_a_res")
                 {
@@ -662,9 +647,25 @@ public class EventManager : MonoBehaviour
                                 finishedAPICalls++;
                                 if (finishedAPICalls >= totalAPICalls)
                                 {
+                                    
                                     LevelEventTimer.instance.OnLevelDataSuccess(level,true);
                                     SceneManager.LoadScene("Battle", LoadSceneMode.Additive);
                                     EventPanel.SetActive(false);
+                                    if (NextStage.Split('-')[0] != levelOrder)
+                                    {
+                                        switch (NextStage.Split('-')[0])
+                                        {
+                                            case "2":
+                                                MapTransitionManager.instance.TransitionMapWithFade(3, 3);
+                                                insideCave = false;
+                                                levelOrder = "2";
+                                                updateProgress();
+                                                break;
+                                            case "3":
+                                                MapTransitionManager.instance.TransitionMapWithFade(4, 4);
+                                                break;
+                                        }
+                                    }
                                 }
                             },
                             (error) =>
@@ -677,6 +678,21 @@ public class EventManager : MonoBehaviour
                 }
                 else
                 {
+                    if (NextStage.Split('-')[0] != levelOrder)
+                    {
+                        switch (NextStage.Split('-')[0])
+                        {
+                            case "2":
+                                MapTransitionManager.instance.TransitionMapWithFade(3, 3);
+                                insideCave = false;
+                                levelOrder = "2";
+                                updateProgress();
+                                break;
+                            case "3":
+                                MapTransitionManager.instance.TransitionMapWithFade(4, 4);
+                                break;
+                        }
+                    }
                     EventPanel.SetActive(false);
                 }
                 
@@ -875,6 +891,17 @@ public class EventManager : MonoBehaviour
         float averageEnergy = (float)energy / round;
         string key = level + "_Cost_average";
         CloudSaveManager.Instance.UpdateLevelField(key, averageEnergy);
+    }
+
+    public void stopTime()
+    {
+        Time.timeScale = 0;
+    }
+    public void resumeTime()
+    {
+        NavMeshAgent agent = player.GetComponent<NavMeshAgent>();
+        agent.ResetPath();
+        Time.timeScale = 1;
     }
 
 }

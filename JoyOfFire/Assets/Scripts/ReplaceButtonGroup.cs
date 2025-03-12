@@ -103,4 +103,17 @@ public class ReplaceButtonGroup : MonoBehaviour
         color.a = alpha;
         image.color = color;
     }
+    
+    public void reset()
+    {
+        selectedButton = null;
+        foreach (var button in buttons)
+        {
+            SetButtonColor(button, defaultColor);
+        }
+        if (ConfirmButton != null)
+        {
+            ConfirmButton.interactable = false;
+        }
+    }
 }

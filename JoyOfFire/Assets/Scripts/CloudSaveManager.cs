@@ -14,6 +14,16 @@ public class CloudSaveManager : MonoBehaviour
     // 本地缓存数据，每个字段单独存储
     private Dictionary<string, object> userData = new Dictionary<string, object>();
     public Dictionary<string, string[]> levelFieldKeys = new Dictionary<string, string[]>();
+    private readonly string[] loginStatusKeys = new string[]
+    {
+        "Login_3_12",
+        "Login_3_13",
+        "Login_3_14",
+        "Login_3_15",
+        "Login_3_16",
+        "Login_3_17",
+        "Login_3_18"
+    };
     public void InitializeLevelFieldKeys()
     {
         // 第一层：1-1 到 1-21
@@ -49,6 +59,7 @@ public class CloudSaveManager : MonoBehaviour
     private const string Key_Mmcz_success = "Mmcz_success";
     private const string Key_Mmcz_create = "Mmcz_create";
     private const string Key_Mmcz_entries = "Mmcz_entries";
+    private const string Key_User_Id = "User_Id";
 
     private async void Awake()
     {
@@ -59,15 +70,21 @@ public class CloudSaveManager : MonoBehaviour
             InitializeLevelFieldKeys();
 
             await UnityServices.InitializeAsync();
+
             if (!AuthenticationService.Instance.IsSignedIn)
             {
+                
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
 
             // 加载数据：这里我们直接从 Cloud Save 加载各个键的数据
             await LoadUserData();
-
-            // 如果没有数据就初始化默认值
+            
+            if(!userData.ContainsKey(Key_User_Id))
+            {
+                userData[Key_User_Id] = LoginManager.instance.userId;
+            }
+            
             if (!userData.ContainsKey(Key_Mmcz_time))
                 userData[Key_Mmcz_time] = "[]";
             if (!userData.ContainsKey(Key_Mmcz_success))
@@ -79,6 +96,7 @@ public class CloudSaveManager : MonoBehaviour
                 userData[Key_Mmcz_entries] = 0;
                 // await AppendAllLevelFieldKeys();
             }
+            await InitializeLoginStatusKeys();
             await AppendLevelTime(false);
             await AppendCreateCount(false);
             await UpdateLevelTime(0f, false);
@@ -86,6 +104,7 @@ public class CloudSaveManager : MonoBehaviour
             await IncrementEntries(false);
             await AppendAllLevelFieldKeys();
             await updateAllLevelFieldKeys();
+            await UpdateTodayLoginStatus();
 
             // 登录时追加新数据
             
@@ -96,7 +115,56 @@ public class CloudSaveManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+    private async Task InitializeLoginStatusKeys()
+    {
+        bool needSave = false;
+        foreach (string key in loginStatusKeys)
+        {
+            if (!userData.ContainsKey(key))
+            {
+                userData[key] = 0;
+                await UpdateSingleField(key, userData[key]);
+                Debug.Log($"Initialized {key} to 0");
+                needSave = true;
+            }
+        }
+        if (needSave)
+        {
+            await SaveUserData();
+        }
+    }private async Task UpdateTodayLoginStatus()
+    {
+        // 这里假设当前月份和日期可以通过 DateTime.Now 获取，并格式化为 "3-14" 或 "3.14"，
+        // 根据你的 key 命名方式，这里使用 "Login_3_14"
+        DateTime now = DateTime.Now;
+        // 如果只需要处理3月12到3月18的情况
+        if (now.Month == 3 && now.Day >= 12 && now.Day <= 18)
+        {
+            string todayKey = $"Login_3_{now.Day}";
+            if (userData.ContainsKey(todayKey))
+            {
+                // 如果状态尚未更新为 1，则更新
+                int currentValue = Convert.ToInt32(userData[todayKey]);
+                if (currentValue != 1)
+                {
+                    userData[todayKey] = 1;
+                    await UpdateSingleField(todayKey, userData[todayKey]);
+                    Debug.Log($"{todayKey} updated to 1");
+                }
+            }
+            else
+            {
+                // 如果没有该 key（一般不应该发生），则初始化并更新
+                userData[todayKey] = 1;
+                await UpdateSingleField(todayKey, userData[todayKey]);
+                Debug.Log($"{todayKey} initialized and updated to 1");
+            }
+        }
+        else
+        {
+            Debug.LogError("Today is not in the range of 3-12 to 3-18, no update needed.");
+        }
+    }
     public async Task updateAllLevelFieldKeys()
     {
         foreach (var kvp in levelFieldKeys)
@@ -115,7 +183,7 @@ public class CloudSaveManager : MonoBehaviour
     public async Task LoadUserData()
 {
     // 构造需要加载的键集合，包括静态字段和动态关卡键
-    HashSet<string> keysToLoad = new HashSet<string> { Key_Mmcz_success, Key_Mmcz_entries, Key_Mmcz_time, Key_Mmcz_create };
+    HashSet<string> keysToLoad = new HashSet<string> { Key_Mmcz_success, Key_Mmcz_entries, Key_Mmcz_time, Key_Mmcz_create, Key_User_Id };
     
         foreach (var kvp in levelFieldKeys)
         {
@@ -179,6 +247,11 @@ public class CloudSaveManager : MonoBehaviour
             {
                 userData[key] = "[]";
                 Debug.Log($"Initialized {key} to default: []");
+            }
+            else if (key == Key_User_Id)
+            {
+                userData[key] = LoginManager.instance.userId;
+                Debug.Log($"Initialized {key} to default: {LoginManager.instance.userId}");
             }
         }
     }
