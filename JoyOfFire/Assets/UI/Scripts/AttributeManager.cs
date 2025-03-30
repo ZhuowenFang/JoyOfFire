@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,134 +15,42 @@ public class AttributeManager : MonoBehaviour
     public TMP_Text intelligenceText;
 
     public TMP_Text totalPointsText;
-    
-    public TMP_Text currentStrengthText;
-    public TMP_Text currentAgilityText;
-    public TMP_Text currentIntelligenceText;
 
-    private int totalPoints;
-    private int allocatedPoints = 0;
+    private int totalPoints = 20;  // ◊‹ Ù–‘µ„ ˝
+    private int allocatedPoints = 0;  // “—∑÷≈‰µƒµ„ ˝
 
     private float lastStrengthValue;
     private float lastAgilityValue;
     private float lastIntelligenceValue;
-    private CharacterAttributes currentCharacter;
-
-    private float strengthChangeValuePerPoint;
-    private float agilityChangeValuePerPoint;
-    private float intelligenceChangeValuePerPoint;
-    public Button confirmButton;
-    public GameObject ATResultPanel;
-    public TMP_Text ATResultStrengthText;
-    public TMP_Text ATResultAgilityText;
-    public TMP_Text ATResultIntelligenceText;
 
     void Start()
     {
-        Initial();
-
-        
-        strengthSlider.onValueChanged.AddListener(delegate { OnSliderChanged(strengthSlider, ref lastStrengthValue); });
-        agilitySlider.onValueChanged.AddListener(delegate { OnSliderChanged(agilitySlider, ref lastAgilityValue); });
-        intelligenceSlider.onValueChanged.AddListener(delegate { OnSliderChanged(intelligenceSlider, ref lastIntelligenceValue); });
-        
-        confirmButton.onClick.AddListener(ConfirmAttributeAllocation);
-        
-    }
-
-   public void Initial()
-{
-    currentCharacter = CharacterDetail.instance.currentCharacter;
-    currentStrengthText.text = currentCharacter.strength.ToString("0.0");
-    currentAgilityText.text = currentCharacter.agility.ToString("0.0");
-    currentIntelligenceText.text = currentCharacter.intelligence.ToString("0.0");
-
-    totalPoints = currentCharacter.attributePoints;
-
-    lastStrengthValue = strengthSlider.value;
-    lastAgilityValue = agilitySlider.value;
-    lastIntelligenceValue = intelligenceSlider.value;
-
-    float strengthDiff = currentCharacter.potentialStrength - currentCharacter.initialStrength;
-    float agilityDiff = currentCharacter.potentialAgility - currentCharacter.initialAgility;
-    float intelligenceDiff = currentCharacter.potentialIntelligence - currentCharacter.initialIntelligence;
-
-    if (Mathf.Approximately(strengthDiff, 0))
-    {
-        strengthChangeValuePerPoint = 0;
-        strengthSlider.maxValue = 0;
-        strengthSlider.interactable = false;
-    }
-    else
-    {
-        strengthChangeValuePerPoint = strengthDiff / 20f;
-        strengthSlider.maxValue = (currentCharacter.potentialStrength - currentCharacter.strength) / strengthChangeValuePerPoint;
-        strengthSlider.interactable = true;
-    }
-
-    if (Mathf.Approximately(agilityDiff, 0))
-    {
-        agilityChangeValuePerPoint = 0;
-        agilitySlider.maxValue = 0;
-        agilitySlider.interactable = false;
-    }
-    else
-    {
-        agilityChangeValuePerPoint = agilityDiff / 20f;
-        agilitySlider.maxValue = (currentCharacter.potentialAgility - currentCharacter.agility) / agilityChangeValuePerPoint;
-        agilitySlider.interactable = true;
-    }
-
-    if (Mathf.Approximately(intelligenceDiff, 0))
-    {
-        intelligenceChangeValuePerPoint = 0;
-        intelligenceSlider.maxValue = 0;
-        intelligenceSlider.interactable = false;
-    }
-    else
-    {
-        intelligenceChangeValuePerPoint = intelligenceDiff / 20f;
-        intelligenceSlider.maxValue = (currentCharacter.potentialIntelligence - currentCharacter.intelligence) / intelligenceChangeValuePerPoint;
-        intelligenceSlider.interactable = true;
-    }
-
-    UpdateUI();
-}
-
-    public void ReAssignSliders()
-    {
-        strengthSlider.value = 0;
-        agilitySlider.value = 0;
-        intelligenceSlider.value = 0;
+        // ≥ı ºªØŒƒ±æ
         lastStrengthValue = strengthSlider.value;
         lastAgilityValue = agilitySlider.value;
         lastIntelligenceValue = intelligenceSlider.value;
+        UpdateUI();
+
+        // º‡Ã˝ Slider ±‰ªØ
+        strengthSlider.onValueChanged.AddListener(delegate { OnSliderChanged(strengthSlider, ref lastStrengthValue, strengthText, "¡¶¡ø"); });
+        agilitySlider.onValueChanged.AddListener(delegate { OnSliderChanged(agilitySlider, ref lastAgilityValue, agilityText, "√ÙΩ›"); });
+        intelligenceSlider.onValueChanged.AddListener(delegate { OnSliderChanged(intelligenceSlider, ref lastIntelligenceValue, intelligenceText, "÷«¡¶"); });
     }
 
-    private void Update()
+    void OnSliderChanged(Slider slider, ref float lastValue, TMP_Text text, string attributeName)
     {
-        if (allocatedPoints == 0)
-        {
-            confirmButton.interactable = false;
-        }
-        else
-        {
-            confirmButton.interactable = true;
-        }
-    }
-
-    void OnSliderChanged(Slider slider, ref float lastValue)
-    {
+        // º∆À„“—∑÷≈‰µƒµ„ ˝
         int newAllocatedPoints = (int)(strengthSlider.value + agilitySlider.value + intelligenceSlider.value);
         int remainingPoints = totalPoints - newAllocatedPoints;
 
+        // »Áπ˚ £”‡µ„ ˝≤ª◊„£¨≤¢«“ÕÊº“ ‘Õº‘ˆº”÷µ£¨‘Úª÷∏¥…œ¥Œµƒ÷µ
         if (remainingPoints < 0 && slider.value > lastValue)
         {
-            slider.value = lastValue;
+            slider.value = lastValue;  // ªπ‘≠Œ™…œ“ª¥Œµƒ÷µ
         }
         else
         {
-            lastValue = slider.value;
+            lastValue = slider.value;  // º«¬º–¬÷µ
         }
         UpdateUI();
     }
@@ -151,67 +58,18 @@ public class AttributeManager : MonoBehaviour
 
     void UpdateUI()
     {
+        // º∆À„“—∑÷≈‰µƒµ„ ˝
         allocatedPoints = (int)(strengthSlider.value + agilitySlider.value + intelligenceSlider.value);
+        int remainingPoints = totalPoints - allocatedPoints;
 
-        strengthText.text = "+ " + (strengthSlider.value * strengthChangeValuePerPoint).ToString("0.0");
-        agilityText.text = "+ " + (agilitySlider.value * agilityChangeValuePerPoint).ToString("0.0");
-        intelligenceText.text = "+ " + (intelligenceSlider.value * intelligenceChangeValuePerPoint).ToString("0.0");
+        // ∏¸–¬ Ù–‘÷µŒƒ±æ
+        strengthText.text = "+ " + strengthSlider.value.ToString("0");
+        agilityText.text = "+ " + agilitySlider.value.ToString("0");
+        intelligenceText.text = "+ " + intelligenceSlider.value.ToString("0");
 
-        totalPointsText.text = "ÂÖ±Êã•Êúâ" + totalPoints.ToString("0") + "‰∏™Â±ûÊÄßÁÇπÔºåÂ∑≤ÂàÜÈÖç" + allocatedPoints.ToString("0") + "‰∏™Â±ûÊÄßÁÇπ„ÄÇ";
+        // ∏¸–¬◊‹ Ù–‘µ„∫Õ“—∑÷≈‰µ„ ˝
+        totalPointsText.text = "π≤”µ”–" + totalPoints.ToString("0") + "∏ˆ Ù–‘µ„£¨“—∑÷≈‰" + allocatedPoints.ToString("0") + "∏ˆ Ù–‘µ„°£";
 
-    }
-    
-    void ConfirmAttributeAllocation()
-    {
-        if (allocatedPoints == 0)
-        {
-            Debug.LogError("No attribute points allocated.");
-            return;
-        }
-        float currentStrength = currentCharacter.strength;
-        float currentAgility = currentCharacter.agility;
-        float currentIntelligence = currentCharacter.intelligence;
-        
-        
-        
-        currentCharacter.strength += strengthSlider.value * strengthChangeValuePerPoint;
-        Debug.Log($"Strength: {currentCharacter.strength}");
-        currentCharacter.agility += agilitySlider.value * agilityChangeValuePerPoint;
-        Debug.Log($"Agility: {currentCharacter.agility}");
-        currentCharacter.intelligence += intelligenceSlider.value * intelligenceChangeValuePerPoint;
-        Debug.Log($"Intelligence: {currentCharacter.intelligence}");
-        currentCharacter.attributePoints -= allocatedPoints;
-        totalPoints = currentCharacter.attributePoints;
-        ReAssignSliders();
-
-        CharacterDetail.instance.UpdateCharacterDetails(currentCharacter);
-        
-        ATResultPanel.SetActive(true);
-        if (currentStrength == currentCharacter.strength)
-        {
-            ATResultStrengthText.text = "ÂäõÈáè      " + currentStrength.ToString("0.0");
-        }
-        else
-        {
-            ATResultStrengthText.text = "ÂäõÈáè      " + currentStrength.ToString("0.0") + "    >>>    " + currentCharacter.strength.ToString("0.0");
-        }
-        if (currentAgility == currentCharacter.agility)
-        {
-            ATResultAgilityText.text = "ÊïèÊç∑      " + currentAgility.ToString("0.0");
-        }
-        else
-        {
-            ATResultAgilityText.text = "ÊïèÊç∑      " + currentAgility.ToString("0.0") + "    >>>    " + currentCharacter.agility.ToString("0.0");
-        }
-        if (currentIntelligence == currentCharacter.intelligence)
-        {
-            ATResultIntelligenceText.text = "Êô∫Âäõ      " + currentIntelligence.ToString("0.0");
-        }
-        else
-        {
-            ATResultIntelligenceText.text = "Êô∫Âäõ      " + currentIntelligence.ToString("0.0") + "    >>>    " + currentCharacter.intelligence.ToString("0.0");
-        }
-        
     }
 
 }

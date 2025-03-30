@@ -1,13 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 public class BattleManager : MonoBehaviour
 {
@@ -17,7 +14,6 @@ public class BattleManager : MonoBehaviour
     public Button endTurnButton;
     public List<Button> characterButtons;
     public List<Button> enemyButtons;
-    public GameObject buffIconPrefab;
 
     private bool isSelectingEnemy = false;
     private float animationTimer = 0f;
@@ -33,20 +29,6 @@ public class BattleManager : MonoBehaviour
     public GameObject skillButtonPrefab;
     public Transform skillButtonParent;
     private List<Button> skillButtons = new List<Button>();
-    private bool skippingTurn = false;
-    private SkillAttributes selectedSkill;
-    public bool canUseSkill = true;
-    private bool enemyHasTaunt = false;
-    public ICharacter randomTarget;
-    
-    public GameObject RewardPanel;
-    public GameObject HorizontalLayoutGroup;
-    public GameObject RewardPrefab;
-    public GameObject LosePanel;
-    public int roundNumber = 1;
-    public int totalEnergy = 0;
-    
-    public Dictionary<String, int> treasures = new Dictionary<string, int>();
     private void Awake()
     {
         instance = this;
@@ -54,24 +36,18 @@ public class BattleManager : MonoBehaviour
 
     void Start()
     {
-        foreach (var button in BattleCharacterManager.instance.characterButtons)
+        foreach (var button in CharacterManager.instance.characterButtons)
         {
-            button.transform.Find("Image").gameObject.SetActive(true);
-            button.transform.Find("fill").gameObject.SetActive(true);
             characterButtons.Add(button);
         }
 
-        foreach (var button in BattleCharacterManager.instance.EnemyButtons)
+        foreach (var button in CharacterManager.instance.EnemyButtons)
         {
-            button.transform.Find("Image").gameObject.SetActive(true);
-            button.transform.Find("fill").gameObject.SetActive(true);
             enemyButtons.Add(button);
         }
         foreach (var button in characterButtons)
         {
             button.onClick.RemoveAllListeners();
-            
-
         }
     
         for (int i = 0; i < enemyButtons.Count; i++)
@@ -85,73 +61,61 @@ public class BattleManager : MonoBehaviour
             isUsingSkill = false;
             StartEnemySelection();
         });
-        UpdateButtonHealthFill();
-        UpdateButtonSheildFill();
+        
+
+        // skillButton.onClick.AddListener(() =>
+        // {
+        //     isUsingSkill = true;
+        //     StartEnemySelection();
+        // });
         endTurnButton.onClick.AddListener(EndTurn);
-        StartCoroutine(StartNextTurnCoroutine());
+        StartNextTurn();
     }
 
-    public IEnumerator StartNextTurnCoroutine()
+    public async void StartNextTurn()
     {
-        canUseSkill = true;
         actionPanel.gameObject.SetActive(false);
         ResetAllCharacterSizes();
-    
+        
         ICharacter nextCharacter = speedBarUI.GetNextCharacter();
         if (nextCharacter == null)
         {
             Debug.Log("没有角色进行回合！");
-            yield break;
+            return;
         }
-    
+
+        Debug.Log($"{nextCharacter.index} 开始行动！");
+
         int characterIndex = nextCharacter.index;
-        // 使用 WaitForSeconds 延迟（受 Time.timeScale 影响）
-        yield return new WaitForSeconds(2f);
-    
-        if (characterIndex >= BattleCharacterManager.instance.PlayerCharacters.Count)
+
+        if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count)
         {
             actionPanel.gameObject.SetActive(false);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
-            yield return new WaitForSeconds(2f);
-            ProcessBuffs(nextCharacter);
-        
+            await Task.Delay(2000);
             BaseEnemy enemyScript = characterButtons[characterIndex].GetComponent<BaseEnemy>();
             if (enemyScript != null)
             {
-                if (skippingTurn)
-                {
-                    yield return new WaitForSeconds(1f);
-                    skippingTurn = false;
-                    EndTurn();
-                    yield break;
-                }
                 enemyScript.TakeTurn();
             }
             else
             {
                 Debug.LogWarning($"Enemy {characterIndex} 没有 BaseEnemy 组件！");
                 EndTurn();
-            }
+            }            
+            Debug.Log($"敌人 {characterIndex} 行动完成！");
+
         }
         else
         {
-            ProcessBuffs(nextCharacter);
-    
-            if (skippingTurn)
-            {
-                yield return new WaitForSeconds(1f);
-                skippingTurn = false;
-                EndTurn();
-                yield break;
-            }
             actionPanel.gameObject.SetActive(true);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
             energyText.text = $"{nextCharacter.energy} / {nextCharacter.maxEnergy}";
-    
+
             GenerateSkillButtons(nextCharacter as CharacterAttributes);
+            
         }
     }
-
 
     private void GenerateSkillButtons(CharacterAttributes character)
     {
@@ -168,27 +132,11 @@ public class BattleManager : MonoBehaviour
             GameObject skillButtonGO = Instantiate(skillButtonPrefab, skillButtonParent);
             Button skillButton = skillButtonGO.GetComponent<Button>();
             Text skillText = skillButtonGO.GetComponentInChildren<Text>();
-            Image skillImage = skillButtonGO.transform.Find("SkillIcon").GetComponent<Image>();
-            
-            if (!String.IsNullOrEmpty(skill.skillIcon))
-            {
-                StartCoroutine(ImageCache.GetTexture(skill.skillIcon, (Texture2D texture) =>
-                {
-                    if (texture != null)
-                    {
-                        skillImage.sprite = Sprite.Create(texture, 
-                            new Rect(0, 0, texture.width, texture.height), 
-                            new Vector2(0.5f, 0.5f));
-                    }
-                }));                
-            }
+
             skillText.text = $"{skill.skillName} (消耗: {skill.skillCost})";
-            
+
             skillButton.interactable = character.energy >= skill.skillCost;
-            if (!canUseSkill)
-            {
-                skillButton.interactable = false;
-            }
+
             skillButton.onClick.AddListener(() => OnSkillSelected(skillButton,character, skill));
 
             skillButtons.Add(skillButton);
@@ -199,46 +147,27 @@ public class BattleManager : MonoBehaviour
     {
         isUsingSkill = true;
         actionPanel.gameObject.SetActive(false);
-        selectedSkill = skill;
-        Debug.Log(skill.physicalDamage);
-        StartEnemySelection();
+    
+        isSelectingEnemy = true;
+
+        skillButton.onClick.RemoveAllListeners();
+        skillButton.onClick.AddListener(() =>
+        {
+            if (isUsingSkill)
+            {
+                ICharacter defender = CharacterManager.instance.EnemyCharacters[0]; // 这里你需要让玩家选择敌人
+                UseSkill(attacker, defender, skill);
+                attacker.energy -= skill.skillCost;
+                isSelectingEnemy = false;
+                ResetAllCharacterSizes();
+                EndTurn();
+            }
+        });
     }
 
 
     public void StartEnemySelection()
     {
-        enemyHasTaunt = enemyButtons.Any(enemy =>
-        {
-            var enemyData = enemy.GetComponent<BaseEnemy>()?.enemyAttributes;
-            return enemyData != null && enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Taunt);
-        });
-
-        foreach (var enemy in enemyButtons)
-        {
-            var enemyData = enemy.GetComponent<BaseEnemy>()?.enemyAttributes;
-            if (enemyData != null && enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Stealth))
-            {
-                enemy.interactable = false;
-                enemy.transform.localScale = Vector3.one;
-            }
-            else if (enemyHasTaunt)
-            {
-                if (enemyData == null || !enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Taunt))
-                {
-                    enemy.interactable = false;
-                    enemy.transform.localScale = Vector3.one;
-                }
-                else
-                {
-                    enemy.interactable = true;
-                }
-            }
-            else
-            {
-                enemy.interactable = true;
-            }
-        }
-
         isSelectingEnemy = true;
         actionPanel.gameObject.SetActive(false);
     }
@@ -258,122 +187,44 @@ public class BattleManager : MonoBehaviour
 
         foreach (var enemy in enemyButtons)
         {
-            var enemyData = enemy.GetComponent<BaseEnemy>()?.enemyAttributes;
-            if (enemyData != null && enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Stealth))
-            {
-                enemy.transform.localScale = Vector3.one;
-            }
-            else if (enemyHasTaunt)
-            {
-                if (enemyData != null && enemyData.activeBuffs.Any(buff => buff.buffType == BuffType.Taunt))
-                {
-                    enemy.transform.localScale = Vector3.one * scale;
-                }
-                else
-                {
-                    enemy.transform.localScale = Vector3.one;
-                }
-            }
-            else
-            {
-                enemy.transform.localScale = Vector3.one * scale;
-            }
+            enemy.transform.localScale = Vector3.one * scale;
         }
     }
-
 
     public void OnEnemySelected(int enemyIndex)
     {
         if (!isSelectingEnemy) return;
-        Debug.Log($"选择了敌人 {enemyIndex}！");
 
         ICharacter attacker = SpeedBarUI.instance.GetNextCharacter();
-        ICharacter defender = BattleCharacterManager.instance.EnemyCharacters[enemyIndex];
+        ICharacter defender = CharacterManager.instance.EnemyCharacters[enemyIndex];
 
-        if (randomTarget != null)
-        {
-            defender = randomTarget;
-            randomTarget = null;
-            bool targetIsPlayer;
-            if (defender is MonsterAttributes)
+        // if (isUsingSkill)
+        // {
+        //     UseSkill(attacker, defender, attacker.skillAttributes);
+        //     attacker.energy -= attacker.skillAttributes.cost;
+        // }
+        // else
+        // {
+            DealDamage(attacker, defender, 1f);
+            if (attacker.energy < attacker.maxEnergy)
             {
-                targetIsPlayer = false;
+                attacker.energy += 1;
             }
-            else
-            {
-                targetIsPlayer = true;
-            }
-            if (isUsingSkill)
-            {
-                UseSkill(attacker, defender, selectedSkill,targetIsPlayer);
-                foreach (CharacterAttributes character in BattleCharacterManager.instance.PlayerCharacters)
-                {
-                    character.energy -= selectedSkill.skillCost;
-                }
-                
-            }
-            else
-            {
-                DealDamage(attacker, defender, 1f,targetIsPlayer);
-                if (attacker.energy < attacker.maxEnergy)
-                {
-                    foreach (CharacterAttributes character in BattleCharacterManager.instance.PlayerCharacters)
-                    {
-                        character.energy += 1;
-                    }
-                }
-            }
+        // }
 
-            isSelectingEnemy = false;
-            ResetAllCharacterSizes();
-            EndTurn();
-        }
-        else
-        {
-            if (isUsingSkill)
-            {
-                UseSkill(attacker, defender, selectedSkill);
-                foreach (CharacterAttributes character in BattleCharacterManager.instance.PlayerCharacters)
-                {
-                    character.energy -= selectedSkill.skillCost;
-                }
-
-            }
-            else
-            {
-                DealDamage(attacker, defender, 1f);
-                if (attacker.energy < attacker.maxEnergy)
-                {
-                    foreach (CharacterAttributes character in BattleCharacterManager.instance.PlayerCharacters)
-                    {
-                        character.energy += 1;
-                    }
-
-                }
-            }
-
-            isSelectingEnemy = false;
-            ResetAllCharacterSizes();
-            EndTurn();
-        }
-        
+        isSelectingEnemy = false;
+        ResetAllCharacterSizes();
+        EndTurn();
     }
     
-    public void DealDamage(ICharacter attacker, ICharacter defender, float damageMultiplier, bool targetIsPlayer = false)
+    public void DealDamage(ICharacter attacker, ICharacter defender, float damageMultiplier)
     {
-        float levelDifference = defender.level - attacker.level;
-        Debug.Log($"defender.level: {defender.level}, attacker.level: {attacker.level}, levelDifference: {levelDifference}");
-
-        float damageReductionPercentage = defender.physicalDefense /
+        float levelDifference = Mathf.Abs(attacker.level - defender.level);
+        float damageReductionPercentage = defender.physicalDefense / 
                                           (defender.physicalDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
-        Debug.Log($"defender.physicalDefense: {defender.physicalDefense}, levelDifference * attacker.damageX1: {levelDifference * attacker.damageX1}, attacker.damageX2: {attacker.damageX2}, damageReductionPercentage: {damageReductionPercentage}");
 
         float damage = attacker.physicalAttack * damageMultiplier * (1 - damageReductionPercentage);
-        Debug.Log($"attacker.physicalAttack: {attacker.physicalAttack}, damageMultiplier: {damageMultiplier}, (1 - damageReductionPercentage): {1 - damageReductionPercentage}, damage: {damage}");
 
-        
-        
-        
         float randomValue = Random.value;
         bool isCritical = randomValue <= attacker.criticalRate;
         if (isCritical)
@@ -385,60 +236,34 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log($"普通攻击造成了 {damage} 点伤害！");
         }
-        if (damage < 0)
-        {
-            damage = 0;
-        }
-        ApplyDamage(attacker,defender, damage, isCritical, targetIsPlayer);
+
+        ApplyDamage(defender, damage, isCritical);
     }
 
-    public void ApplyDamage(ICharacter IfReflectCharacter, ICharacter defender, float damage, bool isCritical, bool targetIsPlayer = false)
+    public void ApplyDamage(ICharacter defender, float damage, bool isCritical, bool isEnemy = false)
     {
-        
         float remainingShield = Mathf.Max(defender.shieldAmount - damage, 0);
         float damageToHealth = Mathf.Max(damage - defender.shieldAmount, 0);
-        damageToHealth += Random.Range(2, 6);
         defender.shieldAmount = remainingShield;
         defender.currentHealth -= damageToHealth;
         Debug.Log($"{defender.characterName} 受到了 {damageToHealth} 点伤害！");
         Debug.Log($"敌人现在的生命值：{defender.currentHealth}");
-        ShowDamageText(defender.index, damageToHealth, isCritical, targetIsPlayer);
-        UpdateButtonHealthFill();
-        UpdateButtonSheildFill();
-
-        if (defender.activeBuffs.Exists(b => b.buffType == BuffType.Reflect))
-        {
-            float reflectedDamage = damageToHealth * 0.5f;
-            float attackerRemainingShield = Mathf.Max(IfReflectCharacter.shieldAmount - reflectedDamage, 0);
-            float damageToAttackerHealth = Mathf.Max(reflectedDamage - IfReflectCharacter.shieldAmount, 0);
-            damageToAttackerHealth += Random.Range(2, 6);
-
-            IfReflectCharacter.shieldAmount = attackerRemainingShield;
-            IfReflectCharacter.currentHealth -= damageToAttackerHealth;
-            Debug.Log($"{IfReflectCharacter.characterName} 受到了 {damageToAttackerHealth} 点反弹伤害！");
-            ShowDamageText(IfReflectCharacter.index, damageToAttackerHealth, false, true);
-            UpdateButtonHealthFill();
-            UpdateButtonSheildFill();
-        }
+        ShowDamageText(defender.index, damage, isCritical, isEnemy);
 
         if (defender.currentHealth <= 0)
         {
             Debug.Log($"{defender.characterName} 被击败！");
-            
-            RemoveCharacterFromBattle(defender);
-            CheckBattleOutcome();
+            // RemoveCharacter(defender);
         }
     }
-
     
-    public void UseSkill(ICharacter attacker, ICharacter defender, SkillAttributes skill, bool targetIsPlayer = false)
+    public void UseSkill(ICharacter attacker, ICharacter defender, SkillAttributes skill)
     {
-        float levelDifference = defender.level - attacker.level;
+        float levelDifference = Mathf.Abs(attacker.level - defender.level);
 
         // 计算物理伤害
         float physicalDamageReduction = defender.physicalDefense /
             (defender.physicalDefense + levelDifference * attacker.damageX1 + attacker.damageX2);
-
         float physicalDamage = attacker.physicalAttack * skill.physicalDamage * (1 - physicalDamageReduction);
 
         // 计算灵魂伤害
@@ -463,456 +288,124 @@ public class BattleManager : MonoBehaviour
         }
 
         // 应用伤害
-        ApplyDamage(attacker, defender,totalDamage,isCritical,targetIsPlayer);
+        ApplyDamage(defender, totalDamage,isCritical);
 
         // 技能附加效果
         ApplySkillEffects(attacker, defender, skill);
     }
-    
-    public void AddBuff(ICharacter attcker, ICharacter defender, string name, BuffType buffType, int turns, float stackVal, bool debuff, int maxStacksVal)
-    {
-        BuffEffect existingBuff = defender.activeBuffs.Find(b => b.buffType == buffType);
-        if (existingBuff != null)
-        {   
-            if (existingBuff.stack + stackVal >= maxStacksVal)
-            {
-                existingBuff.stack = maxStacksVal;
-            }
-            else
-            {
-                existingBuff.stack += stackVal;
-            }
-            Debug.Log($"增加了 {name} 的层数，当前层数：{existingBuff.stack}");
-        }
-        else
-        {
-            BuffEffect newBuff = new BuffEffect(attcker, name, buffType, turns, stackVal, debuff, maxStacksVal);
-            defender.activeBuffs.Add(newBuff);
-        }
-        Button targetButton = null;
-        targetButton = BattleCharacterManager.instance.characterButtons[defender.index];
-        
-        if (targetButton == null)
-        {
-            Debug.LogError("找不到对应的角色按钮");
-            return;
-        }
-        
-        Transform buffGroup = targetButton.transform.Find("BuffGroup");
-        if (buffGroup == null)
-        {
-            Debug.LogError("未在按钮下找到 BuffGroup 子物体");
-            return;
-        }
-        
-        BuffIcon[] existingIcons = buffGroup.GetComponentsInChildren<BuffIcon>();
-        BuffIcon matchingIcon = null;
-        foreach (var icon in existingIcons)
-        {
-            if (icon.buffType == buffType)
-            {
-                matchingIcon = icon;
-                break;
-            }
-        }
-        
-        if (matchingIcon != null)
-        {
-            Text stackText = matchingIcon.transform.Find("Stack").GetComponent<Text>();
-            if (stackText != null)
-            {
-                float currentStack;
-                if (!float.TryParse(stackText.text, out currentStack))
-                {
-                    currentStack = 0f;
-                }
-
-                float newStackFloat = currentStack + stackVal;
-                int newStack = Mathf.FloorToInt(newStackFloat);
-
-                if (newStack >= maxStacksVal)
-                {
-                    newStack = maxStacksVal;
-                }
-
-                stackText.text = newStack.ToString();
-
-
-                Debug.Log($"增加了图标 {name} 的层数，当前层数：{stackText.text}");
-
-            }
-            else
-            {
-                Debug.LogError("未找到 BuffIcon 下的 Stack 文本组件");
-            }
-        }
-        else
-        {
-            GameObject buffIconGO = Instantiate(buffIconPrefab, buffGroup);
-            BuffIcon buffIconScript = buffIconGO.GetComponent<BuffIcon>();
-            if (buffIconScript != null)
-            {
-                buffIconScript.buffType = buffType;
-            }
-            
-            Sprite buffSprite = Resources.Load<Sprite>("buffIcons/" + buffType.ToString());
-            if (buffSprite != null)
-            {
-                Image iconImage = buffIconGO.GetComponent<Image>();
-                if (iconImage != null)
-                {
-                    iconImage.sprite = buffSprite;
-                }
-                else
-                {
-                    Debug.LogError("buffIconPrefab 上没有找到 Image 组件");
-                }
-            }
-            else
-            {
-                Debug.LogError("无法加载 buffSprite，检查路径或文件名: " + buffType.ToString());
-            }
-            
-            Transform stackTransform = buffIconGO.transform.Find("Stack");
-            if (stackTransform != null)
-            {
-                Text stackText = stackTransform.GetComponent<Text>();
-                if (stackText != null)
-                {
-                    stackText.text = stackVal.ToString();
-                }
-                else
-                {
-                    Debug.LogError("未找到 Stack 子物体上的 Text 组件");
-                }
-            }
-            else
-            {
-                Debug.LogError("未找到 buffIconPrefab 下的 Stack 子物体");
-            }
-        }
-    }
-    
-    public void ProcessBuffs(ICharacter character)
-    {
-        List<BuffEffect> buffsToRemove = new List<BuffEffect>();
-
-        foreach (var buff in character.activeBuffs)
-        {
-            switch (buff.buffType)
-            {
-                case BuffType.Stun:
-                    skippingTurn = true;
-                    buffsToRemove.Add(buff);
-                    break;
-                case BuffType.Silence:
-                    canUseSkill = false;
-                    buffsToRemove.Add(buff);
-                    break;
-                case BuffType.Block:
-                    character.physicalDefense /= 1.2f;
-                    character.soulDefense /= 1.2f;
-                    character.tenacityRate -= 0.3f;
-                    buffsToRemove.Add(buff);
-                    break;
-                case BuffType.Bleed:
-                    float bleedDamage = buff.stack * 0.01f * character.health;
-                    ApplyDamage(character,character, bleedDamage, false, true);
-                    buff.stack = Mathf.FloorToInt(buff.stack / 3);
-                    if (buff.stack <= 0)
-                    {
-                        buffsToRemove.Add(buff);
-                    }
-                    else
-                    {
-                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
-                    }
-                    break;
-                case BuffType.Burn:
-                    float burnDamage = buff.stack * 0.01f * character.physicalAttack;
-                    ApplyDamage(character,character, burnDamage, false,true);
-                    buff.stack = Mathf.FloorToInt(buff.stack / 3);
-                    if (buff.stack <= 0)
-                    {
-                        buffsToRemove.Add(buff);
-                    }
-                    else
-                    {
-                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
-                    }
-                    break;
-                case BuffType.SkipTurn:
-                    skippingTurn = true;
-                    buffsToRemove.Add(buff);
-                    break;
-                case BuffType.Gaze:
-                    float gazeDamage = buff.stack;
-                    ApplyDamage(character,character, gazeDamage, false,true);
-                    buff.stack = Mathf.FloorToInt(buff.stack / 2);
-                    if (buff.stack <= 0)
-                    {
-                        buffsToRemove.Add(buff);
-                    }
-                    else
-                    {
-                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
-                    }
-                    break;
-                case BuffType.Poison:
-                    float poisonDamage = buff.stack;
-                    ApplyDamage(character,character, poisonDamage, false,true);
-                    buff.stack = Mathf.FloorToInt(buff.stack / 2);
-                    if (buff.stack <= 0)
-                    {
-                        buffsToRemove.Add(buff);
-                    }
-                    else
-                    {
-                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
-                    }
-                    break;
-                case BuffType.Taunt:
-                    buffsToRemove.Add(buff);
-                    break;
-                case BuffType.Drunk:
-                    List<ICharacter> potentialTargets = NewCharacterManager.instance.allCharacters
-                        .Where(c => c != character)
-                        .ToList();
-                    if (potentialTargets.Count > 0 && Random.value < buff.stack * 0.2f)
-                    {
-                        int randomIndex = Random.Range(0, potentialTargets.Count);
-                        randomTarget = potentialTargets[randomIndex];
-                    }
-                    buff.stack--;
-                    if (buff.stack <= 0)
-                    {
-                        buffsToRemove.Add(buff);
-                    }
-                    else
-                    {
-                        UpdateBuffIconStack(character, buff.buffType, buff.stack);
-                    }
-                    break;
-                case BuffType.Reflect:
-                    buffsToRemove.Add(buff);
-                    break;
-                case BuffType.Stealth:
-                    buffsToRemove.Add(buff);
-                    break;
-                
-            }
-        }
-
-        foreach (var buff in buffsToRemove)
-        {
-            character.activeBuffs.Remove(buff);
-            RemoveBuffIcon(character, buff.buffType);
-        }
-    }
-
-
-    public void RemoveBuffIcon(ICharacter character, BuffType buffType)
-    {
-        Button targetButton = null;
-        targetButton = BattleCharacterManager.instance.characterButtons[character.index];
-
-        if (targetButton == null)
-        {
-            Debug.LogError("未找到对应的角色按钮");
-            return;
-        }
-
-        Transform buffGroup = targetButton.transform.Find("BuffGroup");
-        if (buffGroup == null)
-        {
-            Debug.LogError("未在角色按钮下找到 BuffGroup");
-            return;
-        }
-
-        BuffIcon[] icons = buffGroup.GetComponentsInChildren<BuffIcon>();
-        foreach (var icon in icons)
-        {
-            if (icon.buffType == buffType)
-            {
-                Destroy(icon.gameObject);
-                break;
-            }
-        }
-    }
-    public void UpdateBuffIconStack(ICharacter character, BuffType buffType, float newStack)
-    {
-        Button targetButton = BattleCharacterManager.instance.characterButtons[character.index];
-        if (targetButton == null)
-        {
-            Debug.LogError("找不到对应的角色按钮");
-            return;
-        }
-
-        Transform buffGroup = targetButton.transform.Find("BuffGroup");
-        if (buffGroup == null)
-        {
-            Debug.LogError("未在角色按钮下找到 BuffGroup 子物体");
-            return;
-        }
-
-        BuffIcon[] icons = buffGroup.GetComponentsInChildren<BuffIcon>();
-        foreach (var icon in icons)
-        {
-            if (icon.buffType == buffType)
-            {
-                Transform stackTransform = icon.transform.Find("Stack");
-                if (stackTransform != null)
-                {
-                    Text stackText = stackTransform.GetComponent<Text>();
-                    if (stackText != null)
-                    {
-                        stackText.text = newStack.ToString();
-                        Debug.Log($"更新图标 {buffType} 的层数为：{stackText.text}");
-                    }
-                    else
-                    {
-                        Debug.LogError("未找到 BuffIcon 下的 Stack 文本组件");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("未找到 BuffIcon 下的 Stack 子物体");
-                }
-                break;
-            }
-        }
-    }
-
 
     private void ApplySkillEffects(ICharacter attacker, ICharacter defender, SkillAttributes skill)
     {
-        
-        if (defender.currentHealth <= 0)
-        {
-            return;
-        }
-        // **眩晕**
+        // 状态效果应用
         if (skill.stunChance > 0 && Random.value < skill.stunChance)
         {
-            AddBuff(attacker, defender, "眩晕", BuffType.Stun, 1, 1, true,1);
+            ShowText(defender.index, "眩晕!",Color.yellow);
+            Debug.Log($"{defender.characterName} 被眩晕！");
         }
 
-        // **沉默**
         if (skill.silenceChance > 0 && Random.value < skill.silenceChance)
         {
-            AddBuff(attacker, defender, "沉默", BuffType.Silence, 1, 1, true,1);
-
+            ShowText(defender.index, "沉默!",Color.blue);
+            Debug.Log($"{defender.characterName} 被沉默！");
         }
 
-        // **增加护盾**
+        if (skill.blockChance > 0 && Random.value < skill.blockChance)
+        {
+            attacker.tenacityRate += 0.3f;
+            attacker.physicalDefense *= 1.2f;
+            attacker.soulDefense *= 1.2f;
+
+            ShowText(attacker.index, "变得更肉了!",Color.green);
+            Debug.Log($"{attacker.characterName} 变得更肉了！");
+        }
+
         if (skill.shieldAmount > 0)
         {
             attacker.shieldAmount += skill.shieldAmount;
-            // AddBuff(attacker, attacker, "护盾", BuffType.Shield, 99, skill.shieldAmount, false,99);
+
+            ShowText(attacker.index, $"护盾 +{skill.shieldAmount}",Color.green);
+            Debug.Log($"{attacker.characterName} 获得了 {skill.shieldAmount} 点护盾！");
         }
 
-        // **治疗**
         if (skill.healAmount > 0)
         {
-            float healDiscount = 1f;
-            if(InventoryManager.instance.activeItems.ContainsKey("Gold_plate"))
-            {
-                healDiscount = 0.8f;
-            }
-            attacker.currentHealth = Mathf.Min(attacker.currentHealth + skill.healAmount * healDiscount, attacker.health);
-        }
+            float healedAmount = Mathf.Min(skill.healAmount, attacker.health - attacker.currentHealth);
+            attacker.currentHealth = Mathf.Min(attacker.currentHealth + skill.healAmount, attacker.health);
 
-        // **格挡**
-        if (skill.blockChance > 0 && Random.value < skill.blockChance)
-        {
-            attacker.physicalDefense *= 1.2f;
-            attacker.soulDefense *= 1.2f;
-            attacker.tenacityRate += 0.3f;
-            
-            AddBuff(attacker, attacker, "格挡", BuffType.Block, 1, 1, false,1);
+            ShowText(attacker.index, $"治疗 +{healedAmount:F0}",Color.green);
+            Debug.Log($"{attacker.characterName} 回复了 {healedAmount} 点生命值！");
         }
-        UpdateButtonHealthFill();
-        UpdateButtonSheildFill();
     }
 
 
 
-    private void ShowDamageText(int characterIndex, float damage, bool isCritical, bool targetIsPlayer = false)
+    private void ShowDamageText(int characterIndex, float damage, bool isCritical, bool isEnemy = false)
     {
-        RectTransform targetRect = BattleCharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
+        Debug.Log($"显示伤害文本：{characterIndex}");
+        RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
 
         GameObject damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
         if (isCritical)
         {
-            damageText.GetComponent<Text>().text = $"暴击！-{damage:F0}";
+            damageText.GetComponent<TMP_Text>().text = $"暴击！-{damage:F0}";
         }
         else
         {
-            damageText.GetComponent<Text>().text = $"-{damage:F0}";
+            damageText.GetComponent<TMP_Text>().text = $"-{damage:F0}";
 
         }
 
         RectTransform textRect = damageText.GetComponent<RectTransform>();
         textRect.SetParent(mainCanvas.transform, false);
-        if (!targetIsPlayer)
-        {
-            textRect.localPosition = targetRect.localPosition + new Vector3(0, 250, 0);
-        }
-        else
-        {
-            textRect.localPosition = targetRect.localPosition + new Vector3(0, 130, 0);
-
-        }
-        
+        textRect.localPosition = targetRect.localPosition + new Vector3(0, 300, 0);
 
         damageText.transform.SetAsLastSibling();
 
         
-        StartCoroutine(DestroyAfterRealtime(damageText, 1f));
+        Destroy(damageText, 1f);
     }
     
-    private IEnumerator DestroyAfterRealtime(GameObject obj, float delay)
+
+    public void ShowText(int characterIndex, string text,Color color)
     {
-        yield return new WaitForSecondsRealtime(delay);
-        Destroy(obj);
-    }
+        RectTransform targetRect = CharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
 
-    
+        GameObject statusText = Instantiate(damageTextPrefab, mainCanvas.transform);
+        statusText.GetComponent<TMP_Text>().text = text;
+        statusText.GetComponent<TMP_Text>().color = color;
 
-    public void ShowText(int characterIndex, string text,Color color, bool targetIsPlayer = false)
-    {
-        RectTransform targetRect = BattleCharacterManager.instance.characterButtons[characterIndex].GetComponent<RectTransform>();
+        if (!textOffsets.ContainsKey(characterIndex))
+        {
+            if (characterIndex >= CharacterManager.instance.PlayerCharacters.Count)
+            {
+                textOffsets[characterIndex] = -300f;
+            }
+            else
+            {
+                textOffsets[characterIndex] = -350f;
 
-        GameObject damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
-        
-        damageText.GetComponent<Text>().text = text;
-        damageText.GetComponent<Text>().color = color;
-        
-        RectTransform textRect = damageText.GetComponent<RectTransform>();
+            }
+            
+        }
+
+        RectTransform textRect = statusText.GetComponent<RectTransform>();
         textRect.SetParent(mainCanvas.transform, false);
-        if (!targetIsPlayer)
-        {
-            textRect.localPosition = targetRect.localPosition + new Vector3(0, 250, 0);
-        }
-        else
-        {
-            textRect.localPosition = targetRect.localPosition + new Vector3(0, 130, 0);
+        textRect.localPosition = targetRect.localPosition + new Vector3(0, textOffsets[characterIndex], 0);
+        statusText.transform.SetAsLastSibling();
 
-        }
-        
+        textOffsets[characterIndex] -= 100f;
 
-        damageText.transform.SetAsLastSibling();
-
-        
-        StartCoroutine(DestroyAfterRealtime(damageText, 1f));
+        StartCoroutine(ResetTextOffset(characterIndex, statusText));
     }
 
     private IEnumerator ResetTextOffset(int characterIndex, GameObject textObject)
     {
         yield return new WaitForSeconds(1.5f);
 
+        // 销毁文本对象
         Destroy(textObject);
 
+        // 恢复偏移量
         if (textOffsets.ContainsKey(characterIndex))
         {
             textOffsets[characterIndex] += 100f;
@@ -925,307 +418,19 @@ public class BattleManager : MonoBehaviour
     {
         foreach (var button in characterButtons)
         {
-            button.transform.localScale = Vector3.one;
-            button.interactable = true;
+            button.transform.localScale = Vector3.one;  // 重置图片大小
         }
-    }
-    private void RemoveCharacterFromBattle(ICharacter deadCharacter)
-    {
-        if (deadCharacter is CharacterAttributes)
-        {
-            CharacterAttributes deadPlayer = deadCharacter as CharacterAttributes;
-            BattleCharacterManager.instance.PlayerCharacters.Remove(deadPlayer);
-            RemoveCharacterButton(deadPlayer.index, false);
-        }
-        else if (deadCharacter is MonsterAttributes)
-        {
-            MonsterAttributes deadMonster = deadCharacter as MonsterAttributes;
-            BattleCharacterManager.instance.EnemyCharacters.Remove(deadMonster);
-            int goldAmount = Mathf.FloorToInt(deadMonster.base_gold_value * Random.Range(1, 1.5f));
-            if (InventoryManager.instance.activeItems.ContainsKey("Gold_plate"))
-            {
-                goldAmount = Mathf.FloorToInt(goldAmount * 1.2f);
-            }
-            
-            if (treasures.ContainsKey("gold"))
-            {
-                treasures["gold"] += goldAmount;
-            }
-            else
-            {
-                treasures.Add("gold", goldAmount);
-            }
-            
-            RemoveCharacterButton(deadMonster.index, true);
-        }
-    
-        speedBarUI.RemoveCharacter(deadCharacter);
-        DetailManager.instance.isEnemy = false;
-        DetailManager.instance.UpdateCharacterButtons();
-        DetailManager.instance.isEnemy = true;
-        DetailManager.instance.UpdateCharacterButtons();
-    }
-    public void UpdateButtonHealthFill()
-    {
-        for (int i = 0; i < BattleCharacterManager.instance.PlayerCharacters.Count; i++)
-        {
-            CharacterAttributes player = BattleCharacterManager.instance.PlayerCharacters[i];
-            Button btn = BattleCharacterManager.instance.characterButtons[i];
-            Image fillImage = btn.transform.Find("fill").GetComponent<Image>();
-            if (player.health > 0)
-            {
-                fillImage.fillAmount = player.currentHealth / player.health;
-            }
-        }
-
-        for (int i = 0; i < BattleCharacterManager.instance.EnemyCharacters.Count; i++)
-        {
-            MonsterAttributes enemy = BattleCharacterManager.instance.EnemyCharacters[i];
-            Button btn = BattleCharacterManager.instance.EnemyButtons[i];
-            Image fillImage = btn.transform.Find("fill").GetComponent<Image>();
-            if (enemy.health > 0)
-            {
-                fillImage.fillAmount = enemy.currentHealth / enemy.health;
-            }
-        }
-    }
-    public void UpdateButtonSheildFill()
-    {
-        for (int i = 0; i < BattleCharacterManager.instance.PlayerCharacters.Count; i++)
-        {
-            CharacterAttributes player = BattleCharacterManager.instance.PlayerCharacters[i];
-            Button btn = BattleCharacterManager.instance.characterButtons[i];
-            Image fillImage = btn.transform.Find("ShieldFIll").GetComponent<Image>();
-
-                fillImage.fillAmount = player.shieldAmount / player.health;
-                Debug.LogError(player.shieldAmount);
-            
-        }
-
-        for (int i = 0; i < BattleCharacterManager.instance.EnemyCharacters.Count; i++)
-        {
-            MonsterAttributes enemy = BattleCharacterManager.instance.EnemyCharacters[i];
-            Button btn = BattleCharacterManager.instance.EnemyButtons[i];
-            Image fillImage = btn.transform.Find("ShieldFIll").GetComponent<Image>();
- 
-                fillImage.fillAmount = enemy.shieldAmount / enemy.health;
-            
-        }
-    }
-
-    /// <summary>
-    /// 根据索引移除角色按钮（销毁对应UI对象，并从列表中移除）。
-    /// </summary>
-    private void RemoveCharacterButton(int index, bool ButtonIsEnemy)
-    {
-        if (index >= 0 && index < BattleCharacterManager.instance.characterButtons.Count)
-        {
-            
-            Button btn = BattleCharacterManager.instance.characterButtons[index];
-            GameObject btnGO = btn.gameObject;
-            Destroy(btnGO);
-            BattleCharacterManager.instance.characterButtons.RemoveAt(index);
-            characterButtons.RemoveAt(index);
-
-            if (BattleCharacterManager.instance.EnemyButtons.Contains(btn))
-            {
-                BattleCharacterManager.instance.EnemyButtons.Remove(btn);
-                Transform buffGroup = btn.transform.Find("BuffGroup");
-                if (buffGroup == null)
-                {
-                    Debug.LogError("未在角色按钮下找到 BuffGroup");
-                    return;
-                }
-
-                BuffIcon[] icons = buffGroup.GetComponentsInChildren<BuffIcon>();
-                foreach (var icon in icons)
-                {
-                    Destroy(icon.gameObject);
-
-                }
-                enemyButtons.Remove(btn);
-                for (int j = 0; j < enemyButtons.Count; j++)
-                {
-                    int localIndex = j;
-                    enemyButtons[j].onClick.RemoveAllListeners();
-                    enemyButtons[j].onClick.AddListener(() => OnEnemySelected(localIndex));
-                }
-            }
-           
-        }
-
-        // if (!ButtonIsEnemy)
-        // {
-        //     foreach (var character in BattleCharacterManager.instance.PlayerCharacters)
-        //     {
-        //         if (character.index >= index)
-        //         {
-        //             character.index--;
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        //     foreach (var character in BattleCharacterManager.instance.EnemyCharacters)
-        //     {
-        //         if (character.index >= index)
-        //         {
-        //             character.index--;
-        //         }
-        //     }
-        //     
-        // }
-        foreach (var character in BattleCharacterManager.instance.PlayerCharacters)
-        {
-            if (character.index >= index)
-            {
-                character.index--;
-            }
-        }
-        foreach (var character in BattleCharacterManager.instance.EnemyCharacters)
-        {
-            if (character.index >= index)
-            {
-                character.index--;
-            }
-        }
-    }
-
-
-    private void CheckBattleOutcome()
-    {
-        if (BattleCharacterManager.instance.PlayerCharacters.Count == 0)
-        {
-            Debug.Log("所有玩家角色都已死亡，战斗失败！");
-            EndBattle(false);
-            return;
-        }
-    
-        if (BattleCharacterManager.instance.EnemyCharacters.Count == 0)
-        {
-            Debug.Log("所有敌人角色都已死亡，战斗胜利！");
-            EndBattle(true);
-            return;
-        }
-    }
-
-    public void UpdateTotalEnergy()
-    {
-        try{
-            totalEnergy += BattleCharacterManager.instance.PlayerCharacters[0].energy;
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e);
-        }
-    }
-    public void calculateAverageEnergy()
-    {
-        EventManager.instance.calculateAverageEnergy(totalEnergy,roundNumber);
     }
 
     public void EndTurn()
     {
+        Debug.Log("回合结束！");
         ResetAllCharacterSizes();
         speedBarUI.CompleteCurrentTurn();
-        StartCoroutine(StartNextTurnCoroutine());
+        StartNextTurn();
     }
-    public void EndBattle(bool win)
+    public void EndBattle()
     {
-        LevelEventTimer.instance.OnEventEnd();
-        calculateAverageEnergy();
-        List<ICharacter> toRemove = new List<ICharacter>();
-
-        foreach (ICharacter character in NewCharacterManager.instance.allCharacters)
-        {
-            if (character is CharacterAttributes player)
-            {
-                // player.currentHealth = player.health;
-                // player.energy = 0;
-                if (player.currentHealth <= 0)
-                {
-                    player.currentHealth = 1;
-                }
-                
-                player.activeBuffs?.Clear();
-            }
-            else
-            {
-                toRemove.Add(character);
-            }
-        }
-
-        foreach (ICharacter dead in toRemove)
-        {
-            NewCharacterManager.instance.allCharacters.Remove(dead);
-        }
-
-        if (win)
-        {
-            RewardPanel.SetActive(true);
-            
-            if(LevelEventTimer.instance.level == "3-21")
-            {
-                CloudSaveManager.Instance.IncrementSuccess(true);
-            }
-                    
-
-            foreach (Transform child in HorizontalLayoutGroup.transform)
-            {
-                Destroy(child.gameObject);
-            }
-            
-            if(EventManager.instance.CurrentRewards != null)
-            {
-                foreach (var reward in EventManager.instance.CurrentRewards)
-                {
-                    if (Random.value < reward.Value)
-                    {
-                        if (treasures.ContainsKey(reward.Key))
-                        {
-                            treasures[reward.Key] += 1;
-                        }
-                        else
-                        {
-                            treasures.Add(reward.Key, 1);
-                        }
-                    }
-                    
-                }
-            }
-            
-            foreach (var treasure in treasures)
-            {
-                GameObject newReward = Instantiate(RewardPrefab, HorizontalLayoutGroup.transform);
-
-                Text nameText = newReward.transform.Find("name").GetComponent<Text>();
-                InventoryManager.instance.ObtainItem(treasure.Key,treasure.Value);
-                nameText.text = InventoryManager.instance.activeItems[treasure.Key].item.data.chineseName;
-                Image rewardImage = newReward.transform.Find("Image").GetComponent<Image>();
-                rewardImage.sprite = InventoryManager.instance.activeItems[treasure.Key].item.data.icon;
-                Text amountText = newReward.transform.Find("amount").GetComponent<Text>();
-                amountText.text = treasure.Value.ToString();
-                        
-            }
-
-            treasures.Clear();
-            Button button = RewardPanel.GetComponent<Button>();
-            button.onClick.AddListener(() =>
-            {
-                RewardPanel.SetActive(false);
-                SceneManager.UnloadSceneAsync("Battle");
-            });
-        }
-        else
-        {
-            LosePanel.SetActive(true);
-            Button button = LosePanel.GetComponent<Button>();
-            button.onClick.AddListener(() =>
-            {
-                Application.Quit();
-            });
-        }
-
+        SceneManager.UnloadSceneAsync("Battle");
     }
-
 }

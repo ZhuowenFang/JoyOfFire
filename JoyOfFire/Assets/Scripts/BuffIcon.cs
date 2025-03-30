@@ -6,3 +6,7 @@ public class BuffIcon : MonoBehaviour
 {
     public BuffType buffType;
 }
+
+public class BuffType
+{
+}

@@ -31,8 +31,8 @@ public class ClassManager : MonoBehaviour
     public class LevelData
     {
         public string id;
-        public int level_order;
-        public int level_num;
+        public int levelOrder;
+        public int levelNum;
         public LevelInfo levelInfo;
     }
 
@@ -68,7 +68,6 @@ public class ClassManager : MonoBehaviour
     {
         public string id;
         public string user_id;
-        public string character_id;
         public BasicInformation basic_information;
         public string character_picture;
         public List<string> current_ability;
@@ -79,7 +78,7 @@ public class ClassManager : MonoBehaviour
         public List<string> talent_count2;
         public Talent talent3;
         public List<string> talent_count3;
-        public List<string> experience;
+        public string experience;
     }
 
     [System.Serializable]
@@ -98,8 +97,9 @@ public class ClassManager : MonoBehaviour
         public string abilitydescription;
         public string cost;
         public List<TalentDescription> description;
-        public string icon;
-
+        public string icon1;
+        public string icon2;
+        public string icon3;
     }
 
     [System.Serializable]
@@ -111,26 +111,11 @@ public class ClassManager : MonoBehaviour
     [System.Serializable]
     public class CharacterCreationData
     {
-        public string userId;
         public string sex; // 性别
         public string profession; // 职业
         public string clothes; // 衣服
         public string combat; // 战斗
         public string other; // 其他
-    }
-    
-    public class CharacterUpdateAttributes
-    {
-        public string user_id;
-        public string character_id;
-        public List<string> experience;
-    }
-    [System.Serializable]
-    public class CharacterUpdateData
-    {
-        public string user_id;
-        public string character_id;
-        public string Update;
     }
     [System.Serializable]
     public class MonsterData
@@ -180,8 +165,6 @@ public class ClassManager : MonoBehaviour
         public string skill4_icon;
         public int? skill4_cost;
     }
-    
-
 
 
 }

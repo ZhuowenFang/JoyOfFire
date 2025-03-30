@@ -24,39 +24,35 @@ public class ExpandableButtonGroup : MonoBehaviour
         {
             var rectTransform = button.GetComponent<RectTransform>();
             var textComponent = button.GetComponentInChildren<Text>();
-            var skillDescription = button.transform.Find("SkillDescription").GetComponent<Text>();
-            var skillCostText = button.transform.Find("CostText").GetComponent<Text>();
-            var skillCost = button.transform.Find("CostAmount").GetComponent<Text>();
 
             if (button == clickedButton)
             {
-                StartCoroutine(AnimateButtonSize(rectTransform, expandedWidth, true, textComponent,skillDescription,skillCostText,skillCost));
+                // 展开点击的按钮
+                StartCoroutine(AnimateButtonSize(rectTransform, expandedWidth, true, textComponent));
                 expandedButton = rectTransform;
             }
             else
             {
-                StartCoroutine(AnimateButtonSize(rectTransform, collapsedWidth, false, textComponent,skillDescription,skillCostText,skillCost));
+                // 收缩其他按钮
+                StartCoroutine(AnimateButtonSize(rectTransform, collapsedWidth, false, textComponent));
             }
         }
     }
 
-    System.Collections.IEnumerator AnimateButtonSize(RectTransform target, float targetWidth, bool showText, Text textComponent, Text skillDescription, Text skillCostText, Text skillCost)
-  
+    System.Collections.IEnumerator AnimateButtonSize(RectTransform target, float targetWidth, bool showText, Text textComponent)
     {
         float elapsedTime = 0f;
         float startWidth = target.sizeDelta.x;
 
+        // 隐藏文字（如果是收缩）
         if (!showText && textComponent != null)
         {
             textComponent.enabled = false;
-            skillDescription.enabled = false;
-            skillCostText.enabled = false;
-            skillCost.enabled = false;
         }
 
         while (elapsedTime < animationDuration)
         {
-            elapsedTime += Time.unscaledDeltaTime; 
+            elapsedTime += Time.deltaTime;
             float newWidth = Mathf.Lerp(startWidth, targetWidth, elapsedTime / animationDuration);
             target.sizeDelta = new Vector2(newWidth, target.sizeDelta.y);
             yield return null;
@@ -64,13 +60,10 @@ public class ExpandableButtonGroup : MonoBehaviour
 
         target.sizeDelta = new Vector2(targetWidth, target.sizeDelta.y);
 
+        // 显示文字（如果是展开）
         if (showText && textComponent != null)
         {
             textComponent.enabled = true;
-            skillDescription.enabled = true;
-            skillCostText.enabled = true;
-            skillCost.enabled = true;
         }
     }
-
 }
