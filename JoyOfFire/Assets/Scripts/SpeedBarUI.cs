@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class SpeedBarUI : MonoBehaviour
 {
@@ -18,7 +20,6 @@ public class SpeedBarUI : MonoBehaviour
     public GameObject characterIconPrefab;      // 图标预制件
 
     public List<SpeedCharacter> speedCharacters = new List<SpeedCharacter>();  // 管理角色列表
-    private CharacterManager characterManager;   // 引用角色管理器
     private float speedAreaHeight;               // 速度区域高度
 
     private const float MaxDistance = 5000f;    // 固定路程
@@ -32,23 +33,36 @@ public class SpeedBarUI : MonoBehaviour
     }
     void Start()
     {
-        characterManager = FindObjectOfType<CharacterManager>();
         speedAreaHeight = speedArea.rect.height;
         InitializeCharacters();
         SortIconsByTimePoint();
         UpdateDividerPosition();
-        // BattleManager.instance.StartNextTurn();
-        
     }
 
     private void InitializeCharacters()
     {
-        for (int i = 0; i < CharacterManager.instance.allCharacters.Count; i++)
+        for (int i = 0; i < BattleCharacterManager.instance.allCharacters.Count; i++)
         {
-            ICharacter character = CharacterManager.instance.allCharacters[i];
+            ICharacter character = BattleCharacterManager.instance.allCharacters[i];
 
             GameObject icon = Instantiate(characterIconPrefab, speedArea);
             RectTransform iconTransform = icon.GetComponent<RectTransform>();
+            if (character is CharacterAttributes ca)
+            {
+                StartCoroutine(ImageCache.GetTexture(ca.character_picture, (Texture2D texture) =>
+                {
+                    if (texture != null)
+                    {
+                        icon.GetComponent<Image>().sprite = Sprite.Create(texture, 
+                            new Rect(0, 0, texture.width, texture.height), 
+                            new Vector2(0.5f, 0.5f));
+                    }
+                }));
+            }
+            else if(character is MonsterAttributes enemy)
+            {
+                icon.GetComponent<Image>().sprite = Resources.Load<Sprite>($"EnemyPics/{enemy.monsterId}");
+            }
             TMP_Text numberText = icon.GetComponentInChildren<TMP_Text>();
 
             numberText.text = (i + 1).ToString();
@@ -148,6 +162,26 @@ public class SpeedBarUI : MonoBehaviour
         {
             roundNumber++;
             Debug.Log($"进入第 {roundNumber} 回合！");
+            BattleManager.instance.UpdateTotalEnergy();
+        }
+    }
+
+    /// <summary>
+    /// 从速度条中删除指定角色
+    /// </summary>
+    public void RemoveCharacter(ICharacter character)
+    {
+        SpeedCharacter toRemove = speedCharacters.Find(sc => sc.character == character);
+        if (toRemove != null)
+        {
+            speedCharacters.Remove(toRemove);
+            if (toRemove.iconTransform != null)
+            {
+                Destroy(toRemove.iconTransform.gameObject);
+            }
+            // 重新排序并更新分界线
+            SortIconsByTimePoint();
+            UpdateDividerPosition();
         }
     }
 }

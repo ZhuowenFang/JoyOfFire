@@ -2,7 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TMPro;
+using UnityEngine.EventSystems;
 
 public class CharacterCreation : MonoBehaviour
 {
@@ -24,9 +27,27 @@ public class CharacterCreation : MonoBehaviour
     private string selectedGender; // 选中的性别
     private HashSet<string> forbiddenWords; // 用于存储违禁词
     public GameObject WaitingPanel;
+    
+    public GameObject IlegalWordPanel;
+    
+    public GameObject characterFeaturePanel;
+    public WordLibraries wordLibraries;
 
+    public Button backButton;
+    public int currentIndex = 0;
+
+    public static CharacterCreation instance;
+    private InputField currentInputField;
     
-    
+    public Transform suggestionsContainer;
+    public GameObject suggestionButtonPrefab;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+
     void Start()
     {
         LoadForbiddenWords(); // 加载违禁词
@@ -48,6 +69,106 @@ public class CharacterCreation : MonoBehaviour
         nextButton.onClick.AddListener(OnNextButtonClicked);
 
         createButton.onClick.AddListener(OnCreateButtonClicked);
+        // createInitialCharacter();
+        EventTrigger trigger = professionInput.gameObject.GetComponent<EventTrigger>();
+        if (trigger == null)
+        {
+            trigger = professionInput.gameObject.AddComponent<EventTrigger>();
+        }
+
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Select;
+        Debug.LogError(wordLibraries.careerWords);
+        entry.callback.AddListener((data) => { ShowSuggestions(professionInput, wordLibraries.careerWords); });
+        trigger.triggers.Add(entry);
+        
+        EventTrigger trigger2 = clothesInput.gameObject.GetComponent<EventTrigger>();
+        if (trigger2 == null)
+        {
+            trigger2 = clothesInput.gameObject.AddComponent<EventTrigger>();
+        }
+        EventTrigger.Entry entry2 = new EventTrigger.Entry();
+        entry2.eventID = EventTriggerType.Select;
+        entry2.callback.AddListener((data) => { ShowSuggestions(clothesInput, wordLibraries.clothingWords); });
+        trigger2.triggers.Add(entry2);
+        EventTrigger trigger3 = combatInput.gameObject.GetComponent<EventTrigger>();
+        if (trigger3 == null)
+        {
+            trigger3 = combatInput.gameObject.AddComponent<EventTrigger>();
+        }
+        EventTrigger.Entry entry3 = new EventTrigger.Entry();
+        entry3.eventID = EventTriggerType.Select;
+        entry3.callback.AddListener((data) => { ShowSuggestions(combatInput, wordLibraries.battleStyleWords); });
+        trigger3.triggers.Add(entry3);
+        EventTrigger trigger4 = otherInput.gameObject.GetComponent<EventTrigger>();
+        if (trigger4 == null)
+        {
+            trigger4 = otherInput.gameObject.AddComponent<EventTrigger>();
+        }
+        EventTrigger.Entry entry4 = new EventTrigger.Entry();
+        entry4.eventID = EventTriggerType.Select;
+        entry4.callback.AddListener((data) => { ClearSuggestions(); currentInputField = otherInput; });
+        trigger4.triggers.Add(entry4);
+        
+    }
+    
+    public void refreshSuggestions()
+    {
+        if (currentInputField != null)
+        {
+            ClearSuggestions();
+            if (currentInputField == professionInput)
+            {
+                ShowSuggestions(professionInput, wordLibraries.careerWords);
+            }
+            else if (currentInputField == clothesInput)
+            {
+                ShowSuggestions(clothesInput, wordLibraries.clothingWords);
+            }
+            else if (currentInputField == combatInput)
+            {
+                ShowSuggestions(combatInput, wordLibraries.battleStyleWords);
+            }
+        }
+    }
+
+
+
+    void ShowSuggestions(InputField inputField, List<string> wordLibrary)
+    {
+        currentInputField = inputField;
+        ClearSuggestions();
+
+        int suggestionsCount = 4;
+        for (int i = 0; i < suggestionsCount; i++)
+        {
+            if (wordLibrary.Count == 0)
+                break;
+            int randomIndex = Random.Range(0, wordLibrary.Count);
+            string suggestion = wordLibrary[randomIndex];
+
+            GameObject buttonObj = Instantiate(suggestionButtonPrefab, suggestionsContainer);
+            Button btn = buttonObj.GetComponent<Button>();
+            Text btnText = buttonObj.GetComponentInChildren<Text>();
+            if (btnText != null)
+            {
+                btnText.text = suggestion;
+            }
+
+            btn.onClick.AddListener(() =>
+            {
+                currentInputField.text = suggestion;
+                ClearSuggestions();
+            });
+        }
+    }
+    
+    void ClearSuggestions()
+    {
+        foreach (Transform child in suggestionsContainer)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     private void OnProfessionSelected(Button button)
@@ -131,27 +252,35 @@ public class CharacterCreation : MonoBehaviour
         characterInfoPage.SetActive(true);
     }
 
-    private void OnCreateButtonClicked()
+    private async void OnCreateButtonClicked()
     {
+        
         string profession = professionInput.text;
         string clothes = clothesInput.text;
         string combat = combatInput.text;
         string other = otherInput.text;
 
-        if (string.IsNullOrEmpty(selectedGender) ||
-            string.IsNullOrEmpty(clothes) || string.IsNullOrEmpty(combat) || string.IsNullOrEmpty(other) || string.IsNullOrEmpty(profession))
-        {
-            Debug.LogError("请填写所有字段！");
-            return;
-        }
+        // if (string.IsNullOrEmpty(selectedGender) ||
+        //     string.IsNullOrEmpty(clothes) || string.IsNullOrEmpty(combat) || string.IsNullOrEmpty(other) || string.IsNullOrEmpty(profession))
+        // {
+        //     Debug.LogError("请填写所有字段！");
+        //     return;
+        // }
         if (ContainsForbiddenWord(profession) || ContainsForbiddenWord(clothes) || ContainsForbiddenWord(combat) || ContainsForbiddenWord(other))
         {
             
             Debug.LogError("输入内容包含违禁词，请重新输入！");
+            IlegalWordPanel.SetActive(true);
+            ClearInputs();
             return;
         }
+        characterFeaturePanel.SetActive(false);
+        WaitingPanel.SetActive(true);
+        WaitingPanel.transform.Find("Text (Legacy)").GetComponent<TMP_Text>().text = "创建中，去逛逛吧...";
+        // backButton.interactable = true;
         ClassManager.CharacterCreationData characterCreationData = new ClassManager.CharacterCreationData
         {
+            userId = LoginManager.instance.userId,
             sex = selectedGender,
             profession = profession,
             clothes = clothes,
@@ -159,77 +288,109 @@ public class CharacterCreation : MonoBehaviour
             other = other
         };
         
-        string jsonData = JsonUtility.ToJson(characterCreationData);
-
-        Debug.Log($"角色数据: {jsonData}");
-        // APIManager.instance.CreateCharacter(
-        //     jsonData,
-        //     onSuccess: (response) =>
-        //     {
-        //         WaitingPanel.SetActive(false);
-        //         Debug.Log($"Character Created: {response}");
-        //         var characterResponse = JsonConvert.DeserializeObject<CharacterAttributesResponse>(response);
-        //         var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse.data);
-        //         NewCharacterManager.instance.AddCharacter(character);
-        //         NewCharacterManager.instance.Role.text = selectedProfession;
-        //     },
-        //     onError: (error) =>
-        //     {
-        //         Debug.LogError($"Error creating character: {error}");
-        //     }
-        // );
-        string mockResponse = @"{
-            ""basic_information"": {
-                ""appearance"": ""身穿白大褂，手持听诊器，周围狂风呼啸"",
-                ""fighting_ability"": ""狂风之力，可辅助可攻击"",
-                ""gender"": ""男"",
-                ""name"": ""狂风医生"",
-                ""story"": ""拥有狂风之力的医生，在克苏鲁世界救死扶伤""
+        APIManager.instance.GetLevelData(
+            "1-1",
+            onSuccess: (response) =>
+            {
+                
             },
-            ""character_picture"": ""https://s.coze.cn/t/CnQK0oHlBLj415s2/"",
-            ""current_ability"": [""- 智力：3"", ""- 力量：2"", ""- 敏捷：1""],
-            ""potential_ability"": [""- 智力：25"", ""- 力量：23"", ""- 敏捷：15""],
-            ""talent1"": {
-                ""abilitydescription"": ""以风之力进行诊疗，造成 148.14% 的物理伤害，同时给自己增加 51.04 的护盾。"",
-                ""cost"": ""2"",
-                ""description"": [{
-                    ""talent_description"": ""以风之力治疗与攻击"",
-                    ""talent_name"": ""风暴诊疗""
-                }],
-                ""icon1"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
-            },
-            ""talent_count1"": [""1.4814"", ""0.0000"", ""0.0000"", ""0.0000"", ""0.0000"", ""51.0398"", ""0.0000"", ""0.0000""],
-            ""talent2"": {
-                ""abilitydescription"": """",
-                ""cost"": """",
-                ""description"": [{
-                    ""talent_description"": """",
-                    ""talent_name"": """"
-                }],
-                ""icon2"": """"
-            },
-            ""talent_count2"": [],
-            ""talent3"": {
-                ""abilitydescription"": """",
-                ""cost"": """",
-                ""description"": [{
-                    ""talent_description"": """",
-                    ""talent_name"": """"
-                }],
-                ""icon3"": """"
-            },
-            ""talent_count3"": [],
-            ""experience"": ""0""
-        }";
-
-        var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
-
-        var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
-        NewCharacterManager.instance.AddCharacter(character);
-
-        NewCharacterManager.instance.Role.text = selectedProfession;
+            onError: (error) =>
+            {
+                Debug.LogError($"Error getting level data: {error}");
+            }
+        );
         
-    
+        string jsonData = JsonUtility.ToJson(characterCreationData);
+        NewCharacterManager.instance.isCharacterCreating[currentIndex] = true;
+        Debug.Log($"角色数据: {jsonData}");
+        APIManager.instance.CreateCharacter(
+            jsonData,
+            onSuccess: async (response) =>
+            {
+                Debug.Log($"Character Created: {response}");
+                var characterResponse = JsonConvert.DeserializeObject<CharacterAttributesResponse>(response);
+                if (characterResponse.code != "00000")
+                {
+                    EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f,"角色创建失败"));
+             
+                    Debug.LogError($"Error creating character: {characterResponse.message}");
+                    NewCharacterManager.instance.isCharacterCreating[currentIndex] = false;
+                    WaitingPanel.transform.Find("Text (Legacy)").GetComponent<TMP_Text>().text = "创建失败,请稍后再试";
+                    await Task.Delay(3000);
+                    NewCharacterManager.instance.InitializeButtons();
+                    WaitingPanel.SetActive(false);
+                    return;
+                }
+                EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f,"角色已创建完成"));
+        
+        
+                var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse.data);
+                NewCharacterManager.instance.AddCharacter(character);
+                character.role = selectedProfession;
+                CharacterDetail.instance.Role.text = selectedProfession;
+                NewCharacterManager.instance.isCharacterCreating[currentIndex] = false;
+                NewCharacterManager.instance.InitializeButtons();
+                CloudSaveManager.Instance.UpdateCreateCount();
+                await Task.Delay(500);
+                WaitingPanel.SetActive(false);
+        
+        
+            },
+            onError: async (error) =>
+            {                
+                EventManager.instance.StartCoroutine(EventManager.instance.FadeOutAndDeactivate(5f,"角色创建失败"));
+        
+                Debug.LogError($"Error creating character: {error}");
+                NewCharacterManager.instance.isCharacterCreating[currentIndex] = false;
+                WaitingPanel.transform.Find("Text (Legacy)").GetComponent<TMP_Text>().text = "创建失败,请稍后再试";
+                await Task.Delay(3000);
+                NewCharacterManager.instance.InitializeButtons();
+                WaitingPanel.SetActive(false);
+            }
+        );
+        // string mockResponse = @"{
+        //     ""basic_information"": {
+        //         ""appearance"": ""身穿白大褂，手持听诊器，周围狂风呼啸"",
+        //         ""fighting_ability"": ""狂风之力，可辅助可攻击"",
+        //         ""gender"": ""男"",
+        //         ""name"": ""狂风医生"",
+        //         ""story"": ""拥有狂风之力的医生，在克苏鲁世界救死扶伤""
+        //     },
+        //     ""character_picture"": ""https://s.coze.cn/t/CnQK0oHlBLj415s2/"",
+        //     ""current_ability"": [""- 智力：3"", ""- 力量：6"", ""- 敏捷：1""],
+        //     ""potential_ability"": [""- 智力：25"", ""- 力量：23"", ""- 敏捷：15""],
+        //     ""talent1"": {
+        //         ""abilitydescription"": ""以风之力进行诊疗，造成 148.14% 的物理伤害，同时给自己增加 51.04 的护盾。"",
+        //         ""cost"": ""2"",
+        //         ""description"": [{
+        //             ""talent_description"": ""以风之力治疗与攻击"",
+        //             ""talent_name"": ""风暴诊疗""
+        //         }],
+        //         ""icon"": ""https://s.coze.cn/t/ClmrB2ygjB0IqGk8/""
+        //     },
+        //     ""talent_count1"": [""1.4814"", ""0.0000"", ""1"", ""1"", ""1"", ""51.0398"", ""0.0000"", ""0.0000""],
+        //     ""talent2"": null,
+        //     ""talent_count2"": null,
+        //     ""talent3"": null,
+        //     ""talent_count3"": null,
+        //     ""experience"": null,
+        // }";
+        //
+        // var characterResponse = JsonConvert.DeserializeObject<ClassManager.CharacterData>(mockResponse);
+        //
+        // var character = NewCharacterManager.ConvertToCharacterAttributes(characterResponse);
+        // character.user_id = "1";
+        //
+        // character.id = "1";
+        // character.character_id = "10";
+        // NewCharacterManager.instance.AddCharacter(character);
+        //
+        // CharacterDetail.instance.Role.text = selectedProfession;
+        // character.role = selectedProfession;
+        // NewCharacterManager.instance.InitializeButtons();
+        
+        
+        
 
         
         ClearInputs();
@@ -258,4 +419,10 @@ public class CharacterCreation : MonoBehaviour
         public string message;
         public ClassManager.CharacterData data;
     }
+    // public class CharacterUpdateResponse
+    // {
+    //     public string code;
+    //     public string message;
+    //     public string data;
+    // }
 }

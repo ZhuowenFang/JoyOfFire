@@ -12,9 +12,22 @@ public class ButtonGroup : MonoBehaviour
     
     public bool transparence = false;
     public Button ConfirmButton = null;
-
+    public static ButtonGroup instance;
+    
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
+        
+    }
+    
+    public void InitializeButtons()
+    {
+        selectedButton = null;
+        ConfirmButton.gameObject.SetActive(false);
+        
         foreach (Button button in buttons)
         {
             if (!transparence)
