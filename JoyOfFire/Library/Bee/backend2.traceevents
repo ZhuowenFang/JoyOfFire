@@ -1,330 +1,315 @@
 { "cat":"", "pid":12345, "tid":0, "ts":0, "ph":"M", "name":"process_name", "args": { "name":"bee_backend" } }
-,{ "pid":12345, "tid":0, "ts":1741767049964720, "dur":26158, "ph":"X", "name": "DriverInitData",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":0, "ts":1741767049990889, "dur":181, "ph":"X", "name": "RemoveStaleOutputs",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":0, "ts":1741767049991154, "dur":560, "ph":"X", "name": "BuildQueueInit",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":0, "ts":1741767049991947, "dur":100, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/level0" }}
-,{ "pid":12345, "tid":0, "ts":1741767049992159, "dur":92, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/resources.assets.resS" }}
-,{ "pid":12345, "tid":0, "ts":1741767049992256, "dur":73, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Resources/unity_builtin_extra" }}
-,{ "pid":12345, "tid":0, "ts":1741767049992451, "dur":63, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/sharedassets0.assets.resS" }}
-,{ "pid":12345, "tid":0, "ts":1741767049992589, "dur":50, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/sharedassets2.assets" }}
-,{ "pid":12345, "tid":0, "ts":1741767049992690, "dur":56, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/boot.config" }}
-,{ "pid":12345, "tid":0, "ts":1741767049993066, "dur":100, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.AIModule.dll" }}
-,{ "pid":12345, "tid":0, "ts":1741767049993314, "dur":51, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.AssetBundleModule.dll" }}
-,{ "pid":12345, "tid":0, "ts":1741767049995768, "dur":160, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.dll" }}
-,{ "pid":12345, "tid":0, "ts":1741767049996063, "dur":72, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Environments.Internal.dll" }}
-,{ "pid":12345, "tid":0, "ts":1741767049997180, "dur":61, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.VisualScripting.State.dll" }}
-,{ "pid":12345, "tid":0, "ts":1741767049997321, "dur":50, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.VisualScripting.Antlr3.Runtime.dll" }}
-,{ "pid":12345, "tid":0, "ts":1741767049991758, "dur":7512, "ph":"X", "name": "EnqueueRequestedNodes",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":0, "ts":1741767049999271, "dur":3470027, "ph":"X", "name": "WaitForBuildFinished", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":0, "ts":1741767053469299, "dur":255, "ph":"X", "name": "JoinBuildThread",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":0, "ts":1741767053469718, "dur":2283, "ph":"X", "name": "Tundra",  "args": { "detail":"Write AllBuiltNodes" }}
-,{ "pid":12345, "tid":1, "ts":1741767049992279, "dur":6999, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":1, "ts":1741767049999280, "dur":1966, "ph":"X", "name": "CheckDagSignatures",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":1, "ts":1741767050042128, "dur":876, "ph":"X", "name": "WriteText",  "args": { "detail":"Library/Bee/artifacts/csharpactions/boot.config_tyr4.info" }}
-,{ "pid":12345, "tid":1, "ts":1741767050043009, "dur":248, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\PlayerDataCache\\Win64\\Data\\boot.config" }}
-,{ "pid":12345, "tid":1, "ts":1741767050043266, "dur":11384, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\PlayerDataCache\\Win64\\Data\\RuntimeInitializeOnLoads.json" }}
-,{ "pid":12345, "tid":1, "ts":1741767050054651, "dur":136, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\PlayerDataCache\\Win64\\Data\\ScriptingAssemblies.json" }}
-,{ "pid":12345, "tid":1, "ts":1741767050055021, "dur":156, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\Playerd32d6ea3-inputdata.json" }}
-,{ "pid":12345, "tid":1, "ts":1741767050043008, "dur":12256, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"AddBootConfigGUID Library/Bee/artifacts/WinPlayerBuildProgram/boot.config" }}
-,{ "pid":12345, "tid":1, "ts":1741767050055533, "dur":58, "ph":"X", "name": "StoreTimestampsOfNonGeneratedInputFiles",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":1, "ts":1741767050055833, "dur":229139, "ph":"X", "name": "AddBootConfigGUID",  "args": { "detail":"Library/Bee/artifacts/WinPlayerBuildProgram/boot.config" }}
-,{ "pid":12345, "tid":1, "ts":1741767050286688, "dur":780, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\boot.config" }}
-,{ "pid":12345, "tid":1, "ts":1741767050286688, "dur":782, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/boot.config" }}
-,{ "pid":12345, "tid":1, "ts":1741767050287488, "dur":819, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/boot.config" }}
-,{ "pid":12345, "tid":1, "ts":1741767050288311, "dur":3180988, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":2, "ts":1741767049992379, "dur":6903, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":2, "ts":1741767049999284, "dur":290, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":2, "ts":1741767049999574, "dur":1695, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":2, "ts":1741767050002408, "dur":1885, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.5/machine.config" }}
-,{ "pid":12345, "tid":2, "ts":1741767050004335, "dur":2191, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.0/machine.config" }}
-,{ "pid":12345, "tid":2, "ts":1741767050006577, "dur":1506, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/2.0/Browsers/Compat.browser" }}
-,{ "pid":12345, "tid":2, "ts":1741767050008137, "dur":12375, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/EmbedRuntime/mono-2.0-bdwgc.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050020546, "dur":1998, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Configuration.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050022578, "dur":3090, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Burst.Unsafe.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050025694, "dur":2386, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Authentication.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050028106, "dur":7218, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UI.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050035345, "dur":218, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":2, "ts":1741767050035566, "dur":2786, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Analytics.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050052531, "dur":313, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":2, "ts":1741767050038398, "dur":14457, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.VisualScripting.Flow.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050052882, "dur":124, "ph":"X", "name": "CheckPristineOutputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.VirtualTexturingModule.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050053020, "dur":17568, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.VirtualTexturingModule.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050070621, "dur":5363, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityConnectModule.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050076107, "dur":5433, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.TerrainPhysicsModule.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050081568, "dur":2965, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.ScreenCaptureModule.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050084559, "dur":17433, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.ParticleSystemModule.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050102020, "dur":10463, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.DSPGraphModule.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050112538, "dur":10502, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.AudioModule.dll" }}
-,{ "pid":12345, "tid":2, "ts":1741767050123067, "dur":27727, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/sharedassets0.assets.resS" }}
-,{ "pid":12345, "tid":2, "ts":1741767050192994, "dur":56, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":2, "ts":1741767050150825, "dur":42235, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/level2" }}
-,{ "pid":12345, "tid":2, "ts":1741767050193092, "dur":3276231, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":3, "ts":1741767049992415, "dur":6872, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":3, "ts":1741767049999290, "dur":436, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":3, "ts":1741767049999727, "dur":1538, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":3, "ts":1741767050013286, "dur":9018, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.5/web.config" }}
-,{ "pid":12345, "tid":3, "ts":1741767050022372, "dur":2697, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Runtime.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050025085, "dur":2250, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Mathematics.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050025084, "dur":2252, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Mathematics.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050027348, "dur":7873, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Mathematics.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050035765, "dur":15871, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/NavMeshPlus.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050051666, "dur":13857, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.XRModule.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050065553, "dur":6228, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityWebRequestAudioModule.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050071808, "dur":4406, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UmbraModule.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050079459, "dur":79, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":3, "ts":1741767050076240, "dur":6036, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.TLSModule.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050082330, "dur":3031, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.ProfilerModule.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050085388, "dur":16506, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.InputLegacyModule.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050101938, "dur":9370, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.DirectorModule.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050111383, "dur":12077, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.ClothModule.dll" }}
-,{ "pid":12345, "tid":3, "ts":1741767050123489, "dur":27310, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/sharedassets0.assets" }}
-,{ "pid":12345, "tid":3, "ts":1741767050150830, "dur":40236, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/level1" }}
-,{ "pid":12345, "tid":3, "ts":1741767050191081, "dur":3278214, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":4, "ts":1741767049992449, "dur":6844, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":4, "ts":1741767049999296, "dur":444, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":4, "ts":1741767049999740, "dur":1546, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":4, "ts":1741767050014101, "dur":3051, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.5/Browsers/Compat.browser" }}
-,{ "pid":12345, "tid":4, "ts":1741767050017214, "dur":6009, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Net.Http.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050023238, "dur":600, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Cinemachine.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050023237, "dur":602, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Cinemachine.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050023853, "dur":2079, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Cinemachine.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050025958, "dur":2878, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Timeline.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050028865, "dur":11446, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.VisualScripting.Core.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050040338, "dur":11593, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Environments.Internal.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050051967, "dur":12792, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.WindModule.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050064804, "dur":6465, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityWebRequestTextureModule.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050074703, "dur":51, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":4, "ts":1741767050071300, "dur":3479, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityAnalyticsCommonModule.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050074805, "dur":1125, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":4, "ts":1741767050079449, "dur":76, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":4, "ts":1741767050075932, "dur":4022, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.TilemapModule.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050079993, "dur":8635, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.SpriteMaskModule.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050088665, "dur":37065, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.ImageConversionModule.dll" }}
-,{ "pid":12345, "tid":4, "ts":1741767050125779, "dur":65455, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/ScriptingAssemblies.json" }}
-,{ "pid":12345, "tid":4, "ts":1741767050191246, "dur":3278082, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":5, "ts":1741767049992514, "dur":6785, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":5, "ts":1741767049999302, "dur":292, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":5, "ts":1741767049999595, "dur":1660, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":5, "ts":1741767050001544, "dur":363, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Assembly-CSharp.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050001908, "dur":151, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.IK.Runtime.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050002061, "dur":174, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.AI.Navigation.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050002236, "dur":160, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Environments.Internal.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050002397, "dur":175, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050002574, "dur":141, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Networking.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050002716, "dur":416, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.VisualScripting.Flow.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050003133, "dur":334, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Scheduler.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050003472, "dur":146, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Environments.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050003619, "dur":138, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Configuration.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050003758, "dur":1262, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Collections.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050005022, "dur":554, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.SpriteShape.Runtime.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050005577, "dur":153, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.PixelPerfect.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050005731, "dur":915, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.TextMeshPro.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050006647, "dur":182, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Analytics.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050006830, "dur":857, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Burst.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050007689, "dur":1475, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Internal.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050009165, "dur":149, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\NavMeshPlus.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050009315, "dur":201, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Device.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050009517, "dur":208, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Threading.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050009726, "dur":7515, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.VisualScripting.Core.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050017243, "dur":545, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.Animation.Runtime.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050017790, "dur":404, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.Tilemap.Extras.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050018255, "dur":1239, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\UnityEngine.UI.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050019495, "dur":179, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Telemetry.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050019676, "dur":179, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.InternalAPIEngineBridge.001.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050019856, "dur":312, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.Common.Runtime.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050020169, "dur":465, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Timeline.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050020635, "dur":297, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Analytics.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050020934, "dur":1691, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Authentication.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050022626, "dur":7056, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Authentication.PlayerAccounts.dll" }}
-,{ "pid":12345, "tid":5, "ts":1741767050001259, "dur":28532, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"GenerateNativePluginsForAssemblies Library/Bee/artifacts/WinPlayerBuildProgram/AsyncPluginsFromLinker" }}
-,{ "pid":12345, "tid":5, "ts":1741767050030272, "dur":52, "ph":"X", "name": "StoreTimestampsOfNonGeneratedInputFiles",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":5, "ts":1741767050035431, "dur":3431621, "ph":"X", "name": "GenerateNativePluginsForAssemblies",  "args": { "detail":"Library/Bee/artifacts/WinPlayerBuildProgram/AsyncPluginsFromLinker" }}
-,{ "pid":12345, "tid":5, "ts":1741767053468511, "dur":748, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Plugins/x86_64/lib_burst_generated.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767049992551, "dur":6754, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":6, "ts":1741767049999308, "dur":282, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":6, "ts":1741767049999591, "dur":1670, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":6, "ts":1741767050001647, "dur":2467, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/config" }}
-,{ "pid":12345, "tid":6, "ts":1741767050004172, "dur":1977, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.0/web.config" }}
-,{ "pid":12345, "tid":6, "ts":1741767050006191, "dur":1913, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/2.0/machine.config" }}
-,{ "pid":12345, "tid":6, "ts":1741767050008146, "dur":1140, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire.exe" }}
-,{ "pid":12345, "tid":6, "ts":1741767050009311, "dur":4344, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050013711, "dur":2112, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Xml.Linq.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050015856, "dur":2318, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Runtime.Serialization.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050021997, "dur":77, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":6, "ts":1741767050018201, "dur":3882, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Drawing.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050022121, "dur":3691, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Mono.Security.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050025837, "dur":2870, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Analytics.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050028783, "dur":6586, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.2D.Animation.Runtime.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050038185, "dur":132, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":6, "ts":1741767050035395, "dur":2930, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.TextMeshPro.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050038354, "dur":14728, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Scheduler.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050053143, "dur":17187, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.VehiclesModule.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050070362, "dur":3004, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityCurlModule.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050074110, "dur":4743, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UIElementsModule.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050083514, "dur":697, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":6, "ts":1741767050078894, "dur":5325, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.SpriteShapeModule.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050084251, "dur":7889, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.Physics2DModule.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050092197, "dur":14642, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.IMGUIModule.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050106899, "dur":4189, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.CrashReportingModule.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050111127, "dur":3621, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.ClusterInputModule.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050114778, "dur":6753, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.AccessibilityModule.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050121579, "dur":62624, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/UnityPlayer.dll" }}
-,{ "pid":12345, "tid":6, "ts":1741767050184250, "dur":6936, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/globalgamemanagers.assets" }}
-,{ "pid":12345, "tid":6, "ts":1741767050191200, "dur":3278137, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":7, "ts":1741767049992583, "dur":6730, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":7, "ts":1741767049999316, "dur":285, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":7, "ts":1741767049999601, "dur":1657, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":7, "ts":1741767050001259, "dur":59, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/mconfig/config.xml" }}
-,{ "pid":12345, "tid":7, "ts":1741767050014570, "dur":3780, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/mconfig/config.xml" }}
-,{ "pid":12345, "tid":7, "ts":1741767050018381, "dur":3980, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Data.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050022377, "dur":128, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\PackageCache\\com.unity.nuget.newtonsoft-json@3.2.1\\Runtime\\AOT\\Newtonsoft.Json.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050022375, "dur":131, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Newtonsoft.Json.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050022524, "dur":2416, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Newtonsoft.Json.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050024957, "dur":188, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Registration.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050024956, "dur":190, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Registration.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050025160, "dur":1299, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Registration.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050026486, "dur":4951, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.InternalAPIEngineBridge.001.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050031481, "dur":5362, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Threading.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050036871, "dur":3428, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.2D.SpriteShape.Runtime.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050040330, "dur":14466, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050055024, "dur":19802, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.VRModule.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050074857, "dur":3947, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.TextRenderingModule.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050083421, "dur":774, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":7, "ts":1741767050078832, "dur":5372, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.StreamingModule.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050084239, "dur":7989, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.PhysicsModule.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050106845, "dur":495, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":7, "ts":1741767050092258, "dur":15090, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.HotReloadModule.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050107379, "dur":7433, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.ContentLoadModule.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050114841, "dur":6711, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.ARModule.dll" }}
-,{ "pid":12345, "tid":7, "ts":1741767050121584, "dur":25580, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/sharedassets2.assets.resS" }}
-,{ "pid":12345, "tid":7, "ts":1741767050148031, "dur":42300, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/resources.assets.resS" }}
-,{ "pid":12345, "tid":7, "ts":1741767050190353, "dur":3278941, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":8, "ts":1741767049992619, "dur":6699, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":8, "ts":1741767049999321, "dur":279, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":8, "ts":1741767049999600, "dur":1684, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":8, "ts":1741767050002730, "dur":1388, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.5/DefaultWsdlHelpGenerator.aspx" }}
-,{ "pid":12345, "tid":8, "ts":1741767050004176, "dur":1755, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.0/settings.map" }}
-,{ "pid":12345, "tid":8, "ts":1741767050005986, "dur":2615, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/2.0/settings.map" }}
-,{ "pid":12345, "tid":8, "ts":1741767050008674, "dur":5697, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Resources/unity default resources" }}
-,{ "pid":12345, "tid":8, "ts":1741767050014432, "dur":2875, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Transactions.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050017334, "dur":4625, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.IO.Compression.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050022861, "dur":16257, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.VisualScripting.Antlr3.Runtime.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050039152, "dur":13956, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Networking.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050053134, "dur":15243, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.VideoModule.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050068409, "dur":3829, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityTestProtocolModule.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050072267, "dur":5290, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UIModule.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050077585, "dur":4155, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.SubsystemsModule.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050081768, "dur":3574, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050085377, "dur":28577, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.InputModule.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050113983, "dur":7950, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.AnimationModule.dll" }}
-,{ "pid":12345, "tid":8, "ts":1741767050121964, "dur":110072, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/sharedassets1.assets.resS" }}
-,{ "pid":12345, "tid":8, "ts":1741767050232057, "dur":3237285, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":9, "ts":1741767049992681, "dur":6644, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":9, "ts":1741767049999328, "dur":336, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":9, "ts":1741767049999664, "dur":1599, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":9, "ts":1741767050001870, "dur":2516, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/browscap.ini" }}
-,{ "pid":12345, "tid":9, "ts":1741767050004441, "dur":2018, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.0/DefaultWsdlHelpGenerator.aspx" }}
-,{ "pid":12345, "tid":9, "ts":1741767050006500, "dur":2244, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/2.0/DefaultWsdlHelpGenerator.aspx" }}
-,{ "pid":12345, "tid":9, "ts":1741767050008818, "dur":6980, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/mscorlib.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050015829, "dur":2012, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Security.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050017869, "dur":4985, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.EnterpriseServices.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050022886, "dur":12429, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Collections.LowLevel.ILSupport.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050049881, "dur":271, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":9, "ts":1741767050035346, "dur":14844, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Burst.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050050265, "dur":14531, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Assembly-CSharp.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050084032, "dur":601, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":9, "ts":1741767050064847, "dur":19795, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityWebRequestModule.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050084673, "dur":14315, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.LocalizationModule.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050099017, "dur":8898, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.GIModule.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050107944, "dur":6881, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.ClusterRendererModule.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050115049, "dur":7668, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.AIModule.dll" }}
-,{ "pid":12345, "tid":9, "ts":1741767050122742, "dur":27093, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/sharedassets1.assets" }}
-,{ "pid":12345, "tid":9, "ts":1741767050149882, "dur":46156, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/resources.assets" }}
-,{ "pid":12345, "tid":9, "ts":1741767050196057, "dur":3273255, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":10, "ts":1741767049992879, "dur":6451, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":10, "ts":1741767049999332, "dur":259, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":10, "ts":1741767049999591, "dur":1676, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":10, "ts":1741767050002183, "dur":2234, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.5/settings.map" }}
-,{ "pid":12345, "tid":10, "ts":1741767050004430, "dur":134, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.0/Browsers/Compat.browser" }}
-,{ "pid":12345, "tid":10, "ts":1741767050004591, "dur":1310, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/4.0/Browsers/Compat.browser" }}
-,{ "pid":12345, "tid":10, "ts":1741767050005979, "dur":1977, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/etc/mono/2.0/web.config" }}
-,{ "pid":12345, "tid":10, "ts":1741767050008072, "dur":2279, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/MonoBleedingEdge/EmbedRuntime/MonoPosixHelper.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050010377, "dur":68, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"E:\\Myunity\\2022.3.33f1\\Editor\\Data\\MonoBleedingEdge\\lib\\mono\\unityjit-win32\\System.Xml.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050010376, "dur":70, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Xml.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050010460, "dur":5040, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Xml.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050015527, "dur":1899, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.ServiceModel.Internals.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050017458, "dur":3763, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.IO.Compression.FileSystem.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050021253, "dur":3362, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.ComponentModel.Composition.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050024632, "dur":170, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.VisualScripting.State.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050024631, "dur":172, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.VisualScripting.State.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050024819, "dur":1349, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.VisualScripting.State.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050026198, "dur":2506, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.2D.Common.Runtime.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050028749, "dur":6863, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.2D.Tilemap.Extras.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050035713, "dur":2546, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.2D.PixelPerfect.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050038285, "dur":13289, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Environments.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050051607, "dur":4127, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050055766, "dur":19910, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.VFXModule.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050075706, "dur":6576, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.TextCoreFontEngineModule.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050082325, "dur":2519, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.PropertiesModule.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050084903, "dur":13970, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.JSONSerializeModule.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050098902, "dur":15812, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.GameCenterModule.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050168122, "dur":74, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":10, "ts":1741767050114753, "dur":53465, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.AndroidJNIModule.dll" }}
-,{ "pid":12345, "tid":10, "ts":1741767050168272, "dur":26466, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/globalgamemanagers.assets.resS" }}
-,{ "pid":12345, "tid":10, "ts":1741767050194959, "dur":3274360, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":11, "ts":1741767049992928, "dur":6415, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":11, "ts":1741767049999346, "dur":59, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":11, "ts":1741767049999405, "dur":1852, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":11, "ts":1741767050001265, "dur":56, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/UnityCrashHandler64.exe" }}
-,{ "pid":12345, "tid":11, "ts":1741767050015928, "dur":3942, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/UnityCrashHandler64.exe" }}
-,{ "pid":12345, "tid":11, "ts":1741767050019917, "dur":4900, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Core.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050024849, "dur":425, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.CloudSave.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050024847, "dur":428, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.CloudSave.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050025304, "dur":1837, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.CloudSave.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050027169, "dur":4588, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Telemetry.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050031773, "dur":327, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Device.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050032115, "dur":5075, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Device.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050037254, "dur":6807, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Collections.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050044092, "dur":23801, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.AI.Navigation.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050067930, "dur":7574, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityWebRequestAssetBundleModule.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050075554, "dur":2889, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.TextCoreTextEngineModule.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050083395, "dur":784, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":11, "ts":1741767050078520, "dur":5669, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.SubstanceModule.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050084605, "dur":37072, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.NVIDIAModule.dll" }}
-,{ "pid":12345, "tid":11, "ts":1741767050121704, "dur":25409, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/sharedassets2.assets" }}
-,{ "pid":12345, "tid":11, "ts":1741767050147147, "dur":522, "ph":"X", "name": "StoreTimestampsOfNonGeneratedInputFiles",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":11, "ts":1741767050147682, "dur":38988, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Resources/unity_builtin_extra" }}
-,{ "pid":12345, "tid":11, "ts":1741767050186714, "dur":9541, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/globalgamemanagers" }}
-,{ "pid":12345, "tid":11, "ts":1741767050196273, "dur":3273032, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":12, "ts":1741767049993020, "dur":6330, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":12, "ts":1741767049999350, "dur":1901, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":12, "ts":1741767050015447, "dur":1473, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/app.info" }}
-,{ "pid":12345, "tid":12, "ts":1741767050016941, "dur":2434, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Numerics.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050019406, "dur":2934, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/System.Data.DataSetExtensions.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050022377, "dur":3269, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/netstandard.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050025661, "dur":236, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Authentication.PlayerAccounts.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050025660, "dur":237, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Authentication.PlayerAccounts.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050025912, "dur":9392, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Authentication.PlayerAccounts.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050038145, "dur":58, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":12, "ts":1741767050035365, "dur":2847, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Internal.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050038236, "dur":93, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":12, "ts":1741767050038331, "dur":6049, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.Services.Core.Configuration.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050044411, "dur":11134, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/Unity.2D.IK.Runtime.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050056968, "dur":13862, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityWebRequestWWWModule.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050070862, "dur":5283, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.UnityAnalyticsModule.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050076177, "dur":5326, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.TerrainModule.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050083953, "dur":420, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":12, "ts":1741767050081539, "dur":2842, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.SharedInternalsModule.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050084409, "dur":14179, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.PerformanceReportingModule.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050098629, "dur":8540, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.GridModule.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050107197, "dur":5337, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.CoreModule.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050112563, "dur":2933, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/Managed/UnityEngine.AssetBundleModule.dll" }}
-,{ "pid":12345, "tid":12, "ts":1741767050115520, "dur":387, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\com.unity.services.core\\UnityServicesProjectConfiguration.json" }}
-,{ "pid":12345, "tid":12, "ts":1741767050115519, "dur":388, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of Fire Windows/JoyOfFire_Data/StreamingAssets/UnityServicesProjectConfiguration.json" }}
-,{ "pid":12345, "tid":12, "ts":1741767050115939, "dur":1018, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/StreamingAssets/UnityServicesProjectConfiguration.json" }}
-,{ "pid":12345, "tid":12, "ts":1741767050117016, "dur":19172, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/StreamingAssets/sensitive_stop_words.txt" }}
-,{ "pid":12345, "tid":12, "ts":1741767050136237, "dur":26466, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/RuntimeInitializeOnLoads.json" }}
-,{ "pid":12345, "tid":12, "ts":1741767050162743, "dur":28777, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of Fire Windows/JoyOfFire_Data/level0" }}
-,{ "pid":12345, "tid":12, "ts":1741767050191534, "dur":3277797, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
-,{ "pid":12345, "tid":0, "ts":1741767053475570, "dur":1168, "ph":"X", "name": "ProfilerWriteOutput" }
+,{ "pid":12345, "tid":0, "ts":1741761324338141, "dur":20731, "ph":"X", "name": "DriverInitData",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1741761324358886, "dur":221, "ph":"X", "name": "RemoveStaleOutputs",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1741761324359194, "dur":560, "ph":"X", "name": "BuildQueueInit",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1741761324363877, "dur":53, "ph":"X", "name": "EmitFirstTimeEnqueue",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Mono.Security.dll" }}
+,{ "pid":12345, "tid":0, "ts":1741761324359783, "dur":5650, "ph":"X", "name": "EnqueueRequestedNodes",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1741761324365435, "dur":4005243, "ph":"X", "name": "WaitForBuildFinished", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1741761328370679, "dur":411, "ph":"X", "name": "JoinBuildThread",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1741761328371091, "dur":53, "ph":"X", "name": "ThreadStateDestroy",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1741761328371362, "dur":2205, "ph":"X", "name": "Tundra",  "args": { "detail":"Write AllBuiltNodes" }}
+,{ "pid":12345, "tid":1, "ts":1741761324359803, "dur":5637, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":1, "ts":1741761324365443, "dur":1843, "ph":"X", "name": "CheckDagSignatures",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":1, "ts":1741761324367801, "dur":405, "ph":"X", "name": "WriteText",  "args": { "detail":"Library/Bee/artifacts/csharpactions/boot.config_tyr4.info" }}
+,{ "pid":12345, "tid":1, "ts":1741761324368210, "dur":155, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\PlayerDataCache\\Win64\\Data\\boot.config" }}
+,{ "pid":12345, "tid":1, "ts":1741761324368372, "dur":13898, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\PlayerDataCache\\Win64\\Data\\RuntimeInitializeOnLoads.json" }}
+,{ "pid":12345, "tid":1, "ts":1741761324382473, "dur":144, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"E:\\Myunity\\2022.3.33f1\\Editor\\Data\\PlaybackEngines\\WindowsStandaloneSupport\\Variations\\mono\\Managed\\UnityEngine.UnityWebRequestWWWModule.dll" }}
+,{ "pid":12345, "tid":1, "ts":1741761324383125, "dur":89, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"E:\\Myunity\\2022.3.33f1\\Editor\\Data\\Tools\\BuildPipeline\\Bee.VisualStudioSolution.dll" }}
+,{ "pid":12345, "tid":1, "ts":1741761324368209, "dur":15066, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"AddBootConfigGUID Library/Bee/artifacts/WinPlayerBuildProgram/boot.config" }}
+,{ "pid":12345, "tid":1, "ts":1741761324383563, "dur":99, "ph":"X", "name": "StoreTimestampsOfNonGeneratedInputFiles",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":1, "ts":1741761324384422, "dur":134087, "ph":"X", "name": "AddBootConfigGUID",  "args": { "detail":"Library/Bee/artifacts/WinPlayerBuildProgram/boot.config" }}
+,{ "pid":12345, "tid":1, "ts":1741761324520039, "dur":209, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\Bee\\artifacts\\WinPlayerBuildProgram\\boot.config" }}
+,{ "pid":12345, "tid":1, "ts":1741761324520038, "dur":211, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/boot.config" }}
+,{ "pid":12345, "tid":1, "ts":1741761324520266, "dur":756, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/boot.config" }}
+,{ "pid":12345, "tid":1, "ts":1741761324521025, "dur":3849626, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324359811, "dur":5635, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324365449, "dur":324, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324365773, "dur":1532, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324367343, "dur":328, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324367697, "dur":361, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324368112, "dur":526, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324368647, "dur":267, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324368925, "dur":247, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324369180, "dur":459, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Analytics.dll" }}
+,{ "pid":12345, "tid":2, "ts":1741761324369179, "dur":460, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.Analytics.dll" }}
+,{ "pid":12345, "tid":2, "ts":1741761324369640, "dur":166, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324369814, "dur":792, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Burst.dll" }}
+,{ "pid":12345, "tid":2, "ts":1741761324369813, "dur":794, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Burst.dll" }}
+,{ "pid":12345, "tid":2, "ts":1741761324370608, "dur":463, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324371081, "dur":209, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324371290, "dur":64, "ph":"X", "name": "EmitNodeUpToDate",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/UnityEngine.VideoModule.dll" }}
+,{ "pid":12345, "tid":2, "ts":1741761324371358, "dur":145, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324371511, "dur":276, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324371802, "dur":222, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324372033, "dur":255, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324372312, "dur":367, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324372688, "dur":253, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324372980, "dur":290, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324373278, "dur":14209, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\PlayerDataCache\\Win64\\Data\\RuntimeInitializeOnLoads.json" }}
+,{ "pid":12345, "tid":2, "ts":1741761324373277, "dur":14213, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/RuntimeInitializeOnLoads.json" }}
+,{ "pid":12345, "tid":2, "ts":1741761324387492, "dur":65, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":2, "ts":1741761324387589, "dur":5749, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/level1" }}
+,{ "pid":12345, "tid":2, "ts":1741761324393355, "dur":3977318, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324359839, "dur":5613, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324365455, "dur":284, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324365739, "dur":1568, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324367322, "dur":61, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"E:\\Myunity\\2022.3.33f1\\Editor\\Data\\PlaybackEngines\\WindowsStandaloneSupport\\Variations\\win64_player_nondevelopment_mono\\MonoBleedingEdge\\etc\\mono\\4.5\\web.config" }}
+,{ "pid":12345, "tid":3, "ts":1741761324367310, "dur":74, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/MonoBleedingEdge/etc/mono/4.5/web.config" }}
+,{ "pid":12345, "tid":3, "ts":1741761324367385, "dur":443, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324367853, "dur":312, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324368189, "dur":599, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324368801, "dur":147, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324368963, "dur":499, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.CloudSave.dll" }}
+,{ "pid":12345, "tid":3, "ts":1741761324368962, "dur":501, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.CloudSave.dll" }}
+,{ "pid":12345, "tid":3, "ts":1741761324369463, "dur":116, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324369585, "dur":823, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.VisualScripting.Core.dll" }}
+,{ "pid":12345, "tid":3, "ts":1741761324369584, "dur":825, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.VisualScripting.Core.dll" }}
+,{ "pid":12345, "tid":3, "ts":1741761324370445, "dur":118, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324370571, "dur":738, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324371360, "dur":115, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324371485, "dur":209, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324371702, "dur":295, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324372006, "dur":278, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324372294, "dur":400, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324372703, "dur":226, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324372935, "dur":343, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\com.unity.services.core\\UnityServicesProjectConfiguration.json" }}
+,{ "pid":12345, "tid":3, "ts":1741761324372935, "dur":343, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/StreamingAssets/UnityServicesProjectConfiguration.json" }}
+,{ "pid":12345, "tid":3, "ts":1741761324373279, "dur":156, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":3, "ts":1741761324373470, "dur":18561, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/Resources/unity_builtin_extra" }}
+,{ "pid":12345, "tid":3, "ts":1741761324392426, "dur":2385, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/globalgamemanagers" }}
+,{ "pid":12345, "tid":3, "ts":1741761324394825, "dur":3975856, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324359862, "dur":5596, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324365460, "dur":432, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324365892, "dur":1410, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324367317, "dur":192, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"E:\\Myunity\\2022.3.33f1\\Editor\\Data\\PlaybackEngines\\WindowsStandaloneSupport\\Variations\\win64_player_nondevelopment_mono\\MonoBleedingEdge\\etc\\mono\\mconfig\\config.xml" }}
+,{ "pid":12345, "tid":4, "ts":1741761324367302, "dur":208, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/MonoBleedingEdge/etc/mono/mconfig/config.xml" }}
+,{ "pid":12345, "tid":4, "ts":1741761324367511, "dur":497, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324368055, "dur":253, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324368317, "dur":267, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324368594, "dur":61, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324368667, "dur":248, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324368935, "dur":247, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324369187, "dur":264, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Timeline.dll" }}
+,{ "pid":12345, "tid":4, "ts":1741761324369186, "dur":266, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Timeline.dll" }}
+,{ "pid":12345, "tid":4, "ts":1741761324369452, "dur":193, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324369653, "dur":183, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Threading.dll" }}
+,{ "pid":12345, "tid":4, "ts":1741761324369652, "dur":185, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.Core.Threading.dll" }}
+,{ "pid":12345, "tid":4, "ts":1741761324369837, "dur":246, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324370090, "dur":388, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.PixelPerfect.dll" }}
+,{ "pid":12345, "tid":4, "ts":1741761324370089, "dur":389, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.2D.PixelPerfect.dll" }}
+,{ "pid":12345, "tid":4, "ts":1741761324370556, "dur":769, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324371325, "dur":76, "ph":"X", "name": "EmitNodeUpToDate",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/UnityEngine.dll" }}
+,{ "pid":12345, "tid":4, "ts":1741761324371405, "dur":242, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324371664, "dur":211, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324371886, "dur":310, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324372205, "dur":375, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324372691, "dur":261, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":4, "ts":1741761324372963, "dur":50, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"E:\\Myunity\\2022.3.33f1\\Editor\\Data\\PlaybackEngines\\WindowsStandaloneSupport\\Variations\\win64_player_nondevelopment_mono\\UnityPlayer.dll" }}
+,{ "pid":12345, "tid":4, "ts":1741761324372962, "dur":51, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/UnityPlayer.dll" }}
+,{ "pid":12345, "tid":4, "ts":1741761324373062, "dur":7294, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/sharedassets1.assets" }}
+,{ "pid":12345, "tid":4, "ts":1741761324380395, "dur":15135, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/resources.assets" }}
+,{ "pid":12345, "tid":4, "ts":1741761324395550, "dur":3975123, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324359889, "dur":5575, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324365466, "dur":410, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324365877, "dur":1452, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324367342, "dur":107, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"E:\\Myunity\\2022.3.33f1\\Editor\\Data\\PlaybackEngines\\WindowsStandaloneSupport\\Variations\\win64_player_nondevelopment_mono\\MonoBleedingEdge\\etc\\mono\\4.5\\machine.config" }}
+,{ "pid":12345, "tid":5, "ts":1741761324367329, "dur":121, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/MonoBleedingEdge/etc/mono/4.5/machine.config" }}
+,{ "pid":12345, "tid":5, "ts":1741761324367451, "dur":627, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324368101, "dur":371, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324368479, "dur":171, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324368663, "dur":254, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324368917, "dur":53, "ph":"X", "name": "EmitNodeUpToDate",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/System.Configuration.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324368972, "dur":273, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Registration.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324368971, "dur":274, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.Core.Registration.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324369246, "dur":120, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324369372, "dur":233, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Telemetry.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324369371, "dur":234, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.Core.Telemetry.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324369606, "dur":120, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324369748, "dur":358, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\NavMeshPlus.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324369747, "dur":360, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/NavMeshPlus.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324370138, "dur":516, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.SpriteShape.Runtime.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324370137, "dur":518, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.2D.SpriteShape.Runtime.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324370655, "dur":460, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324371123, "dur":181, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324371304, "dur":74, "ph":"X", "name": "EmitNodeUpToDate",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/UnityEngine.VehiclesModule.dll" }}
+,{ "pid":12345, "tid":5, "ts":1741761324371382, "dur":266, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324371692, "dur":188, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324371894, "dur":312, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324372215, "dur":477, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324372699, "dur":274, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":5, "ts":1741761324373027, "dur":16419, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/sharedassets2.assets.resS" }}
+,{ "pid":12345, "tid":5, "ts":1741761324389484, "dur":26790, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/level0" }}
+,{ "pid":12345, "tid":5, "ts":1741761324416318, "dur":3954345, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324359923, "dur":5547, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324365474, "dur":394, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324365869, "dur":1441, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324367359, "dur":346, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324367744, "dur":257, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324368034, "dur":141, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324368200, "dur":996, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324369203, "dur":318, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.Common.Runtime.dll" }}
+,{ "pid":12345, "tid":6, "ts":1741761324369202, "dur":319, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.2D.Common.Runtime.dll" }}
+,{ "pid":12345, "tid":6, "ts":1741761324369522, "dur":143, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324369681, "dur":1800, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Device.dll" }}
+,{ "pid":12345, "tid":6, "ts":1741761324369680, "dur":1802, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.Core.Device.dll" }}
+,{ "pid":12345, "tid":6, "ts":1741761324371482, "dur":301, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324371806, "dur":195, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324372013, "dur":276, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324372305, "dur":365, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324372681, "dur":195, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324372917, "dur":116, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324373051, "dur":115, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":6, "ts":1741761324373167, "dur":41585, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/sharedassets1.assets.resS" }}
+,{ "pid":12345, "tid":6, "ts":1741761324414772, "dur":3955895, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324359946, "dur":5531, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324365480, "dur":406, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324365886, "dur":1413, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324367299, "dur":55, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/UnityCrashHandler64.exe" }}
+,{ "pid":12345, "tid":7, "ts":1741761324367355, "dur":105, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324367501, "dur":385, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324367919, "dur":270, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324368199, "dur":733, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324368948, "dur":501, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Cinemachine.dll" }}
+,{ "pid":12345, "tid":7, "ts":1741761324368947, "dur":503, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Cinemachine.dll" }}
+,{ "pid":12345, "tid":7, "ts":1741761324369485, "dur":491, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\UnityEngine.UI.dll" }}
+,{ "pid":12345, "tid":7, "ts":1741761324369484, "dur":493, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/UnityEngine.UI.dll" }}
+,{ "pid":12345, "tid":7, "ts":1741761324369977, "dur":173, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324370157, "dur":777, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Collections.dll" }}
+,{ "pid":12345, "tid":7, "ts":1741761324370156, "dur":778, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Collections.dll" }}
+,{ "pid":12345, "tid":7, "ts":1741761324370935, "dur":331, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324371335, "dur":147, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324371491, "dur":293, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324371798, "dur":262, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324372068, "dur":272, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324372348, "dur":407, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324372773, "dur":175, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":7, "ts":1741761324373010, "dur":18004, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/sharedassets2.assets" }}
+,{ "pid":12345, "tid":7, "ts":1741761324391050, "dur":2628, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/globalgamemanagers.assets.resS" }}
+,{ "pid":12345, "tid":7, "ts":1741761324393734, "dur":3976912, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324359968, "dur":5515, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324365486, "dur":376, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324365863, "dur":1471, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324367335, "dur":81, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/MonoBleedingEdge/etc/mono/4.5/Browsers/Compat.browser" }}
+,{ "pid":12345, "tid":8, "ts":1741761324367417, "dur":645, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324368068, "dur":51, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Resources/unity default resources" }}
+,{ "pid":12345, "tid":8, "ts":1741761324368120, "dur":150, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324368291, "dur":314, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324368614, "dur":157, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324368791, "dur":155, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324368987, "dur":306, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Authentication.PlayerAccounts.dll" }}
+,{ "pid":12345, "tid":8, "ts":1741761324368986, "dur":307, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.Authentication.PlayerAccounts.dll" }}
+,{ "pid":12345, "tid":8, "ts":1741761324369294, "dur":188, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324369490, "dur":262, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.Tilemap.Extras.dll" }}
+,{ "pid":12345, "tid":8, "ts":1741761324369489, "dur":264, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.2D.Tilemap.Extras.dll" }}
+,{ "pid":12345, "tid":8, "ts":1741761324369753, "dur":139, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324369902, "dur":463, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Analytics.dll" }}
+,{ "pid":12345, "tid":8, "ts":1741761324369901, "dur":465, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.Core.Analytics.dll" }}
+,{ "pid":12345, "tid":8, "ts":1741761324370366, "dur":140, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324370514, "dur":129, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324370652, "dur":636, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324371289, "dur":50, "ph":"X", "name": "EmitNodeUpToDate",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/UnityEngine.WindModule.dll" }}
+,{ "pid":12345, "tid":8, "ts":1741761324371344, "dur":176, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324371529, "dur":308, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324371845, "dur":307, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324372170, "dur":273, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324372454, "dur":213, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324372678, "dur":148, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324372894, "dur":155, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324373062, "dur":55, "ph":"X", "name": "EmitNodeStart",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":8, "ts":1741761324373167, "dur":19282, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/sharedassets0.assets" }}
+,{ "pid":12345, "tid":8, "ts":1741761324392494, "dur":3978153, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324359994, "dur":5495, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324365493, "dur":373, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324365867, "dur":1464, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324367331, "dur":69, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/MonoBleedingEdge/etc/mono/4.5/DefaultWsdlHelpGenerator.aspx" }}
+,{ "pid":12345, "tid":9, "ts":1741761324367401, "dur":604, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324368033, "dur":316, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324368364, "dur":258, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324368633, "dur":169, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324368813, "dur":236, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324369063, "dur":342, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Authentication.dll" }}
+,{ "pid":12345, "tid":9, "ts":1741761324369061, "dur":345, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.Authentication.dll" }}
+,{ "pid":12345, "tid":9, "ts":1741761324369406, "dur":134, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":9, "ts":1741761324369548, "dur":318, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.Animation.Runtime.dll" }}
+,{ "pid":12345, "tid":9, "ts":1741761324369547, "dur":320, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.2D.Animation.Runtime.dll" }}
+,{ "pid":12345, "tid":9, "ts":1741761324369906, "dur":580, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.TextMeshPro.dll" }}
+,{ "pid":12345, "tid":9, "ts":1741761324369905, "dur":582, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.TextMeshPro.dll" }}
+,{ "pid":12345, "tid":9, "ts":1741761324371046, "dur":14314, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/Managed/Assembly-CSharp.dll" }}
+,{ "pid":12345, "tid":9, "ts":1741761324385391, "dur":7961, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/level2" }}
+,{ "pid":12345, "tid":9, "ts":1741761324393752, "dur":3976896, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1741761324360031, "dur":5466, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1741761324365500, "dur":402, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1741761324365902, "dur":1395, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":10, "ts":1741761324367510, "dur":275, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Assembly-CSharp.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324367786, "dur":151, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.IK.Runtime.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324367938, "dur":164, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.AI.Navigation.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324368103, "dur":135, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Environments.Internal.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324368239, "dur":126, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324368366, "dur":112, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Networking.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324368480, "dur":374, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.VisualScripting.Flow.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324368855, "dur":125, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Scheduler.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324368982, "dur":418, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Environments.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324369401, "dur":203, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Configuration.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324369605, "dur":574, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Collections.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324370180, "dur":410, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.2D.SpriteShape.Runtime.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324370595, "dur":344, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Burst.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324370944, "dur":150, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Device.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324371112, "dur":753, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Mathematics.dll" }}
+,{ "pid":12345, "tid":10, "ts":1741761324367310, "dur":4665, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"GenerateNativePluginsForAssemblies Library/Bee/artifacts/WinPlayerBuildProgram/AsyncPluginsFromLinker" }}
+,{ "pid":12345, "tid":10, "ts":1741761324377886, "dur":3990861, "ph":"X", "name": "GenerateNativePluginsForAssemblies",  "args": { "detail":"Library/Bee/artifacts/WinPlayerBuildProgram/AsyncPluginsFromLinker" }}
+,{ "pid":12345, "tid":10, "ts":1741761328370398, "dur":203, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324360052, "dur":5451, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324365506, "dur":61, "ph":"X", "name": "EarlyStatNonGeneratedFile",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324365567, "dur":1736, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324367304, "dur":59, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/MonoBleedingEdge/etc/mono/config" }}
+,{ "pid":12345, "tid":11, "ts":1741761324367364, "dur":325, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324367734, "dur":161, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324367927, "dur":412, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324368349, "dur":239, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324368598, "dur":167, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324368776, "dur":174, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324368980, "dur":2467, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Mathematics.dll" }}
+,{ "pid":12345, "tid":11, "ts":1741761324368979, "dur":2468, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Mathematics.dll" }}
+,{ "pid":12345, "tid":11, "ts":1741761324371448, "dur":113, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324371572, "dur":211, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324371792, "dur":208, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324372028, "dur":262, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324372297, "dur":358, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324372655, "dur":82, "ph":"X", "name": "EmitNodeUpToDate",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/UnityEngine.NVIDIAModule.dll" }}
+,{ "pid":12345, "tid":11, "ts":1741761324372740, "dur":345, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324373091, "dur":259, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"Library\\PlayerDataCache\\Win64\\Data\\ScriptingAssemblies.json" }}
+,{ "pid":12345, "tid":11, "ts":1741761324373090, "dur":261, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/ScriptingAssemblies.json" }}
+,{ "pid":12345, "tid":11, "ts":1741761324373352, "dur":107, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":11, "ts":1741761324373479, "dur":50659, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/resources.assets.resS" }}
+,{ "pid":12345, "tid":11, "ts":1741761324424157, "dur":3946502, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324360072, "dur":5439, "ph":"X", "name": "FirstLock",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324365512, "dur":1782, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324367308, "dur":123, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324367443, "dur":359, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324367829, "dur":219, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324368103, "dur":312, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324368422, "dur":180, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324368611, "dur":157, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324368786, "dur":159, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324368958, "dur":326, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.VisualScripting.State.dll" }}
+,{ "pid":12345, "tid":12, "ts":1741761324368957, "dur":328, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.VisualScripting.State.dll" }}
+,{ "pid":12345, "tid":12, "ts":1741761324369317, "dur":293, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.InternalAPIEngineBridge.001.dll" }}
+,{ "pid":12345, "tid":12, "ts":1741761324369316, "dur":295, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.InternalAPIEngineBridge.001.dll" }}
+,{ "pid":12345, "tid":12, "ts":1741761324369612, "dur":167, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324369786, "dur":343, "ph":"X", "name": "ComputeFileSignatureSha1",  "args": { "detail":"D:\\Unity\\JoyOfFire\\JoyOfFire\\Library\\Bee\\PlayerScriptAssemblies\\Unity.Services.Core.Internal.dll" }}
+,{ "pid":12345, "tid":12, "ts":1741761324369785, "dur":345, "ph":"X", "name": "CheckInputSignature",  "args": { "detail":"CopyFiles D:/Joy of FIre/JoyOfFire_Data/Managed/Unity.Services.Core.Internal.dll" }}
+,{ "pid":12345, "tid":12, "ts":1741761324370226, "dur":156, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324370502, "dur":545, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324371058, "dur":261, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324371367, "dur":277, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324371656, "dur":226, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324371896, "dur":301, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324372210, "dur":345, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324372563, "dur":206, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324372901, "dur":143, "ph":"X", "name": "OutputFilesMissingFor",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324391497, "dur":259, "ph":"X", "name": "EmitNodeFinish",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":12, "ts":1741761324373074, "dur":18692, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/sharedassets0.assets.resS" }}
+,{ "pid":12345, "tid":12, "ts":1741761324391801, "dur":1709, "ph":"X", "name": "CopyFiles",  "args": { "detail":"D:/Joy of FIre/JoyOfFire_Data/globalgamemanagers.assets" }}
+,{ "pid":12345, "tid":12, "ts":1741761324393523, "dur":3977127, "ph":"X", "name": "WaitingForWork", "cname":"thread_state_sleeping",  "args": { "detail":"" }}
+,{ "pid":12345, "tid":0, "ts":1741761328376868, "dur":1051, "ph":"X", "name": "ProfilerWriteOutput" }
 ,

@@ -15,10 +15,8 @@ MonoBehaviour:
   itemName: Boiling_pot
   chineseName: "\u6EDA\u70EB\u7684\u70ED\u9505"
   description: "\u91CC\u9762\u7096\u716E\u7740\u6216\u8BB8\u5343\u4E07\u5E74\u524D\u7684\u8089\u6C64"
-  IsConsumable: 0
   type: 0
   effectType: 0
   icon: {fileID: 21300000, guid: 89c737c2c44a52440910d1e3af10dc85, type: 3}
   useCustomScript: 0
   itemScriptName: 
-  itemEffect: "\u6218\u6597\u4E2D\u88AB\u51FB\u4E2D\u65F6\uFF0C\u5BF9\u653B\u51FB\u8005\u65BD\u52A02\u5C42\u707C\u70E7\u3002\u6218\u6597\u7ED3\u675F\u65F6\u82E5\u5DF2\u65BD\u52A0\u4E8610\u5C42\u707C\u70E7\uFF0C\u5219\u4E3A\u6240\u6709\u6211\u65B9\u5355\u4F4D\u6062\u590D10%\u7684\u751F\u547D\u3002"

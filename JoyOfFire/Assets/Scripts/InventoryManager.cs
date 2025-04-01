@@ -109,7 +109,7 @@ public class InventoryManager : MonoBehaviour
             {
                 if (itemSlot.isFull && itemSlot.itemName == existingItem.data.chineseName)
                 {
-                    itemSlot.AddItem(existingItem.data.chineseName, existingItem.data.icon, existingItem.data.description, count, existingItem.data.itemEffect);
+                    itemSlot.AddItem(existingItem.data.chineseName, existingItem.data.icon, existingItem.data.description, count);
                     return;
                 }
             }
@@ -145,7 +145,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (!itemSlot.isFull)
             {
-                itemSlot.AddItem(newItem.data.chineseName, newItem.data.icon, newItem.data.description, count, newItem.data.itemEffect);
+                itemSlot.AddItem(newItem.data.chineseName, newItem.data.icon, newItem.data.description, count);
                 break;
             }
         }
@@ -178,7 +178,7 @@ public class InventoryManager : MonoBehaviour
             {
                 if (itemSlot.isFull && itemSlot.itemSlotName.text == itemName)
                 {
-                    itemSlot.AddItem(item.data.chineseName, item.data.icon, item.data.description, count, item.data.itemEffect);
+                    itemSlot.AddItem(item.data.chineseName, item.data.icon, item.data.description, count);
                     return;
                 }
             }
@@ -187,7 +187,7 @@ public class InventoryManager : MonoBehaviour
             {
                 if (!itemSlot.isFull)
                 {
-                    itemSlot.AddItem(item.data.chineseName, item.data.icon, item.data.description, count, item.data.itemEffect);
+                    itemSlot.AddItem(item.data.chineseName, item.data.icon, item.data.description, count);
                     break;
                 }
             }

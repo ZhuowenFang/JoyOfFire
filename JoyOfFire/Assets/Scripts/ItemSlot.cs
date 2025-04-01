@@ -12,7 +12,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public Sprite itemSprite;
     public bool isFull;
     public string itemDescription;
-    public string itemEffect;
     public Sprite emptySlotSprite;
 
     public Text itemNumber;
@@ -24,7 +23,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
     public Text itemDesciptionNumber;
     public GameObject selectedShader;
     public bool isSelected;
-    public Text itemEffectText;
+
     private InventoryManager inventoryManager;
     public int itemCount;
 
@@ -34,7 +33,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemNumber.text = "";
     }
 
-    public void AddItem(string itemName, Sprite itemImage, string itemDescription, int count, string itemEffect)
+    public void AddItem(string itemName, Sprite itemImage, string itemDescription, int count)
     {
         if (isFull && itemSlotName.text == itemName)
         {
@@ -48,8 +47,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
             itemSprite = itemImage;
             itemSlotName.text = itemName;
             this.itemDescription = itemDescription;
-            
-            this.itemEffect = itemEffect;
             isFull = true;
             itemCount = count;
             itemIcon.sprite = itemImage;
@@ -93,7 +90,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemSlotName.text = "";
         itemSprite = null;
         itemDescription = "";
-        itemEffect = "";
         isFull = false;
         itemCount = 0;
         itemIcon.sprite = emptySlotSprite;
@@ -118,7 +114,6 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler
         itemDescriptionText.text = itemDescription;
         itemDesciptionImage.sprite = itemSprite;
         itemDesciptionNumber.text = itemNumber.text;
-        itemEffectText.text = itemEffect;
         if (itemDesciptionImage.sprite == null)
         {
             itemDesciptionImage.sprite = emptySlotSprite;
