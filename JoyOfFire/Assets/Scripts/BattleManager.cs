@@ -32,7 +32,7 @@ public class BattleManager : MonoBehaviour
     
     public GameObject skillButtonPrefab;
     public Transform skillButtonParent;
-    private List<Button> skillButtons = new List<Button>();
+    public List<Button> skillButtons = new List<Button>();
     private bool skippingTurn = false;
     private SkillAttributes selectedSkill;
     public bool canUseSkill = true;
@@ -157,19 +157,19 @@ public class BattleManager : MonoBehaviour
     {
         foreach (var btn in skillButtons)
         {
-            Destroy(btn.gameObject);
+            btn.gameObject.SetActive(false);
         }
-        skillButtons.Clear();
+        
+        
+        int currentSkillIndex = 0;
 
         foreach (var skill in character.skills)
         {
-            
             if (skill.skillName == "") continue;
-            GameObject skillButtonGO = Instantiate(skillButtonPrefab, skillButtonParent);
-            Button skillButton = skillButtonGO.GetComponent<Button>();
-            Text skillText = skillButtonGO.GetComponentInChildren<Text>();
-            Image skillImage = skillButtonGO.transform.Find("SkillIcon").GetComponent<Image>();
-            
+            Button skillButton = skillButtons[currentSkillIndex].GetComponent<Button>();
+            TMP_Text skillText = skillButtons[currentSkillIndex].GetComponentInChildren<TMP_Text>();
+            Image skillImage = skillButtons[currentSkillIndex].transform.Find("SkillIcon").GetComponent<Image>();
+            skillButton.gameObject.SetActive(true);
             if (!String.IsNullOrEmpty(skill.skillIcon))
             {
                 StartCoroutine(ImageCache.GetTexture(skill.skillIcon, (Texture2D texture) =>
@@ -190,8 +190,7 @@ public class BattleManager : MonoBehaviour
                 skillButton.interactable = false;
             }
             skillButton.onClick.AddListener(() => OnSkillSelected(skillButton,character, skill));
-
-            skillButtons.Add(skillButton);
+            currentSkillIndex++;
         }
     }
     
