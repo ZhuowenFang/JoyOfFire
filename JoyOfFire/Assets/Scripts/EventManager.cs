@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cinemachine;
 using Newtonsoft.Json.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -71,6 +72,10 @@ public class EventManager : MonoBehaviour
     private int current2 = 0;
     private int current3 = 0;
     private bool insideCave = false;
+
+    public Text stage1Progess;
+    public Text stage2Progess;
+    public Text stage3Progess;
     public static Dictionary<string, LevelPrerequisite> levelPrerequisites = new Dictionary<string, LevelPrerequisite>()
     {
         { "1-1", new LevelPrerequisite { mustNotTriggered = new List<string> { "1-4" } } },
@@ -97,30 +102,21 @@ public class EventManager : MonoBehaviour
 
     public void updateProgress()
     {
-        foreach (Transform child in progressLayout.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        
         if (levelOrder == "1" && !insideCave)
         {
-            GameObject newProgress = Instantiate(progressTextPrefab, progressLayout.transform);
-            newProgress.GetComponent<Text>().text = $"梦镜岛东部：" + current1 + "/" + max1;
+            stage1Progess.text = $"梦镜岛东：" + current1 + "/" + max1;
         }
         else if (levelOrder == "1" && insideCave)
         {
-            GameObject newProgress = Instantiate(progressTextPrefab, progressLayout.transform);
-            newProgress.GetComponent<Text>().text = $"梦镜岛东部：" + current1 + "/" + max1;
-            GameObject newProgress1 = Instantiate(progressTextPrefab, progressLayout.transform);
-            newProgress1.GetComponent<Text>().text = $"阴暗洞穴：" + current2 + "/" + max2;
+            stage1Progess.text = $"梦镜岛东：" + current1 + "/" + max1;
+            stage2Progess.text = $"阴暗洞穴：" + current2 + "/" + max2;
         }
         else if (levelOrder == "2" || levelOrder == "3")
         {
-            GameObject newProgress = Instantiate(progressTextPrefab, progressLayout.transform);
-            newProgress.GetComponent<Text>().text = $"梦镜岛东部：" + current1 + "/" + max1;
-            GameObject newProgress1 = Instantiate(progressTextPrefab, progressLayout.transform);
-            newProgress1.GetComponent<Text>().text = $"阴暗洞穴：" + current2 + "/" + max2;
-            GameObject newProgress2 = Instantiate(progressTextPrefab, progressLayout.transform);
-            newProgress2.GetComponent<Text>().text = $"“美梦成真”餐厅内部：" + current3 + "/" + max3;
+            stage1Progess.text = $"梦镜岛东：" + current1 + "/" + max1;
+            stage2Progess.text = $"阴暗洞穴：" + current2 + "/" + max2;
+            stage3Progess.text = $"餐厅内部：" + current3 + "/" + max3;
         }
         
         

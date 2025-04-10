@@ -859,7 +859,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            textRect.localPosition = targetRect.localPosition + new Vector3(0, 130, 0);
+            textRect.localPosition = targetRect.localPosition + new Vector3(0, 0, 0);
 
         }
         
@@ -895,7 +895,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            textRect.localPosition = targetRect.localPosition + new Vector3(0, 130, 0);
+            textRect.localPosition = targetRect.localPosition + new Vector3(0, 0, 0);
 
         }
         
