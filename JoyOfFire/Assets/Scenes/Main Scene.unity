@@ -38753,6 +38753,14 @@ MonoBehaviour:
   agilityText: {fileID: 1842127054}
   intelligenceText: {fileID: 308566606}
   totalPointsText: {fileID: 973772512}
+  currentStrengthText: {fileID: 1185072067}
+  currentAgilityText: {fileID: 138939903}
+  currentIntelligenceText: {fileID: 1551428608}
+  confirmButton: {fileID: 1694334875}
+  ATResultPanel: {fileID: 2076813799}
+  ATResultStrengthText: {fileID: 1611865766}
+  ATResultAgilityText: {fileID: 1503921921}
+  ATResultIntelligenceText: {fileID: 1962391166}
 --- !u!1 &1443817915
 GameObject:
   m_ObjectHideFlags: 0
