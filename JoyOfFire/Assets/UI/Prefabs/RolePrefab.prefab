@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 4722448871764928792}
   - component: {fileID: 9063207906899395563}
   - component: {fileID: 384451437339150288}
+  - component: {fileID: 8938247546583335928}
   m_Layer: 5
   m_Name: RolePrefab
   m_TagString: Untagged
@@ -140,7 +141,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -181,6 +182,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8938247546583335928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361120371225766981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa0cc22e514d2ff488371877d987666f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationAngle: 20
+  rotationSpeed: 5
 --- !u!1 &405110191275380789
 GameObject:
   m_ObjectHideFlags: 0
