@@ -40,10 +40,8 @@ public class ButtonBreathManager : MonoBehaviour
 
     void Start()
     {
-        // 记录主按钮
         mainButtonSet = new HashSet<Button>(mainButtons.Select(b => b.button));
 
-        // 自动识别子按钮
         foreach (var root in buttonRoots)
         {
             if (root == null) continue;
@@ -58,7 +56,6 @@ public class ButtonBreathManager : MonoBehaviour
             }
         }
 
-        // 初始化主按钮
         foreach (var btn in mainButtons)
         {
             if (btn.glowImage != null)
@@ -69,20 +66,16 @@ public class ButtonBreathManager : MonoBehaviour
             }
 
             if (btn.backgroundImage != null)
-            {
                 btn.backgroundImage.color = normalColor;
-            }
 
-            AddSelectListener(btn.button, () => OnMainButtonSelected(btn));
+            AddButtonListeners(btn.button, () => OnMainButtonSelected(btn));
         }
 
-        // 初始化子按钮
         foreach (var btn in subButtons)
         {
-            AddSelectListener(btn, OnSubButtonSelected);
+            AddButtonListeners(btn, OnSubButtonSelected);
         }
 
-        // 默认选中第一个主按钮
         if (mainButtons.Count > 0)
         {
             EventSystem.current.SetSelectedGameObject(mainButtons[0].button.gameObject);
@@ -92,7 +85,6 @@ public class ButtonBreathManager : MonoBehaviour
 
     void Update()
     {
-        // 呼吸动画
         if (currentMain != null && currentMain.glowImage != null && currentMain.glowImage.enabled)
         {
             float t = (Mathf.Sin(Time.time * pulseSpeed) + 1f) / 2f;
@@ -107,9 +99,32 @@ public class ButtonBreathManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 每次外部刷新呼吸光效
+    /// </summary>
+    public void RefreshBreathEffect()
+    {
+        if (currentMain == null && mainButtons.Count > 0)
+        {
+            EventSystem.current.SetSelectedGameObject(mainButtons[0].button.gameObject);
+            OnMainButtonSelected(mainButtons[0]);
+        }
+        else if (currentMain != null)
+        {
+            if (currentMain.glowImage != null)
+            {
+                currentMain.glowImage.enabled = true;
+                currentMain.glowImage.rectTransform.localScale = originalScale;
+                currentMain.glowImage.color = originalGlowColor;
+            }
+
+            if (currentMain.backgroundImage != null)
+                currentMain.backgroundImage.color = selectedColor;
+        }
+    }
+
     void OnMainButtonSelected(BreathButton btn)
     {
-        // 关闭上一个主按钮效果
         if (currentMain != null && currentMain != btn)
         {
             if (currentMain.glowImage != null)
@@ -121,7 +136,6 @@ public class ButtonBreathManager : MonoBehaviour
 
         currentMain = btn;
 
-        // 开启当前主按钮效果
         if (btn.glowImage != null)
         {
             btn.glowImage.enabled = true;
@@ -130,29 +144,29 @@ public class ButtonBreathManager : MonoBehaviour
         }
 
         if (btn.backgroundImage != null)
-        {
             btn.backgroundImage.color = selectedColor;
-        }
     }
 
     void OnSubButtonSelected()
     {
-        // 子按钮不会改变主按钮状态，但可强制回选当前主按钮
         if (currentMain != null)
-        {
             EventSystem.current.SetSelectedGameObject(currentMain.button.gameObject);
-        }
     }
 
-    void AddSelectListener(Button button, UnityEngine.Events.UnityAction onSelect)
+    void AddButtonListeners(Button button, UnityEngine.Events.UnityAction onSelectOrClick)
     {
         EventTrigger trigger = button.GetComponent<EventTrigger>();
         if (trigger == null)
             trigger = button.gameObject.AddComponent<EventTrigger>();
 
-        EventTrigger.Entry entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.Select;
-        entry.callback.AddListener((_) => onSelect());
-        trigger.triggers.Add(entry);
+        EventTrigger.Entry selectEntry = new EventTrigger.Entry();
+        selectEntry.eventID = EventTriggerType.Select;
+        selectEntry.callback.AddListener((_) => onSelectOrClick());
+        trigger.triggers.Add(selectEntry);
+
+        EventTrigger.Entry clickEntry = new EventTrigger.Entry();
+        clickEntry.eventID = EventTriggerType.PointerClick;
+        clickEntry.callback.AddListener((_) => onSelectOrClick());
+        trigger.triggers.Add(clickEntry);
     }
 }
