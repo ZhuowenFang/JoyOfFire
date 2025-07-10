@@ -1,15 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MirrorFlash : MonoBehaviour
 {
-    public Material flashMat;
-    public float interval = 5f;
-    public float sweepDuration = 0.6f;
+    [Header("材质和参数")]
+    public Material flashMat;               // 需要控制的材质（建议是实例材质）
+    public float interval = 5f;             // 自动扫掠时间间隔（秒）
+    public float sweepDuration = 0.6f;      // 扫掠动画时长（秒）
 
     private float timer = 0f;
     private bool sweeping = false;
+    private Coroutine sweepCoroutine = null;
 
     void Update()
     {
@@ -17,26 +18,57 @@ public class MirrorFlash : MonoBehaviour
 
         if (!sweeping && timer >= interval)
         {
-            StartCoroutine(SweepFlash());
+            StartSweep();
             timer = 0f;
         }
     }
 
-    System.Collections.IEnumerator SweepFlash()
+    // 自动和手动播放入口，都调用这个方法启动扫掠协程
+    private void StartSweep()
+    {
+        if (sweepCoroutine != null)
+        {
+            StopCoroutine(sweepCoroutine);
+            sweepCoroutine = null;
+        }
+        sweepCoroutine = StartCoroutine(SweepFlashCoroutine());
+    }
+
+    // 立即播放扫掠动画，重置计时器
+    public void PlayImmediately()
+    {
+        timer = 0f;
+        StartSweep();
+    }
+
+    // 停止当前扫掠动画和关闭效果
+    public void StopEffect()
+    {
+        if (sweepCoroutine != null)
+        {
+            StopCoroutine(sweepCoroutine);
+            sweepCoroutine = null;
+        }
+        sweeping = false;
+        flashMat.SetFloat("_FlashStrength", 0f);
+    }
+
+    private IEnumerator SweepFlashCoroutine()
     {
         sweeping = true;
-        float time = 0f;
+        float elapsed = 0f;
         flashMat.SetFloat("_FlashStrength", 1f);
 
-        while (time < sweepDuration)
+        while (elapsed < sweepDuration)
         {
-            float pos = time / sweepDuration; // 从0扫到1
+            float pos = Mathf.Clamp01(elapsed / sweepDuration);
             flashMat.SetFloat("_FlashPos", pos);
-            time += Time.deltaTime;
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
         flashMat.SetFloat("_FlashStrength", 0f);
         sweeping = false;
+        sweepCoroutine = null;
     }
 }
