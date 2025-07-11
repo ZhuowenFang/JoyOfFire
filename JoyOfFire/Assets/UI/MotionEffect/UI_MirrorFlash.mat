@@ -29,7 +29,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FlashPos: 0.99804497
+    - _FlashPos: 0.99925274
     - _FlashStrength: 0
     - _FlashWidth: 0.2
     m_Colors:

@@ -7,6 +7,7 @@ Shader "UI/BranchPulse"
         _ColorB ("End Color (Purple)", Color) = (0.7, 0.3, 1, 1)
         _BreathStrength ("Breath Strength", Range(0, 1)) = 0.5
         _BreathSpeed ("Breath Speed", Range(0.1, 10)) = 2.0
+        _RealTime ("Real Time", Float) = 0
     }
 
     SubShader
@@ -30,6 +31,7 @@ Shader "UI/BranchPulse"
             fixed4 _ColorB;
             float _BreathStrength;
             float _BreathSpeed;
+            float _RealTime;
 
             struct appdata
             {
@@ -54,15 +56,11 @@ Shader "UI/BranchPulse"
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed4 maskColor = tex2D(_MainTex, i.uv);
-                float breath = sin(_Time.y * _BreathSpeed) * 0.5 + 0.5;
+                float breath = sin(_RealTime * _BreathSpeed) * 0.5 + 0.5;
 
-                // 颜色渐变：绿色 -> 紫色
                 fixed3 pulseColor = lerp(_ColorA.rgb, _ColorB.rgb, breath);
-
-                // 强度控制
                 fixed3 finalColor = pulseColor * _BreathStrength;
 
-                // 透明度由贴图 alpha 和呼吸强度共同决定
                 return fixed4(finalColor, maskColor.a * breath);
             }
             ENDCG

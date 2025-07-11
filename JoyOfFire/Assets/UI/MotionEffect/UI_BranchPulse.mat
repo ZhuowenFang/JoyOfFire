@@ -29,12 +29,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BreathSpeed: 1
+    - _BreathSpeed: 1.5
     - _BreathStrength: 0.592
     - _HighlightThreshold: 1
     - _PulseSpeed: 1
     - _PulseStrength: 1
     - _PulseWidth: 0.2
+    - _RealTime: 0
     m_Colors:
     - _BreathColor: {r: 0.40784317, g: 0.93725497, b: 0.7176471, a: 1}
     - _ColorA: {r: 0.37730396, g: 0.109803915, b: 1, a: 1}

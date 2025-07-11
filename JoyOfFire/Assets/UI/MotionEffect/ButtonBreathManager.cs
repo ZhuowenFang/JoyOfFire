@@ -87,7 +87,7 @@ public class ButtonBreathManager : MonoBehaviour
     {
         if (currentMain != null && currentMain.glowImage != null && currentMain.glowImage.enabled)
         {
-            float t = (Mathf.Sin(Time.time * pulseSpeed) + 1f) / 2f;
+            float t = (Mathf.Sin(Time.realtimeSinceStartup * pulseSpeed) + 1f) / 2f;
             float scale = Mathf.Lerp(1f, pulseScale, t);
             float alpha = Mathf.Lerp(0.3f, pulseAlpha, t);
 
@@ -99,9 +99,6 @@ public class ButtonBreathManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 每次外部刷新呼吸光效
-    /// </summary>
     public void RefreshBreathEffect()
     {
         if (currentMain == null && mainButtons.Count > 0)
