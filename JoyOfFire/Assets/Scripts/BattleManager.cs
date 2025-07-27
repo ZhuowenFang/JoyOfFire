@@ -15,6 +15,7 @@ public class BattleManager : MonoBehaviour
     public RectTransform actionPanel;
     public Button attackButton; 
     public Button endTurnButton;
+    public Image endTurnImage;
     public List<Button> characterButtons;
     public List<Button> enemyButtons;
     public GameObject buffIconPrefab;
@@ -88,6 +89,8 @@ public class BattleManager : MonoBehaviour
         UpdateButtonHealthFill();
         UpdateButtonSheildFill();
         endTurnButton.onClick.AddListener(EndTurn);
+        endTurnButton.enabled = false;
+        endTurnImage.color = Color.gray;
         StartCoroutine(StartNextTurnCoroutine());
     }
 
@@ -110,6 +113,9 @@ public class BattleManager : MonoBehaviour
     
         if (characterIndex >= BattleCharacterManager.instance.PlayerCharacters.Count)
         {
+            
+            endTurnButton.enabled = false;
+            endTurnImage.color = Color.gray;
             actionPanel.gameObject.SetActive(false);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
             yield return new WaitForSeconds(2f);
@@ -144,6 +150,8 @@ public class BattleManager : MonoBehaviour
                 EndTurn();
                 yield break;
             }
+            endTurnButton.enabled = true;
+            endTurnImage.color = Color.yellow;
             actionPanel.gameObject.SetActive(true);
             characterButtons[characterIndex].transform.localScale = Vector3.one * 1.2f;
             energyText.text = $"{nextCharacter.energy} / {nextCharacter.maxEnergy}";
@@ -1127,7 +1135,10 @@ public class BattleManager : MonoBehaviour
     {
         ResetAllCharacterSizes();
         speedBarUI.CompleteCurrentTurn();
+        endTurnButton.enabled = false;
+        endTurnImage.color = Color.gray;
         StartCoroutine(StartNextTurnCoroutine());
+        
     }
     public void EndBattle(bool win)
     {

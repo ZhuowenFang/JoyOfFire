@@ -1770,7 +1770,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1305908934}
   - {fileID: 2111218250}
   - {fileID: 1574547180}
   - {fileID: 59237479}
@@ -1778,6 +1777,7 @@ RectTransform:
   - {fileID: 1851010156}
   - {fileID: 966543622}
   - {fileID: 1939304937}
+  - {fileID: 1305908934}
   m_Father: {fileID: 1925403246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -8908,7 +8908,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: ba2b9e7606cdb0a49bfe27d8314eeb8e, type: 3}
 --- !u!224 &1305908934 stripped
 RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6863453138019158359, guid: ba2b9e7606cdb0a49bfe27d8314eeb8e, type: 3}
+  m_CorrespondingSourceObject: {fileID: 7137429725432280597, guid: ba2b9e7606cdb0a49bfe27d8314eeb8e, type: 3}
   m_PrefabInstance: {fileID: 1305908933}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1335978364
@@ -13006,6 +13006,7 @@ MonoBehaviour:
   actionPanel: {fileID: 7086246631777651736}
   attackButton: {fileID: 6202962486367410240}
   endTurnButton: {fileID: 1364499112}
+  endTurnImage: {fileID: 1364499113}
   characterButtons: []
   enemyButtons: []
   buffIconPrefab: {fileID: 274705873775680713, guid: 805158b35840e024787ff0c29bd44343, type: 3}
@@ -16244,6 +16245,7 @@ MonoBehaviour:
   divider: {fileID: 4223066841624652082}
   characterIconPrefab: {fileID: 6351953890817566788, guid: c14e646086726ed4da787eddc1d640b1, type: 3}
   speedCharacters: []
+  roundNumberText: {fileID: 2965512789764446955}
 --- !u!222 &923383745934163775
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18387,7 +18389,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -79.9, y: -8.9755}
+  m_AnchoredPosition: {x: -83, y: -11.889}
   m_SizeDelta: {x: 275.205, y: 61.3639}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2327189528369539020
@@ -19439,10 +19441,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "9/20\u56DE\u5408"
+  m_text: "\u7B2C 1 \u56DE\u5408"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 06f546297c89834408e4ef5929bd445a, type: 2}
-  m_sharedMaterial: {fileID: 4716247137240907774, guid: 06f546297c89834408e4ef5929bd445a, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a39115d01709c5e478b309a8bf299cf4, type: 2}
+  m_sharedMaterial: {fileID: -6820147486518835907, guid: a39115d01709c5e478b309a8bf299cf4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

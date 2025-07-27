@@ -217,6 +217,8 @@ public class NewCharacterManager : MonoBehaviour
             if(isCharacterCreating[index])
             {
                 waitPanel.SetActive(true);
+                characterCreationPanel.SetActive(false);
+
             }
             else
             {

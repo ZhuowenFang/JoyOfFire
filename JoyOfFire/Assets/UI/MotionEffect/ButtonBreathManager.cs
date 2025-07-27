@@ -9,26 +9,26 @@ public class ButtonBreathManager : MonoBehaviour
     [System.Serializable]
     public class BreathButton
     {
-        public Button button;          // Ö÷°´Å¥×é¼þ
-        public Image glowImage;        // ¹âÐ§ÌùÍ¼
-        public Image backgroundImage;  // Ö÷°´Å¥µ×Í¼
+        public Button button;          // ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½
+        public Image glowImage;        // ï¿½ï¿½Ð§ï¿½ï¿½Í¼
+        public Image backgroundImage;  // ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½Í¼
     }
 
-    [Header("Ö÷°´Å¥")]
+    [Header("ï¿½ï¿½ï¿½ï¿½Å¥")]
     public List<BreathButton> mainButtons;
 
-    [Header("°´Å¥ÈÝÆ÷ÁÐ±í£¨×Ô¶¯Ê¶±ð×Ó°´Å¥£©")]
+    [Header("ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½Ô¶ï¿½Ê¶ï¿½ï¿½ï¿½Ó°ï¿½Å¥ï¿½ï¿½")]
     public List<Transform> buttonRoots = new List<Transform>();
 
-    [Header("ºôÎü¹âÐ§²ÎÊý")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½")]
     public float pulseScale = 1.1f;
     public float pulseAlpha = 0.6f;
     public float pulseSpeed = 2f;
 
-    [Header("Ö÷°´Å¥Ñ¡ÖÐÑÕÉ«")]
-    public Color selectedColor = new Color(0.4f, 1f, 0.9f); // ÇàÂÌÉ«
+    [Header("ï¿½ï¿½ï¿½ï¿½Å¥Ñ¡ï¿½ï¿½ï¿½ï¿½É«")]
+    public Color selectedColor = new Color(0.4f, 1f, 0.9f); // ï¿½ï¿½ï¿½ï¿½É«
 
-    [Header("Ö÷°´Å¥Ä¬ÈÏÑÕÉ«")]
+    [Header("ï¿½ï¿½ï¿½ï¿½Å¥Ä¬ï¿½ï¿½ï¿½ï¿½É«")]
     public Color normalColor = Color.white;
 
     private BreathButton currentMain;
@@ -122,6 +122,11 @@ public class ButtonBreathManager : MonoBehaviour
 
     void OnMainButtonSelected(BreathButton btn)
     {
+        
+        if (!btn.button.interactable)
+        {
+            return;
+        }
         if (currentMain != null && currentMain != btn)
         {
             if (currentMain.glowImage != null)
@@ -135,6 +140,7 @@ public class ButtonBreathManager : MonoBehaviour
 
         if (btn.glowImage != null)
         {
+            
             btn.glowImage.enabled = true;
             btn.glowImage.rectTransform.localScale = originalScale;
             btn.glowImage.color = originalGlowColor;

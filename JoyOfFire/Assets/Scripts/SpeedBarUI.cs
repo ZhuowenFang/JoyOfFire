@@ -27,6 +27,8 @@ public class SpeedBarUI : MonoBehaviour
     private int roundNumber = 1;                // 当前回合数
     public static SpeedBarUI instance;
     
+    public TextMeshProUGUI roundNumberText;
+    
     private void Awake()
     {
         instance = this;
@@ -161,6 +163,7 @@ public class SpeedBarUI : MonoBehaviour
         if (allBeyondCurrentRound)
         {
             roundNumber++;
+            roundNumberText.text = $"第 {roundNumber} 回合";
             Debug.Log($"进入第 {roundNumber} 回合！");
             BattleManager.instance.UpdateTotalEnergy();
         }
